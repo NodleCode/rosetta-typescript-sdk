@@ -3,7 +3,12 @@
     "baseUrl": ".",
     "module": "CommonJS",
     "target": "ESNext",
-    "paths": {},
+    "paths": {
+      "types": [
+        "src/types"
+      ],
+      "rosetta-typescript-sdk":["./"]
+    },
     "esModuleInterop": true,
     "skipLibCheck": true,
     "sourceMap": true,
@@ -17,8 +22,7 @@
       "es2017",
       "ESNext"
     ],
-    "types": [
-    ],
+    "types": [],
   },
   "include": [
     "*",
