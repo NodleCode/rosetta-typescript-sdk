@@ -15,7 +15,7 @@ class Controller {
          * send 200 and the payload as received in this method.
          */
         response.status(payload.code || 200);
-        response.setHeader("content-type", "application/json");
+        response.setHeader('content-type', 'application/json');
         const responsePayload = payload.payload !== undefined ? payload.payload : payload;
         if (responsePayload instanceof Object) {
             if (beautify) {
@@ -57,14 +57,14 @@ class Controller {
      * @returns {string}
      */
     static collectFile(request, fieldName) {
-        let uploadedFileName = "";
+        let uploadedFileName = '';
         if (request.files && request.files.length > 0) {
             const fileObject = request.files.find((file) => file.fieldname === fieldName);
             if (fileObject) {
-                const fileArray = fileObject.originalname.split(".");
+                const fileArray = fileObject.originalname.split('.');
                 const extension = fileArray.pop();
                 fileArray.push(`_${Date.now()}`);
-                uploadedFileName = `${fileArray.join("")}.${extension}`;
+                uploadedFileName = `${fileArray.join('')}.${extension}`;
                 fs_1.default.renameSync(path_1.default.join(default_1.default.FILE_UPLOAD_PATH, fileObject.filename), path_1.default.join(default_1.default.FILE_UPLOAD_PATH, uploadedFileName));
             }
         }
@@ -103,7 +103,7 @@ class Controller {
      * output: modelName (if lcFirstChar == true)
      **/
     static extractModelName(schema, lcFirstChar = true) {
-        const index = schema.$ref.lastIndexOf("/");
+        const index = schema.$ref.lastIndexOf('/');
         if (index == -1) {
             console.warn(`${schema.$ref} did not have the expected format.`);
             return schema.$ref;
@@ -117,23 +117,23 @@ class Controller {
         const requestParams = {};
         if (request.openapi.schema.requestBody !== undefined) {
             const { content } = request.openapi.schema.requestBody;
-            if (content["application/json"] !== undefined) {
-                const schema = request.openapi.schema.requestBody.content["application/json"].schema;
+            if (content['application/json'] !== undefined) {
+                const schema = request.openapi.schema.requestBody.content['application/json'].schema;
                 if (schema.$ref) {
                     let modelName = Controller.extractModelName(schema);
                     requestParams[modelName] = request.body;
-                    requestParams["class"] = Controller.extractModelName(schema, false);
-                    requestParams["requestParamsKey"] = modelName;
+                    requestParams['class'] = Controller.extractModelName(schema, false);
+                    requestParams['requestParamsKey'] = modelName;
                 }
                 else {
                     requestParams.body = request.body;
                 }
             }
-            else if (content["multipart/form-data"] !== undefined) {
-                Object.keys(content["multipart/form-data"].schema.properties).forEach((property) => {
-                    const propertyObject = content["multipart/form-data"].schema.properties[property];
+            else if (content['multipart/form-data'] !== undefined) {
+                Object.keys(content['multipart/form-data'].schema.properties).forEach((property) => {
+                    const propertyObject = content['multipart/form-data'].schema.properties[property];
                     if (propertyObject.format !== undefined &&
-                        propertyObject.format === "binary") {
+                        propertyObject.format === 'binary') {
                         requestParams[property] = this.collectFile(request, property);
                     }
                     else {
@@ -151,13 +151,14 @@ class Controller {
         //   }
         // }
         request.openapi.schema.parameters.forEach((param) => {
-            if (param.in === "path") {
-                requestParams[param.name] = request.openapi.pathParams[param.name];
+            if (param.in === 'path') {
+                requestParams[param.name] =
+                    request.openapi.pathParams[param.name];
             }
-            else if (param.in === "query") {
+            else if (param.in === 'query') {
                 requestParams[param.name] = request.query[param.name];
             }
-            else if (param.in === "header") {
+            else if (param.in === 'header') {
                 requestParams[param.name] = request.headers[param.name];
             }
         });

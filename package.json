@@ -2,8 +2,8 @@
   "name": "rosetta-typescript-sdk",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.min.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "files": [
     "dist/",
     "src/"

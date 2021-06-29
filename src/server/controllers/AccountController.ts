@@ -1,4 +1,4 @@
-import Controller from "./Controller";
+import Controller from './Controller';
 const { handleRequest } = Controller;
 
 /**
@@ -10,5 +10,5 @@ const { handleRequest } = Controller;
  */
 
 export const accountBalance = async (request, response) => {
-  await handleRequest(request, response);
+    await handleRequest(request, response);
 };

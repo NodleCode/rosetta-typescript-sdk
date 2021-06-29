@@ -9,14 +9,13 @@
 import Controller from './Controller';
 
 export const networkList = async (request, response) => {
-  await Controller.handleRequest(request, response);
+    await Controller.handleRequest(request, response);
 };
 
 export const networkOptions = async (request, response) => {
-  await Controller.handleRequest(request, response);
+    await Controller.handleRequest(request, response);
 };
 
 export const networkStatus = async (request, response) => {
-  await Controller.handleRequest(request, response);
+    await Controller.handleRequest(request, response);
 };
-

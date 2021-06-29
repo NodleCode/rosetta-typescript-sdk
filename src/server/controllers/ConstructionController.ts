@@ -9,33 +9,33 @@
 import Controller from './Controller';
 
 export const constructionCombine = async (request, response) => {
-  await Controller.handleRequest(request, response);
+    await Controller.handleRequest(request, response);
 };
 
 export const constructionDerive = async (request, response) => {
-  await Controller.handleRequest(request, response);
+    await Controller.handleRequest(request, response);
 };
 
 export const constructionHash = async (request, response) => {
-  await Controller.handleRequest(request, response);
+    await Controller.handleRequest(request, response);
 };
 
 export const constructionMetadata = async (request, response) => {
-  await Controller.handleRequest(request, response);
+    await Controller.handleRequest(request, response);
 };
 
 export const constructionParse = async (request, response) => {
-  await Controller.handleRequest(request, response);
+    await Controller.handleRequest(request, response);
 };
 
 export const constructionPayloads = async (request, response) => {
-  await Controller.handleRequest(request, response);
+    await Controller.handleRequest(request, response);
 };
 
 export const constructionPreprocess = async (request, response) => {
-  await Controller.handleRequest(request, response);
+    await Controller.handleRequest(request, response);
 };
 
 export const constructionSubmit = async (request, response) => {
-  await Controller.handleRequest(request, response);
+    await Controller.handleRequest(request, response);
 };

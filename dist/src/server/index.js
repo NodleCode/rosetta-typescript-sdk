@@ -27,7 +27,7 @@ class RosettaServer {
             console.info(`Express server running on port ${port} using OpenAPI Spec: ${openAPIPath}`);
         }
         catch (error) {
-            console.error("Express Server failure", error.message);
+            console.error('Express Server failure', error.message);
             await this.close();
         }
     }
