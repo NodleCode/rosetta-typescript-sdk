@@ -1,4 +1,4 @@
-import { PartialBlockIdentifier } from 'rosetta-node-sdk-client';
+import { Client } from '../../';
 import RosettaFetcher from '../fetcher';
 import EventEmitter from 'events';
 import { SyncerError } from '../errors';
@@ -6,6 +6,7 @@ import { Hash } from '../utils';
 import SyncEvents, { BLOCK_REMOVED, BLOCK_ADDED, SYNC_CANCELLED } from './events';
 import sleep from '../utils/sleep';
 
+const { PartialBlockIdentifier } = Client
 /**
  * RosettaSyncer
  * Emits blockAdded and blockRemoved Events during sync.
@@ -50,7 +51,7 @@ class RosettaSyncer extends EventEmitter {
       throw new SyncerError('Unable to determine current head');
     }
 
-    let networkStatus 
+    let networkStatus
 
     try {
       networkStatus = await this.fetcher.networkStatusRetry(this.networkIdentifier);
@@ -121,7 +122,7 @@ class RosettaSyncer extends EventEmitter {
   async processBlock(blockIn) {
     // ToDo: Type check block
     const block = Object.assign({}, blockIn); // clone
-    
+
     const { shouldRemove, lastBlock } = await this.checkRemove(block);
 
     if (shouldRemove) {
@@ -216,7 +217,7 @@ class RosettaSyncer extends EventEmitter {
         const result = await this.nextSyncableRange(endIndex);
         rangeEnd = result.rangeEnd;
         halt = result.halt;
-      } catch(e) {
+      } catch (e) {
         throw new SyncerError(`Unable to get next syncable range: ${e.message}`);
       }
 

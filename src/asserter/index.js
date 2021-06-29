@@ -1,6 +1,6 @@
 import fs from "fs";
 import { AsserterError } from "../errors";
-import * as RosettaClient from "rosetta-node-sdk-client";
+import { Client as RosettaClient } from "../../";
 
 const Types = RosettaClient;
 

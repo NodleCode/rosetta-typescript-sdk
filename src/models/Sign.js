@@ -1,9 +1,7 @@
-// Sign.js
-
 import { InternalError } from '../errors';
 import { AmountValue } from '../utils';
 
-const ANY = '*';
+export const ANY = '*';
 const POSITIVE = '+';
 const NEGATIVE = '-';
 

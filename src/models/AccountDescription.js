@@ -1,6 +1,4 @@
-// AccountDescription.js
-
-module.exports = class AccountDescription {
+export default class AccountDescription {
   constructor({
     exists = false,
     sub_account_exists = false,

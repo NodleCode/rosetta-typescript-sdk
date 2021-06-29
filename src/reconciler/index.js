@@ -3,10 +3,10 @@
 import { ReconcilerError } from '../errors';
 
 import { SubtractValues, constructPartialBlockIdentifier, Hash } from '../utils';
-
-import { AccountCurrency as _AccountCurrency } from 'rosetta-node-sdk-client';
-
+import { Client } from '../../'
 import sleep from '../utils/sleep';
+
+const { AccountCurrency: _AccountCurrency } = Client
 
 const RECONCILIATION_INACTIVE_SLEEP_MS = 5000;
 const RECONCILIATION_INACTIVE_FREQUENCY_BLOCK_COUNT = 200;
@@ -14,7 +14,7 @@ const RECONCILIATION_INACTIVE_FREQUENCY_BLOCK_COUNT = 200;
 const defaults = {
   highWaterMark: -1,
   lookupBalanceByBlock: true,
-  requiredDepthInactive: 500, 
+  requiredDepthInactive: 500,
   waitToCheckDiff: 10 * 1000,
   waitToCheckDiffSleep: 5000,
   inactiveFrequency: RECONCILIATION_INACTIVE_FREQUENCY_BLOCK_COUNT,
@@ -206,7 +206,7 @@ class RosettaReconciler {
               if (diff < this.waitToCheckDiff) {
                 await sleep(this.waitToCheckDiffSleep);
                 continue;
-              } 
+              }
 
               // Don't wait to check if we are very far behind
               console.info(`Skipping reconciliation for ${JSON.stringify(accountCurrency)}:` +
@@ -363,7 +363,7 @@ class RosettaReconciler {
 
       } else {
         if (this.debugLogging) {
-          this.logger.verbose(`No accounts ready for inactive reconciliation ` + 
+          this.logger.verbose(`No accounts ready for inactive reconciliation ` +
             `(${queueLen} account(s) in queue, will reconcile next account at index ${nextValidIndex})`);
         }
 
@@ -415,12 +415,12 @@ RosettaReconciler.AccountCurrency = class AccountCurrency {
     if (typeof opts == 'object' && opts.accountIdentifier) {
       const { accountIdentifier, currency } = opts;
       this.account = accountIdentifier;
-      this.currency = currency;   
-         
+      this.currency = currency;
+
     } else {
-      const [ accountIdentifier, currency ] = arguments;
+      const [accountIdentifier, currency] = arguments;
       this.account = arguments[0];
-      this.currency = arguments[1];   
+      this.currency = arguments[1];
     }
   };
 }

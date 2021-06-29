@@ -1,6 +1,3 @@
-
-// AmountDescription.js
-
 import Sign, { Any } from './Sign';
 
 export default class AmountDescription {

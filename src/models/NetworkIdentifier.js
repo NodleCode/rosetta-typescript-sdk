@@ -1,7 +1,4 @@
-
-// NetworkIdentifier.js
-
-module.exports = class NetworkIdentifier {
+export default class NetworkIdentifier {
   constructor() {
     this.blockchain = '';
     this.network = '';

@@ -1,7 +1,4 @@
-
-// NetworkListResponse.js
-
-module.exports = class NetworkListResponse {
+export default class NetworkListResponse {
   constructor() {
     this.network_identifiers = [];
   }

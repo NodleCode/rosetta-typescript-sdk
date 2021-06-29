@@ -1,8 +1,5 @@
-
-// OperationDescription.js
-
 // OperationDescription is used to describe an operation
-module.exports = class OperationDescription {
+export default  class OperationDescription {
   constructor({
     account,
     amount,

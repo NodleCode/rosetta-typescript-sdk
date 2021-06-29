@@ -1,4 +1,4 @@
-import RosettaClient from "rosetta-node-sdk-client";
+import * as RosettaClient from "rosetta-node-sdk-client";
 import RosettaAsserter from '../asserter'
 import { backOff } from 'exponential-backoff'
 import * as PromisePool from '../utils/PromisePool'

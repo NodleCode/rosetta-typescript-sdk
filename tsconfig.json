@@ -9,6 +9,7 @@
     "sourceMap": true,
     "noEmitOnError": true,
     "allowJs": true,
+    "outDir": "dist",
     "lib": [
       "es6",
       "dom",
@@ -17,6 +18,7 @@
       "ESNext"
     ],
     "types": [
+      "src/types"
     ],
   },
   "include": [

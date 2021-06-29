@@ -1,11 +1,12 @@
 // Parser: index.js
-import { Operation } from 'rosetta-node-sdk-client';
+import { Client } from '../../';
 import { ParserError } from '../errors';
 
 import { AddValues, Hash, AmountValue, NegateValue } from '../utils';
 
 import { Sign } from '../models';
 
+const {Operation} = Client
 const ExpectedOppositesLength = 2;
 
 const EMPTY_OPERATIONS_GROUP = {

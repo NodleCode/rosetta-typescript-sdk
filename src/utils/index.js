@@ -1,9 +1,11 @@
 // models: index.js
 
 import { InputError } from '../errors';
-import { PartialBlockIdentifier } from 'rosetta-node-sdk-client';
+import { Client } from '../../'
 
-function AddValues(a, b) {
+const PartialBlockIdentifier = Client.PartialBlockIdentifier
+
+export function AddValues(a, b) {
   const parsedA = parseInt(a);
   const parsedB = parseInt(b);
 
@@ -30,7 +32,7 @@ function SubtractValues(a, b) {
     throw new AsserterError('SupportedNetworks must be an array');
   }
 
-  return `${parsedA - parsedB}`;  
+  return `${parsedA - parsedB}`;
 }
 
 function constructPartialBlockIdentifier(blockIdentifier) {
@@ -42,11 +44,11 @@ function constructPartialBlockIdentifier(blockIdentifier) {
 
 // http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
 Object.defineProperty(String.prototype, 'hashCode', {
-  value: function() {
+  value: function () {
     var hash = 0, i, chr;
     for (i = 0; i < this.length; i++) {
-      chr   = this.charCodeAt(i);
-      hash  = ((hash << 5) - hash) + chr;
+      chr = this.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
       hash |= 0; // Convert to 32bit integer
     }
     return hash;
@@ -88,7 +90,7 @@ function AmountValue(amount) {
 
   if (typeof amount.value !== 'string') {
     throw new Error('Amount must be a string');
-  }  
+  }
 
   return parseInt(amount.value);
 }
@@ -106,7 +108,7 @@ function NegateValue(amount) {
   return `${negated}`;
 }
 
-export default {
+export {
   AddValues,
   SubtractValues,
   constructPartialBlockIdentifier,

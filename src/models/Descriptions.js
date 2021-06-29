@@ -1,9 +1,6 @@
-
-// Descriptions.js
-
 // Contains a slice of operation descriptions
 
-module.exports = class Descriptions {
+export default class Descriptions {
   constructor({
     operation_descriptions = [],
     equal_amounts = [],
