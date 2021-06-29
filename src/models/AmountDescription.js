@@ -1,12 +1,12 @@
 
 // AmountDescription.js
 
-const Sign = require('./Sign');
+import Sign, { Any } from './Sign';
 
-module.exports = class AmountDescription {
+export default class AmountDescription {
   constructor({
     exists = false,
-    sign = Sign.Any,
+    sign = Any,
     currency = null,
   }) {
     this.exists = exists;

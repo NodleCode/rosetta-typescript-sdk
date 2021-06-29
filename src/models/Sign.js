@@ -1,7 +1,7 @@
 // Sign.js
 
-const { InternalError } = require('../errors');
-const { AmountValue } = require('../utils');
+import { InternalError } from '../errors';
+import { AmountValue } from '../utils';
 
 const ANY = '*';
 const POSITIVE = '+';
@@ -65,4 +65,4 @@ Sign.Positive = POSITIVE;
 Sign.Negative = NEGATIVE;
 Sign.Any = ANY;
 
-module.exports = Sign;
+export default Sign;

@@ -3,8 +3,8 @@
  * Author: Yoshi Jaeger
  */
 
-const PromisePool = require('./PromisePool');
-const { expect } = require('chai');
+import { create, arrayApplier } from './PromisePool';
+import { expect } from 'chai';
 
 const array = [];
 const poolSize = 2;
@@ -20,7 +20,7 @@ const testFunction = (timeout, text) => {
 
 describe('PromisePool', function () {
   it('output should have the correct order', function (done) {
-    PromisePool.create(
+    create(
       poolSize,
       [
         [500, 'first'],
@@ -29,7 +29,7 @@ describe('PromisePool', function () {
         [100,  'third'],
       ],
       testFunction,
-      PromisePool.arrayApplier,
+      arrayApplier,
     ).then(data => {
       console.log(`All promises finished! Promises: ${data}, Data: ${array}`);
 

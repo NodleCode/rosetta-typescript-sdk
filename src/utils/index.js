@@ -1,7 +1,7 @@
 // models: index.js
 
-const { InputError } = require('../errors');
-const RosettaClient = require('rosetta-node-sdk-client');
+import { InputError } from '../errors';
+import { PartialBlockIdentifier } from 'rosetta-node-sdk-client';
 
 function AddValues(a, b) {
   const parsedA = parseInt(a);
@@ -34,7 +34,7 @@ function SubtractValues(a, b) {
 }
 
 function constructPartialBlockIdentifier(blockIdentifier) {
-  return RosettaClient.PartialBlockIdentifier.constructFromObject({
+  return PartialBlockIdentifier.constructFromObject({
     hash: blockIdentifier.hash,
     index: blockIdentifier.index,
   });
@@ -106,7 +106,7 @@ function NegateValue(amount) {
   return `${negated}`;
 }
 
-module.exports = {
+export default {
   AddValues,
   SubtractValues,
   constructPartialBlockIdentifier,

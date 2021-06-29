@@ -1,18 +1,12 @@
 // Reconciler: index.js
 
-const {
-  ReconcilerError,
-} = require('../errors');
+import { ReconcilerError } from '../errors';
 
-const {
-  SubtractValues,
-  constructPartialBlockIdentifier,
-  Hash,
-} = require('../utils');
+import { SubtractValues, constructPartialBlockIdentifier, Hash } from '../utils';
 
-const Types = require('rosetta-node-sdk-client');
+import { AccountCurrency as _AccountCurrency } from 'rosetta-node-sdk-client';
 
-const sleep = require('../utils/sleep');
+import sleep from '../utils/sleep';
 
 const RECONCILIATION_INACTIVE_SLEEP_MS = 5000;
 const RECONCILIATION_INACTIVE_FREQUENCY_BLOCK_COUNT = 200;
@@ -94,7 +88,7 @@ class RosettaReconciler {
     for (let change of balanceChangesArray) {
       await this.inactiveAccountQueue(
         false,
-        new Types.AccountCurrency(change.account, change.currency),
+        new _AccountCurrency(change.account, change.currency),
         blockIdentifier
       );
 
@@ -433,4 +427,4 @@ RosettaReconciler.AccountCurrency = class AccountCurrency {
 
 RosettaReconciler.defaults = defaults;
 
-module.exports = RosettaReconciler;
+export default RosettaReconciler;

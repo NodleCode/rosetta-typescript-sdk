@@ -1,10 +1,10 @@
-const RosettaClient = require('rosetta-node-sdk-client');
-const RosettaFetcher = require('../fetcher');
-const EventEmitter = require('events');
-const { SyncerError } = require('../errors');
-const { Hash } = require('../utils');
-const SyncEvents = require('./events');
-const sleep = require('../utils/sleep');
+import { PartialBlockIdentifier } from 'rosetta-node-sdk-client';
+import RosettaFetcher from '../fetcher';
+import EventEmitter from 'events';
+import { SyncerError } from '../errors';
+import { Hash } from '../utils';
+import SyncEvents, { BLOCK_REMOVED, BLOCK_ADDED, SYNC_CANCELLED } from './events';
+import sleep from '../utils/sleep';
 
 /**
  * RosettaSyncer
@@ -126,7 +126,7 @@ class RosettaSyncer extends EventEmitter {
 
     if (shouldRemove) {
       // Notify observers that a block was removed
-      this.emit(SyncEvents.BLOCK_REMOVED, lastBlock);
+      this.emit(BLOCK_REMOVED, lastBlock);
 
       // Remove the block internally
       this.pastBlocks.pop();
@@ -135,7 +135,7 @@ class RosettaSyncer extends EventEmitter {
     }
 
     // Notify observers that a block was added
-    this.emit(SyncEvents.BLOCK_ADDED, block);
+    this.emit(BLOCK_ADDED, block);
 
     // Add the block internally
     this.pastBlocks.push(block.block_identifier);
@@ -170,7 +170,7 @@ class RosettaSyncer extends EventEmitter {
 
       if (!block) {
         // Re-org happened. Refetch the next block.
-        const partialBlockIdentifier = RosettaClient.PartialBlockIdentifier.constructFromObject({
+        const partialBlockIdentifier = PartialBlockIdentifier.constructFromObject({
           index: this.nextIndex,
         });
 
@@ -200,7 +200,7 @@ class RosettaSyncer extends EventEmitter {
       throw new SyncerError(`Arguments startIndex and endIndex must be a valid number`);
     }
 
-    this.emit(SyncEvents.SYNC_CANCELLED);
+    this.emit(SYNC_CANCELLED);
 
     try {
       await this.setStart(startIndex);
@@ -255,4 +255,4 @@ class RosettaSyncer extends EventEmitter {
 
 RosettaSyncer.Events = SyncEvents;
 
-module.exports = RosettaSyncer;
+export default RosettaSyncer;

@@ -1,17 +1,10 @@
 // Parser: index.js
-const RosettaClient = require('rosetta-node-sdk-client');
-const { ParserError } = require('../errors');
+import { Operation } from 'rosetta-node-sdk-client';
+import { ParserError } from '../errors';
 
-const {
-  AddValues,
-  Hash,
-  AmountValue,
-  NegateValue,
-} = require('../utils');
+import { AddValues, Hash, AmountValue, NegateValue } from '../utils';
 
-const {
-  Sign,
-} = require('../models');
+import { Sign } from '../models';
 
 const ExpectedOppositesLength = 2;
 
@@ -199,7 +192,7 @@ class RosettaParser {
           opGroups[key] = {
             type: op.type,
             operations: [
-              RosettaClient.Operation.constructFromObject(op),
+              Operation.constructFromObject(op),
             ],
           };
 
@@ -669,4 +662,4 @@ class RosettaParser {
 
 RosettaParser.Match = Match;
 
-module.exports = RosettaParser;
+export default RosettaParser;
