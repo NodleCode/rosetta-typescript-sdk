@@ -1,5 +1,5 @@
-const controllers = require('../controllers');
-const Services = require('../services');
+import controllers from '../controllers';
+import Services from '../services';
 
 function handleError(err, request, response, next) {
   console.error(err);
@@ -63,4 +63,4 @@ function openApiRouter() {
   };
 }
 
-module.exports = openApiRouter;
+export default openApiRouter;

@@ -1,11 +1,8 @@
 import RosettaClient from "rosetta-node-sdk-client";
-//const Asserter = require('../asserter');
 import RosettaAsserter from '../asserter'
 import { backOff } from 'exponential-backoff'
-//const { backOff } = require('exponential-backoff');
 import * as PromisePool from '../utils/PromisePool'
-
-const { FetcherError } = require('../errors');
+import { FetcherError } from '../errors'
 const Asserter = RosettaAsserter
 
 export default class RosettaFetcher {
