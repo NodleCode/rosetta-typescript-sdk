@@ -150,7 +150,7 @@ class Controller {
         //     requestParams.body = request.body;
         //   }
         // }
-        request.openapi.schema.parameters?.forEach((param) => {
+        request.openapi.schema.parameters.forEach((param) => {
             if (param.in === 'path') {
                 requestParams[param.name] =
                     request.openapi.pathParams[param.name];
