@@ -76,7 +76,7 @@ export default class ExpressServer {
             OpenApiValidator.middleware({
                 apiSpec: this.openApiPath,
                 operationHandlers: path.join(__dirname),
-                validateRequests: true,
+                validateRequests: false,
                 validateResponses: false,
             })
         );
