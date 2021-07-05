@@ -11,6 +11,7 @@ import * as RosettaInternalModels from './src/models';
 import * as RosettaErrors from './src/errors';
 import RosettaSyncer from './src/syncer';
 import RosettaSyncerEvents from './src/syncer/events';
+import * as types from './src/types'
 
 export {
     RosettaAsserter as Asserter,
@@ -24,4 +25,5 @@ export {
     RosettaInternalModels as InternalModels,
     RosettaSyncerEvents as SyncerEvents,
     RosettaErrors as Errors,
+    types
 };

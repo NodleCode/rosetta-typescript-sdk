@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "./index.js",
-  "files": [
-    "dist/",
-    "src/"
-  ],
   "scripts": {
     "run:server": "npm exec -- ts-node -r ./src/example/index.ts",
     "prettier": "prettier --config .prettierrc.json --write src/**/*.ts",
