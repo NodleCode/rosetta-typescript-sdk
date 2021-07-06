@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "commonjs", 
-    "target": "es2019",
+    "module": "commonjs",
+    "target": "es6",
     "moduleResolution": "node",
     "paths": {
       "types": [
         "src/types"
       ],
-      "rosetta-typescript-sdk":["./"]
+      "rosetta-typescript-sdk": [
+        "./"
+      ]
     },
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -29,10 +31,10 @@
   "include": [
     "*",
     "src/**/*",
-    "src/server/api/openapi.yaml"
+    "src/server/api/openapi.yaml",
+    "dist/**/*"
   ],
   "exclude": [
     "node_modules",
-    "dist"
   ]
 }

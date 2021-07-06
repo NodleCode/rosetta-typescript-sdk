@@ -1,5 +1,4 @@
 node_modules
 .idea
 src/example
-dist
 .DS_Store
