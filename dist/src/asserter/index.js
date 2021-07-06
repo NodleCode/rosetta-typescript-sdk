@@ -1,7 +1,32 @@
-var fs = require("fs");
-var Types = require('rosetta-node-sdk-client');
-var AsserterError = require("../errors").AsserterError;
-var Hash = require("../utils").Hash;
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+exports.__esModule = true;
+var fs_1 = __importDefault(require("fs"));
+var errors_1 = require("../errors");
+var Client = __importStar(require("rosetta-node-sdk-client"));
+var Types = Client;
+var utils_1 = require("../utils");
 /**
  * @type module:OpenApiConfig
  * @class RosettaAsserter
@@ -57,19 +82,19 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.SupportedNetworks = function (supportedNetworks) {
         if (!Array.isArray(supportedNetworks)) {
-            throw new AsserterError("SupportedNetworks must be an array");
+            throw new errors_1.AsserterError("SupportedNetworks must be an array");
         }
         if (supportedNetworks.length == 0) {
-            throw new AsserterError("NetworkIdentifier Array contains no supported networks");
+            throw new errors_1.AsserterError("NetworkIdentifier Array contains no supported networks");
         }
         var parsedNetworks = [];
         for (var _i = 0, supportedNetworks_1 = supportedNetworks; _i < supportedNetworks_1.length; _i++) {
             var network = supportedNetworks_1[_i];
             this.NetworkIdentifier(network);
-            if (parsedNetworks.includes(Hash(network))) {
-                throw new AsserterError("SupportedNetwork has a duplicate: " + JSON.stringify(network));
+            if (parsedNetworks.includes(utils_1.Hash(network))) {
+                throw new errors_1.AsserterError("SupportedNetwork has a duplicate: " + JSON.stringify(network));
             }
-            parsedNetworks.push(Hash(network));
+            parsedNetworks.push(utils_1.Hash(network));
         }
     };
     /**
@@ -78,9 +103,9 @@ var RosettaAsserter = /** @class */ (function () {
      * @throws {AsserterError} if the networkIdentifier is not supported by the asserter.
      */
     RosettaAsserter.prototype.SupportedNetwork = function (networkIdentifier) {
-        var index = this.supportedNetworks.findIndex(function (network) { return Hash(network) == Hash(networkIdentifier); });
+        var index = this.supportedNetworks.findIndex(function (network) { return utils_1.Hash(network) == utils_1.Hash(networkIdentifier); });
         if (index == -1) {
-            throw new AsserterError("Network " + JSON.stringify(networkIdentifier) + " is not supported");
+            throw new errors_1.AsserterError("Network " + JSON.stringify(networkIdentifier) + " is not supported");
         }
     };
     /**
@@ -105,7 +130,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.AccountBalanceRequest = function (accountBalanceRequest) {
         if (accountBalanceRequest == null) {
-            throw new AsserterError("AccountBalanceRequest is null");
+            throw new errors_1.AsserterError("AccountBalanceRequest is null");
         }
         this.ValidSupportedNetwork(accountBalanceRequest.network_identifier);
         this.AccountIdentifier(accountBalanceRequest.account_identifier);
@@ -113,7 +138,7 @@ var RosettaAsserter = /** @class */ (function () {
             return;
         }
         if (!this.historicalBalanceLookup) {
-            throw new AsserterError("historical balance loopup is not supported");
+            throw new errors_1.AsserterError("historical balance loopup is not supported");
         }
         this.PartialBlockIdentifier(accountBalanceRequest.block_identifier);
     };
@@ -126,7 +151,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.BlockRequest = function (blockRequest) {
         if (blockRequest == null) {
-            throw new AsserterError("BlockRequest is null");
+            throw new errors_1.AsserterError("BlockRequest is null");
         }
         this.ValidSupportedNetwork(blockRequest.network_identifier);
         this.PartialBlockIdentifier(blockRequest.block_identifier);
@@ -141,7 +166,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.BlockTransactionRequest = function (blockTransactionRequest) {
         if (blockTransactionRequest == null) {
-            throw new AsserterError("BlockTransactionRequest is null");
+            throw new errors_1.AsserterError("BlockTransactionRequest is null");
         }
         this.ValidSupportedNetwork(blockTransactionRequest.network_identifier);
         this.BlockIdentifier(blockTransactionRequest.block_identifier);
@@ -156,11 +181,11 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionMetadataRequest = function (constructionMetadataRequest) {
         if (constructionMetadataRequest == null) {
-            throw new AsserterError("ConstructionMetadataRequest is null");
+            throw new errors_1.AsserterError("ConstructionMetadataRequest is null");
         }
         this.ValidSupportedNetwork(constructionMetadataRequest.network_identifier);
         if (constructionMetadataRequest.options == null) {
-            throw new AsserterError("ConstructionMetadataRequest.options is null");
+            throw new errors_1.AsserterError("ConstructionMetadataRequest.options is null");
         }
     };
     /**
@@ -172,11 +197,11 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionSubmitRequest = function (constructionSubmitRequest) {
         if (constructionSubmitRequest == null) {
-            throw new AsserterError("ConstructionSubmitRequest.options is null");
+            throw new errors_1.AsserterError("ConstructionSubmitRequest.options is null");
         }
         this.ValidSupportedNetwork(constructionSubmitRequest.network_identifier);
         if (!constructionSubmitRequest.signed_transaction) {
-            throw new AsserterError("ConstructionSubmitRequest.signed_transaction is empty");
+            throw new errors_1.AsserterError("ConstructionSubmitRequest.signed_transaction is empty");
         }
     };
     /**
@@ -188,7 +213,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.MempoolTransactionRequest = function (mempoolTransactionRequest) {
         if (mempoolTransactionRequest == null) {
-            throw new AsserterError("MempoolTransactionRequest is null");
+            throw new errors_1.AsserterError("MempoolTransactionRequest is null");
         }
         this.ValidSupportedNetwork(mempoolTransactionRequest.network_identifier);
         this.TransactionIdentifier(mempoolTransactionRequest.transaction_identifier);
@@ -201,7 +226,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.MetadataRequest = function (metadataRequest) {
         if (metadataRequest == null) {
-            throw new AsserterError("MetadataRequest is null");
+            throw new errors_1.AsserterError("MetadataRequest is null");
         }
     };
     /**
@@ -213,7 +238,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.NetworkRequest = function (networkRequest) {
         if (networkRequest == null) {
-            throw new AsserterError("NetworkRequest is null");
+            throw new errors_1.AsserterError("NetworkRequest is null");
         }
         this.ValidSupportedNetwork(networkRequest.network_identifier);
     };
@@ -225,10 +250,10 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionMetadataResponse = function (constructionMetadataResponse) {
         if (constructionMetadataResponse == null) {
-            throw new AsserterError("ConstructionMetadataResponse cannot be null");
+            throw new errors_1.AsserterError("ConstructionMetadataResponse cannot be null");
         }
         if (constructionMetadataResponse.metadata == null) {
-            throw new AsserterError("ConstructionMetadataResponse.metadata is null");
+            throw new errors_1.AsserterError("ConstructionMetadataResponse.metadata is null");
         }
     };
     /**
@@ -240,7 +265,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.TransactionIdentifierResponse = function (transactionIdentifierResponse) {
         if (transactionIdentifierResponse == null) {
-            throw new AsserterError("transactionIdentifierResponse cannot be null");
+            throw new errors_1.AsserterError("transactionIdentifierResponse cannot be null");
         }
         // Note, this is not in the reference implementation (Go)
         this.TransactionIdentifier(transactionIdentifierResponse.transaction_identifier);
@@ -254,13 +279,13 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionCombineResponse = function (constructionCombineResponse) {
         if (constructionCombineResponse == null) {
-            throw new AsserterError("constructionCombineResponse cannot be null");
+            throw new errors_1.AsserterError("constructionCombineResponse cannot be null");
         }
         if (typeof constructionCombineResponse.signed_transaction !== "string") {
-            throw new AsserterError("constructionCombineResponse.signed_transaction must be a string");
+            throw new errors_1.AsserterError("constructionCombineResponse.signed_transaction must be a string");
         }
         if (!constructionCombineResponse.signed_transaction) {
-            throw new AsserterError("constructionCombineResponse.signed_transaction cannot be empty");
+            throw new errors_1.AsserterError("constructionCombineResponse.signed_transaction cannot be empty");
         }
     };
     /**
@@ -271,13 +296,13 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionDeriveResponse = function (constructionDeriveResponse) {
         if (constructionDeriveResponse == null) {
-            throw new AsserterError("constructionDeriveResponse cannot be null");
+            throw new errors_1.AsserterError("constructionDeriveResponse cannot be null");
         }
         if (typeof constructionDeriveResponse.address !== "string") {
-            throw new AsserterError("constructionDeriveResponse.address must be a string");
+            throw new errors_1.AsserterError("constructionDeriveResponse.address must be a string");
         }
         if (!constructionDeriveResponse.address) {
-            throw new AsserterError("constructionDeriveResponse.address cannot be empty");
+            throw new errors_1.AsserterError("constructionDeriveResponse.address cannot be empty");
         }
     };
     /**
@@ -289,7 +314,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionDeriveRequest = function (constructionDeriveRequest) {
         if (constructionDeriveRequest == null) {
-            throw new AsserterError("ConstructionDeriveRequest cannot be null");
+            throw new errors_1.AsserterError("ConstructionDeriveRequest cannot be null");
         }
         this.ValidSupportedNetwork(constructionDeriveRequest.network_identifier);
         this.PublicKey(constructionDeriveRequest.public_key);
@@ -303,7 +328,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionPreprocessRequest = function (constructionPreprocessRequest) {
         if (constructionPreprocessRequest == null) {
-            throw new AsserterError("constructionPreprocessRequest cannot be null");
+            throw new errors_1.AsserterError("constructionPreprocessRequest cannot be null");
         }
         this.ValidSupportedNetwork(constructionPreprocessRequest.network_identifier);
         this.Operations(constructionPreprocessRequest.operations, true);
@@ -317,7 +342,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionPayloadsRequest = function (constructionPayloadsRequest) {
         if (constructionPayloadsRequest == null) {
-            throw new AsserterError("constructionPayloadsRequest cannot be null");
+            throw new errors_1.AsserterError("constructionPayloadsRequest cannot be null");
         }
         this.ValidSupportedNetwork(constructionPayloadsRequest.network_identifier);
         this.Operations(constructionPayloadsRequest.operations, true);
@@ -331,12 +356,12 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionCombineRequest = function (constructionCombineRequest) {
         if (constructionCombineRequest == null) {
-            throw new AsserterError("constructionCombineRequest cannot be null");
+            throw new errors_1.AsserterError("constructionCombineRequest cannot be null");
         }
         this.ValidSupportedNetwork(constructionCombineRequest.network_identifier);
         if (typeof constructionCombineRequest.unsigned_transaction !== "string" ||
             constructionCombineRequest.unsigned_transaction.length == 0) {
-            throw new AsserterError("unsigned_transaction cannot be empty");
+            throw new errors_1.AsserterError("unsigned_transaction cannot be empty");
         }
         this.Signatures(constructionCombineRequest.signatures);
     };
@@ -349,12 +374,12 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionHashRequest = function (constructionHashRequest) {
         if (constructionHashRequest == null) {
-            throw new AsserterError("constructionHashRequest cannot be null");
+            throw new errors_1.AsserterError("constructionHashRequest cannot be null");
         }
         this.ValidSupportedNetwork(constructionHashRequest.network_identifier);
         if (typeof constructionHashRequest.signed_transaction !== "string" ||
             constructionHashRequest.signed_transaction.length == 0) {
-            throw new AsserterError("signed_transaction cannot be empty");
+            throw new errors_1.AsserterError("signed_transaction cannot be empty");
         }
     };
     /**
@@ -366,12 +391,12 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionParseRequest = function (constructionParseRequest) {
         if (constructionParseRequest == null) {
-            throw new AsserterError("constructionParseRequest cannot be null");
+            throw new errors_1.AsserterError("constructionParseRequest cannot be null");
         }
         this.ValidSupportedNetwork(constructionParseRequest.network_identifier);
         if (typeof constructionParseRequest.transaction !== "string" ||
             constructionParseRequest.transaction.length == 0) {
-            throw new AsserterError("transaction cannot be empty");
+            throw new errors_1.AsserterError("transaction cannot be empty");
         }
     };
     /**
@@ -386,33 +411,33 @@ var RosettaAsserter = /** @class */ (function () {
     RosettaAsserter.prototype.ConstructionParseResponse = function (constructionParseResponse, signed) {
         if (signed === void 0) { signed = false; }
         if (constructionParseResponse == null) {
-            throw new AsserterError("constructionParseResponse cannot be null");
+            throw new errors_1.AsserterError("constructionParseResponse cannot be null");
         }
         if (!constructionParseResponse.operations ||
             constructionParseResponse.operations.length == 0) {
-            throw new AsserterError("operations cannot be empty");
+            throw new errors_1.AsserterError("operations cannot be empty");
         }
         try {
             this.Operations(constructionParseResponse.operations, true);
         }
         catch (e) {
-            throw new AsserterError("unable to parse operations: " + e.message);
+            throw new errors_1.AsserterError("unable to parse operations: " + e.message);
         }
         if (signed &&
             (!constructionParseResponse.signers ||
                 constructionParseResponse.signers.length == 0)) {
-            throw new AsserterError("signers cannot be empty");
+            throw new errors_1.AsserterError("signers cannot be empty");
         }
         if (!signed) {
             if (Array.isArray(constructionParseResponse.signers) &&
                 constructionParseResponse.signers.length > 0) {
-                throw new AsserterError("signers should be empty for unsigned txs");
+                throw new errors_1.AsserterError("signers should be empty for unsigned txs");
             }
         }
         for (var i = 0; i < (constructionParseResponse.signers || []).length; ++i) {
             var signer = constructionParseResponse.signers[i];
             if (signer.length == 0) {
-                throw new AsserterError("signer " + i + " cannot be empty string");
+                throw new errors_1.AsserterError("signer " + i + " cannot be empty string");
             }
         }
     };
@@ -425,15 +450,15 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.ConstructionPayloadsResponse = function (constructionPayloadsResponse) {
         if (constructionPayloadsResponse == null) {
-            throw new AsserterError("constructionPayloadsResponse cannot be null");
+            throw new errors_1.AsserterError("constructionPayloadsResponse cannot be null");
         }
         if (typeof constructionPayloadsResponse.unsigned_transaction !== "string" ||
             constructionPayloadsResponse.unsigned_transaction.length == 0) {
-            throw new AsserterError("unsigned transaction cannot be empty");
+            throw new errors_1.AsserterError("unsigned transaction cannot be empty");
         }
         if (!constructionPayloadsResponse.payloads ||
             constructionPayloadsResponse.payloads.length == 0) {
-            throw new AsserterError("signing payloads cannot be empty");
+            throw new errors_1.AsserterError("signing payloads cannot be empty");
         }
         for (var i = 0; i < constructionPayloadsResponse.payloads.length; ++i) {
             var payload = constructionPayloadsResponse.payloads[i];
@@ -441,7 +466,7 @@ var RosettaAsserter = /** @class */ (function () {
                 this.SigningPayload(payload);
             }
             catch (e) {
-                throw new AsserterError("Signing Payload " + i + " is invalid: " + e.message);
+                throw new errors_1.AsserterError("Signing Payload " + i + " is invalid: " + e.message);
             }
         }
     };
@@ -454,21 +479,21 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.PublicKey = function (publicKey) {
         if (publicKey == null) {
-            throw new AsserterError("public_key cannot be null");
+            throw new errors_1.AsserterError("public_key cannot be null");
         }
         if (typeof publicKey.hex_bytes !== "string" ||
             publicKey.hex_bytes.length == 0) {
             // hex
-            throw new AsserterError("public key bytes cannot be empty");
+            throw new errors_1.AsserterError("public key bytes cannot be empty");
         }
         if (!this.checkHex(publicKey.hex_bytes)) {
-            throw new AsserterError("hex_bytes must be a valid hexadecimal string");
+            throw new errors_1.AsserterError("hex_bytes must be a valid hexadecimal string");
         }
         try {
             this.CurveType(publicKey.curve_type);
         }
         catch (e) {
-            throw new AsserterError("public key curve type is not supported: " + e.message);
+            throw new errors_1.AsserterError("public key curve type is not supported: " + e.message);
         }
     };
     /**
@@ -483,7 +508,7 @@ var RosettaAsserter = /** @class */ (function () {
             case new Types.CurveType().edwards25519:
                 break;
             default:
-                throw new AsserterError(JSON.stringify(curveType) + " is not a supported CurveType");
+                throw new errors_1.AsserterError(JSON.stringify(curveType) + " is not a supported CurveType");
         }
     };
     /**
@@ -496,18 +521,18 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.SigningPayload = function (signingPayload) {
         if (signingPayload == null) {
-            throw new AsserterError("signing payload cannot be null");
+            throw new errors_1.AsserterError("signing payload cannot be null");
         }
         if (typeof signingPayload.address !== "string" ||
             signingPayload.address.length == 0) {
-            throw new AsserterError("signing payload cannot be empty");
+            throw new errors_1.AsserterError("signing payload cannot be empty");
         }
         if (typeof signingPayload.hex_bytes != "string" ||
             signingPayload.hex_bytes.length == 0) {
-            throw new AsserterError("signing payload bytes cannot be empty");
+            throw new errors_1.AsserterError("signing payload bytes cannot be empty");
         }
         if (!this.checkHex(signingPayload.hex_bytes)) {
-            throw new AsserterError("hex_bytes must be a valid hexadecimal string");
+            throw new errors_1.AsserterError("hex_bytes must be a valid hexadecimal string");
         }
         if (!signingPayload.signature_type ||
             signingPayload.signature_type.length == 0) {
@@ -517,7 +542,7 @@ var RosettaAsserter = /** @class */ (function () {
             this.SignatureType(signingPayload.signature_type);
         }
         catch (e) {
-            throw new AsserterError("signature payload type is not valid: " + e.message);
+            throw new errors_1.AsserterError("signature payload type is not valid: " + e.message);
         }
     };
     /**
@@ -540,7 +565,7 @@ var RosettaAsserter = /** @class */ (function () {
     RosettaAsserter.prototype.Signatures = function (signatureArray) {
         if (signatureArray === void 0) { signatureArray = []; }
         if (!signatureArray || signatureArray.length == 0) {
-            throw new AsserterError("signatures cannot be empty");
+            throw new errors_1.AsserterError("signatures cannot be empty");
         }
         for (var i = 0; i < signatureArray.length; ++i) {
             var signature = signatureArray[i];
@@ -548,29 +573,29 @@ var RosettaAsserter = /** @class */ (function () {
                 this.SigningPayload(signature.signing_payload);
             }
             catch (e) {
-                throw new AsserterError("signature " + i + " has invalid signing payload: " + e.message);
+                throw new errors_1.AsserterError("signature " + i + " has invalid signing payload: " + e.message);
             }
             try {
                 this.PublicKey(signature.public_key);
             }
             catch (e) {
-                throw new AsserterError("signature " + i + " has invalid public key: " + e.message);
+                throw new errors_1.AsserterError("signature " + i + " has invalid public key: " + e.message);
             }
             try {
                 this.SignatureType(signature.signature_type);
             }
             catch (e) {
-                throw new AsserterError("signature " + i + " has invalid signature type: " + e.message);
+                throw new errors_1.AsserterError("signature " + i + " has invalid signature type: " + e.message);
             }
             if (signature.signing_payload.signature_type &&
                 signature.signing_payload.signature_type != signature.signature_type) {
-                throw new AsserterError("requested signature type does not match returned signature type");
+                throw new errors_1.AsserterError("requested signature type does not match returned signature type");
             }
             if (!signature.hex_bytes || signature.hex_bytes.length == 0) {
-                throw new AsserterError("signature " + i + ": bytes cannot be empty");
+                throw new errors_1.AsserterError("signature " + i + ": bytes cannot be empty");
             }
             if (!this.checkHex(signature.hex_bytes)) {
-                throw new AsserterError("hex_bytes must be a valid hexadecimal string");
+                throw new errors_1.AsserterError("hex_bytes must be a valid hexadecimal string");
             }
         }
     };
@@ -587,7 +612,7 @@ var RosettaAsserter = /** @class */ (function () {
             case new Types.SignatureType().ed25519:
                 break;
             default:
-                throw new AsserterError(JSON.stringify(signatureType) + " is not a supported SignatureType");
+                throw new errors_1.AsserterError(JSON.stringify(signatureType) + " is not a supported SignatureType");
         }
     };
     /**
@@ -623,11 +648,11 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.NetworkIdentifier = function (networkIdentifier) {
         if (networkIdentifier == null)
-            throw new AsserterError("NetworkIdentifier is null");
+            throw new errors_1.AsserterError("NetworkIdentifier is null");
         if (!this.validString(networkIdentifier.blockchain))
-            throw new AsserterError("NetworkIdentifier.blockchain is missing");
+            throw new errors_1.AsserterError("NetworkIdentifier.blockchain is missing");
         if (!this.validString(networkIdentifier.network))
-            throw new AsserterError("NetworkIdentifier.network is missing");
+            throw new errors_1.AsserterError("NetworkIdentifier.network is missing");
         return this.SubNetworkIdentifier(networkIdentifier.sub_network_identifier);
     };
     /**
@@ -641,7 +666,7 @@ var RosettaAsserter = /** @class */ (function () {
         if (subnetworkIdentifier == null)
             return;
         if (!this.validString(subnetworkIdentifier.network)) {
-            throw new AsserterError("NetworkIdentifier.sub_network_identifier.network is missing");
+            throw new errors_1.AsserterError("NetworkIdentifier.sub_network_identifier.network is missing");
         }
     };
     /**
@@ -652,7 +677,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.Peer = function (peer) {
         if (peer == null || !peer.peer_id) {
-            throw new AsserterError("Peer.peer_id is missing");
+            throw new errors_1.AsserterError("Peer.peer_id is missing");
         }
     };
     /**
@@ -665,14 +690,14 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.Version = function (version) {
         if (version == null) {
-            throw new AsserterError("Version is null");
+            throw new errors_1.AsserterError("Version is null");
         }
         if (!this.validString(version.node_version)) {
-            throw new AsserterError("Version.node_version is missing");
+            throw new errors_1.AsserterError("Version.node_version is missing");
         }
         if (version.middleware_version != null &&
             !this.validString(version.middleware_version)) {
-            throw new AsserterError("Version.middleware_version is missing");
+            throw new errors_1.AsserterError("Version.middleware_version is missing");
         }
     };
     /**
@@ -685,16 +710,16 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.StringArray = function (name, array) {
         if (!array || array.length == 0) {
-            throw new AsserterError("No " + name + " found");
+            throw new errors_1.AsserterError("No " + name + " found");
         }
         var existing = [];
         for (var _i = 0, array_1 = array; _i < array_1.length; _i++) {
             var element = array_1[_i];
             if (!this.validString(element)) {
-                throw new AsserterError(name + " has an empty string");
+                throw new errors_1.AsserterError(name + " has an empty string");
             }
             if (existing.includes(element)) {
-                throw new AsserterError(name + " contains a duplicate element: " + element);
+                throw new errors_1.AsserterError(name + " contains a duplicate element: " + element);
             }
             existing.push(element);
         }
@@ -708,10 +733,10 @@ var RosettaAsserter = /** @class */ (function () {
     RosettaAsserter.prototype.Timestamp = function (timestamp) {
         if (timestamp === void 0) { timestamp = 0; }
         if (timestamp < RosettaAsserter.MinUnixEpoch) {
-            throw new AsserterError("Timestamp " + timestamp + " is before 01/01/2000");
+            throw new errors_1.AsserterError("Timestamp " + timestamp + " is before 01/01/2000");
         }
         else if (timestamp > RosettaAsserter.MaxUnixEpoch) {
-            throw new AsserterError("Timestamp " + timestamp + " is after 01/01/2040");
+            throw new errors_1.AsserterError("Timestamp " + timestamp + " is after 01/01/2040");
         }
         else {
             return null;
@@ -727,13 +752,13 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.NetworkStatusResponse = function (networkStatusResponse) {
         if (networkStatusResponse == null) {
-            throw new AsserterError("networkStatusResponse is null");
+            throw new errors_1.AsserterError("networkStatusResponse is null");
         }
         this.BlockIdentifier(networkStatusResponse.current_block_identifier);
         this.Timestamp(networkStatusResponse.current_block_timestamp);
         this.BlockIdentifier(networkStatusResponse.genesis_block_identifier);
         if (!Array.isArray(networkStatusResponse.peers))
-            throw new AsserterError("Peers must be an array.");
+            throw new errors_1.AsserterError("Peers must be an array.");
         for (var _i = 0, _a = networkStatusResponse.peers; _i < _a.length; _i++) {
             var peer = _a[_i];
             this.Peer(peer);
@@ -748,22 +773,22 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.OperationStatuses = function (operationStatuses) {
         if (operationStatuses == null || operationStatuses.length == 0) {
-            throw new AsserterError("No Allow.operation_statuses found");
+            throw new errors_1.AsserterError("No Allow.operation_statuses found");
         }
         var existingStatuses = [];
         var foundSuccessful = false;
         for (var _i = 0, operationStatuses_2 = operationStatuses; _i < operationStatuses_2.length; _i++) {
-            var status_1 = operationStatuses_2[_i];
-            if (!status_1.status) {
-                throw new AsserterError("Operation.status is missing");
+            var status = operationStatuses_2[_i];
+            if (!status.status) {
+                throw new errors_1.AsserterError("Operation.status is missing");
             }
-            if (status_1.successful) {
+            if (status.successful) {
                 foundSuccessful = true;
             }
-            existingStatuses.push(status_1.status);
+            existingStatuses.push(status.status);
         }
         if (!foundSuccessful) {
-            throw new AsserterError("No successful Allow.operation_statuses found");
+            throw new errors_1.AsserterError("No successful Allow.operation_statuses found");
         }
         return this.StringArray("Allow.operation_statuses", existingStatuses);
     };
@@ -785,13 +810,13 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.Error = function (error) {
         if (error == null) {
-            throw new AsserterError("Error is null");
+            throw new errors_1.AsserterError("Error is null");
         }
         if (error.code < 0) {
-            throw new AsserterError("Error.code is negative");
+            throw new errors_1.AsserterError("Error.code is negative");
         }
         if (!this.validString(error.message)) {
-            throw new AsserterError("Error.message is missing");
+            throw new errors_1.AsserterError("Error.message is missing");
         }
     };
     /**
@@ -808,7 +833,7 @@ var RosettaAsserter = /** @class */ (function () {
             var rosettaError = rosettaErrors_1[_i];
             this.Error(rosettaError);
             if (statusCodeMap[rosettaError.code] != null) {
-                throw new AsserterError("Error code used multiple times");
+                throw new errors_1.AsserterError("Error code used multiple times");
             }
             statusCodeMap[rosettaError.code] = true;
         }
@@ -822,7 +847,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.Allow = function (allowed) {
         if (allowed == null) {
-            throw new AsserterError("Allow is null");
+            throw new errors_1.AsserterError("Allow is null");
         }
         this.OperationStatuses(allowed.operation_statuses);
         this.OperationTypes(allowed.operation_types);
@@ -837,7 +862,7 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.NetworkOptionsResponse = function (networkOptionsResponse) {
         if (networkOptionsResponse == null) {
-            throw new AsserterError("NetworkOptions Response is null");
+            throw new errors_1.AsserterError("NetworkOptions Response is null");
         }
         this.Version(networkOptionsResponse.version);
         return this.Allow(networkOptionsResponse.allow);
@@ -850,8 +875,8 @@ var RosettaAsserter = /** @class */ (function () {
      * @returns {boolean} describes whether the network was found in the array of networks.
      */
     RosettaAsserter.prototype.containsNetworkIdentifier = function (networks, network) {
-        var networkHash = Hash(network);
-        var index = networks.findIndex(function (n) { return Hash(n) == networkHash; });
+        var networkHash = utils_1.Hash(network);
+        var index = networks.findIndex(function (n) { return utils_1.Hash(n) == networkHash; });
         return index >= 0;
     };
     /**
@@ -863,14 +888,14 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.NetworkListResponse = function (networkListResponse) {
         if (networkListResponse == null) {
-            throw new AsserterError("NetworkListResponse is null");
+            throw new errors_1.AsserterError("NetworkListResponse is null");
         }
         var existingNetworks = [];
         for (var _i = 0, _a = networkListResponse.network_identifiers; _i < _a.length; _i++) {
             var network = _a[_i];
             this.NetworkIdentifier(network);
             if (this.containsNetworkIdentifier(existingNetworks, network)) {
-                throw new AsserterError("NetworkListResponse.Network contains duplicated");
+                throw new errors_1.AsserterError("NetworkListResponse.Network contains duplicated");
             }
             existingNetworks.push(network);
         }
@@ -883,7 +908,7 @@ var RosettaAsserter = /** @class */ (function () {
      * @returns {boolean} describes whether the currency was found in the array of currencies.
      */
     RosettaAsserter.prototype.containsCurrency = function (currencies, currency) {
-        var currencyIndex = currencies.findIndex(function (a) { return Hash(a) == Hash(currency); });
+        var currencyIndex = currencies.findIndex(function (a) { return utils_1.Hash(a) == utils_1.Hash(currency); });
         return currencyIndex >= 0;
     };
     /**
@@ -899,7 +924,7 @@ var RosettaAsserter = /** @class */ (function () {
             var amount = amountsArray_1[_i];
             var containsCurrency = this.containsCurrency(currencies, amount.currency);
             if (containsCurrency) {
-                throw new AsserterError("Currency " + amount.currency.symbol + " used in balance multiple times");
+                throw new errors_1.AsserterError("Currency " + amount.currency.symbol + " used in balance multiple times");
             }
             currencies.push(amount.currency);
             this.Amount(amount);
@@ -914,20 +939,20 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.Amount = function (amount) {
         if (amount == null || amount.value == "") {
-            throw new AsserterError("Amount.value is missing");
+            throw new errors_1.AsserterError("Amount.value is missing");
         }
         // Allow all numbers, except e notation, or negative numbers.
         if (!/^-?[0-9]+$/.test(amount.value)) {
-            throw new AsserterError("Amount.value is not an integer: " + amount.value);
+            throw new errors_1.AsserterError("Amount.value is not an integer: " + amount.value);
         }
         if (amount.currency == null) {
-            throw new AsserterError("Amount.currency is null");
+            throw new errors_1.AsserterError("Amount.currency is null");
         }
         if (!amount.currency.symbol) {
-            throw new AsserterError("Amount.currency does not have a symbol");
+            throw new errors_1.AsserterError("Amount.currency does not have a symbol");
         }
         if (amount.currency.decimals < 0) {
-            throw new AsserterError("Amount.currency.decimals must be positive. Found: " + amount.currency.decimals);
+            throw new errors_1.AsserterError("Amount.currency.decimals must be positive. Found: " + amount.currency.decimals);
         }
     };
     /**
@@ -938,10 +963,10 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.CoinIdentifier = function (coinIdentifier) {
         if (coinIdentifier == null) {
-            throw new AsserterError("coin_identifier cannot be null");
+            throw new errors_1.AsserterError("coin_identifier cannot be null");
         }
         if (!this.validString(coinIdentifier.identifier)) {
-            throw new AsserterError("coin_identifier cannot be empty");
+            throw new errors_1.AsserterError("coin_identifier cannot be empty");
         }
     };
     /**
@@ -956,7 +981,7 @@ var RosettaAsserter = /** @class */ (function () {
             case new Types.CoinAction().spent:
                 break;
             default:
-                throw new AsserterError(JSON.stringify(coinAction) + " is not a valid coin action");
+                throw new errors_1.AsserterError(JSON.stringify(coinAction) + " is not a valid coin action");
         }
     };
     /**
@@ -968,19 +993,19 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.CoinChange = function (coinChange) {
         if (coinChange == null) {
-            throw new AsserterError("coin change cannot be null");
+            throw new errors_1.AsserterError("coin change cannot be null");
         }
         try {
             this.CoinIdentifier(coinChange.coin_identifier);
         }
         catch (e) {
-            throw new AsserterError("coin identifier is invalid: " + e.message);
+            throw new errors_1.AsserterError("coin identifier is invalid: " + e.message);
         }
         try {
             this.CoinAction(coinChange.coin_action);
         }
         catch (e) {
-            throw new AsserterError("coin action is invalid: " + e.message);
+            throw new errors_1.AsserterError("coin action is invalid: " + e.message);
         }
     };
     /**
@@ -992,19 +1017,19 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.Coin = function (coin) {
         if (!coin) {
-            throw new AsserterError("Coin cannot be null");
+            throw new errors_1.AsserterError("Coin cannot be null");
         }
         try {
             this.CoinIdentifier(coin.coin_identifier);
         }
         catch (e) {
-            throw new AsserterError("coin identifier is invalid: " + e.message);
+            throw new errors_1.AsserterError("coin identifier is invalid: " + e.message);
         }
         try {
             this.Amount(coin.amount);
         }
         catch (e) {
-            throw new AsserterError("coin amount is invalid: " + e.message);
+            throw new errors_1.AsserterError("coin amount is invalid: " + e.message);
         }
     };
     /**
@@ -1024,10 +1049,10 @@ var RosettaAsserter = /** @class */ (function () {
                 this.Coin(coin);
             }
             catch (e) {
-                throw new AsserterError("coin is invalid: " + e.message);
+                throw new errors_1.AsserterError("coin is invalid: " + e.message);
             }
             if (ids[coin.coin_identifier.identifier]) {
-                throw new AsserterError("duplicate coin identifier detected: " +
+                throw new errors_1.AsserterError("duplicate coin identifier detected: " +
                     ("" + coin.coin_identifier.identifier));
             }
             ids[coin.coin_identifier.identifier] = true;
@@ -1054,13 +1079,13 @@ var RosettaAsserter = /** @class */ (function () {
         if (partialBlockIdentifier.hash != null &&
             partialBlockIdentifier.hash !=
                 accountBalanceResponse.block_identifier.hash) {
-            throw new AsserterError("Request BlockHash " + partialBlockIdentifier.hash +
+            throw new errors_1.AsserterError("Request BlockHash " + partialBlockIdentifier.hash +
                 (" does not match Response block hash " + accountBalanceResponse.block_identifier.hash));
         }
         if (partialBlockIdentifier.index != null &&
             partialBlockIdentifier.index !=
                 accountBalanceResponse.block_identifier.index) {
-            throw new AsserterError("Request Index " + partialBlockIdentifier.index +
+            throw new errors_1.AsserterError("Request Index " + partialBlockIdentifier.index +
                 (" does not match Response block index " + accountBalanceResponse.block_identifier.index));
         }
     };
@@ -1074,17 +1099,17 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.OperationIdentifier = function (operationIdentifier, index) {
         if (typeof index !== "number") {
-            throw new AsserterError("OperationIdentifier: index must be a number");
+            throw new errors_1.AsserterError("OperationIdentifier: index must be a number");
         }
         if (operationIdentifier == null) {
-            throw new AsserterError("OperationIdentifier is null");
+            throw new errors_1.AsserterError("OperationIdentifier is null");
         }
         if (operationIdentifier.index != index) {
-            throw new AsserterError("OperationIdentifier.index " + operationIdentifier.index + " is out of order, expected " + index);
+            throw new errors_1.AsserterError("OperationIdentifier.index " + operationIdentifier.index + " is out of order, expected " + index);
         }
         if (operationIdentifier.network_index != null &&
             operationIdentifier.network_index < 0) {
-            throw new AsserterError("OperationIdentifier.network_index is invalid");
+            throw new errors_1.AsserterError("OperationIdentifier.network_index is invalid");
         }
     };
     /**
@@ -1096,16 +1121,16 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.AccountIdentifier = function (accountIdentifier) {
         if (accountIdentifier == null) {
-            throw new AsserterError("Account is null");
+            throw new errors_1.AsserterError("Account is null");
         }
         if (!this.validString(accountIdentifier.address)) {
-            throw new AsserterError("Account.address is missing");
+            throw new errors_1.AsserterError("Account.address is missing");
         }
         if (accountIdentifier.sub_account == null) {
             return;
         }
         if (!this.validString(accountIdentifier.sub_account.address)) {
-            throw new AsserterError("Account.sub_account.address is missing");
+            throw new errors_1.AsserterError("Account.sub_account.address is missing");
         }
     };
     /**
@@ -1117,46 +1142,46 @@ var RosettaAsserter = /** @class */ (function () {
      */
     RosettaAsserter.prototype.OperationStatus = function (status) {
         if (status == null) {
-            throw new AsserterError("Asserter not initialized");
+            throw new errors_1.AsserterError("Asserter not initialized");
         }
         if (typeof status !== "string") {
-            throw new AsserterError("OperationStatus.status must be a string");
+            throw new errors_1.AsserterError("OperationStatus.status must be a string");
         }
         if (status == "") {
-            throw new AsserterError("OperationStatus.status is empty");
+            throw new errors_1.AsserterError("OperationStatus.status is empty");
         }
         if (this.operationStatusMap[status] == null) {
-            throw new AsserterError("OperationStatus.status " + status + " is not valid");
+            throw new errors_1.AsserterError("OperationStatus.status " + status + " is not valid");
         }
     };
     RosettaAsserter.prototype.OperationType = function (type) {
         if (typeof type !== "string") {
-            throw new AsserterError("OperationStatus.type must be a string");
+            throw new errors_1.AsserterError("OperationStatus.type must be a string");
         }
         if (type == "" || !this.operationTypes.includes(type)) {
-            throw new AsserterError("Operation.type " + type + " is invalid");
+            throw new errors_1.AsserterError("Operation.type " + type + " is invalid");
         }
     };
     RosettaAsserter.prototype.Operation = function (operation, index, construction) {
         if (construction === void 0) { construction = false; }
         if (operation == null) {
-            throw new AsserterError("Operation is null");
+            throw new errors_1.AsserterError("Operation is null");
         }
         try {
             this.OperationIdentifier(operation.operation_identifier, index);
         }
         catch (e) {
-            throw new AsserterError("Operation.identifier is invalid in operation " + index + ": " + e.message);
+            throw new errors_1.AsserterError("Operation.identifier is invalid in operation " + index + ": " + e.message);
         }
         try {
             this.OperationType(operation.type);
         }
         catch (e) {
-            throw new AsserterError("Operation.type is invalid in operation " + index + ": " + e.message);
+            throw new errors_1.AsserterError("Operation.type is invalid in operation " + index + ": " + e.message);
         }
         if (construction) {
             if (operation.status && operation.status.length > 0) {
-                throw new AsserterError("Operation.status must be empty for construction");
+                throw new errors_1.AsserterError("Operation.status must be empty for construction");
             }
         }
         else {
@@ -1164,7 +1189,7 @@ var RosettaAsserter = /** @class */ (function () {
                 this.OperationStatus(operation.status);
             }
             catch (e) {
-                throw new AsserterError("Operation.status is invalid in operation " + index + ": " + e.message);
+                throw new errors_1.AsserterError("Operation.status is invalid in operation " + index + ": " + e.message);
             }
         }
         if (operation.amount == null) {
@@ -1174,13 +1199,13 @@ var RosettaAsserter = /** @class */ (function () {
             this.AccountIdentifier(operation.account);
         }
         catch (e) {
-            throw new AsserterError("operation.account is invalid in operation " + index + ": " + e.message);
+            throw new errors_1.AsserterError("operation.account is invalid in operation " + index + ": " + e.message);
         }
         try {
             this.Amount(operation.amount);
         }
         catch (e) {
-            throw new AsserterError("operation.amount is invalid in operation " + index + ": " + e.message);
+            throw new errors_1.AsserterError("operation.amount is invalid in operation " + index + ": " + e.message);
         }
         if (operation.coin_change == null)
             return null;
@@ -1188,23 +1213,23 @@ var RosettaAsserter = /** @class */ (function () {
             this.CoinChange(operation.coin_change);
         }
         catch (e) {
-            throw new AsserterError("operation.coin_change is invalid in operation " + index + ": " + e.message);
+            throw new errors_1.AsserterError("operation.coin_change is invalid in operation " + index + ": " + e.message);
         }
     };
     RosettaAsserter.prototype.BlockIdentifier = function (blockIdentifier) {
         if (blockIdentifier == null) {
-            throw new AsserterError("BlockIdentifier is null");
+            throw new errors_1.AsserterError("BlockIdentifier is null");
         }
         if (!blockIdentifier.hash) {
-            throw new AsserterError("BlockIdentifier.hash is missing");
+            throw new errors_1.AsserterError("BlockIdentifier.hash is missing");
         }
         if (blockIdentifier.index < 0) {
-            throw new AsserterError("BlockIdentifier.index is negative");
+            throw new errors_1.AsserterError("BlockIdentifier.index is negative");
         }
     };
     RosettaAsserter.prototype.PartialBlockIdentifier = function (partialBlockIdentifier) {
         if (partialBlockIdentifier == null) {
-            throw new AsserterError("PartialBlockIdentifier is null");
+            throw new errors_1.AsserterError("PartialBlockIdentifier is null");
         }
         if (!!partialBlockIdentifier.hash) {
             return null;
@@ -1213,22 +1238,22 @@ var RosettaAsserter = /** @class */ (function () {
             partialBlockIdentifier.index >= 0) {
             return null;
         }
-        throw new AsserterError("Neither PartialBlockIdentifier.hash nor PartialBlockIdentifier.index is set");
+        throw new errors_1.AsserterError("Neither PartialBlockIdentifier.hash nor PartialBlockIdentifier.index is set");
     };
     RosettaAsserter.prototype.TransactionIdentifier = function (transactionIdentifier) {
         if (transactionIdentifier == null) {
-            throw new AsserterError("TransactionIdentifier is null");
+            throw new errors_1.AsserterError("TransactionIdentifier is null");
         }
         if (!transactionIdentifier.hash) {
-            throw new AsserterError("TransactionIdentifier.hash is missing");
+            throw new errors_1.AsserterError("TransactionIdentifier.hash is missing");
         }
     };
     RosettaAsserter.prototype.Operations = function (operations, construction) {
         if (construction === void 0) { construction = false; }
         if (!operations)
-            throw new AsserterError("Operations cannot be null");
+            throw new errors_1.AsserterError("Operations cannot be null");
         if (operations.length == 0 && construction) {
-            throw new AsserterError("Operations cannot be empty for construction");
+            throw new errors_1.AsserterError("Operations cannot be empty for construction");
         }
         for (var i = 0; i < operations.length; ++i) {
             var operation = operations[i];
@@ -1239,11 +1264,11 @@ var RosettaAsserter = /** @class */ (function () {
             for (var _i = 0, _a = operation.related_operations; _i < _a.length; _i++) {
                 var relatedOperation = _a[_i];
                 if (relatedOperation.index >= operation.operation_identifier.index) {
-                    throw new AsserterError("Related operation index " + relatedOperation.index +
+                    throw new errors_1.AsserterError("Related operation index " + relatedOperation.index +
                         (" >= operation index " + operation.operation_identifier.index));
                 }
                 if (relatedIndices.includes(relatedOperation.index)) {
-                    throw new AsserterError("Found duplicate related operation index" +
+                    throw new errors_1.AsserterError("Found duplicate related operation index" +
                         (" " + relatedOperation.index + " for operation index " + operation.operation_identifier.index));
                 }
                 relatedIndices.push(relatedOperation.index);
@@ -1252,32 +1277,32 @@ var RosettaAsserter = /** @class */ (function () {
     };
     RosettaAsserter.prototype.Transaction = function (transaction) {
         if (transaction == null) {
-            throw new AsserterError("Transaction is null");
+            throw new errors_1.AsserterError("Transaction is null");
         }
         this.TransactionIdentifier(transaction.transaction_identifier);
         if (!Array.isArray(transaction.operations)) {
-            throw new AsserterError("Transaction.operations must be an array");
+            throw new errors_1.AsserterError("Transaction.operations must be an array");
         }
         try {
             this.Operations(transaction.operations);
         }
         catch (e) {
-            throw new AsserterError("Invalid operation in transaction " +
+            throw new errors_1.AsserterError("Invalid operation in transaction " +
                 (transaction.transaction_identifier.hash + ": " + e.message));
         }
     };
     RosettaAsserter.prototype.Block = function (block) {
         if (block == null) {
-            throw new AsserterError("Block is null");
+            throw new errors_1.AsserterError("Block is null");
         }
         this.BlockIdentifier(block.block_identifier);
         this.BlockIdentifier(block.parent_block_identifier);
         if (this.genesisBlockIdentifier.index != block.block_identifier.index) {
             if (block.block_identifier.hash == block.parent_block_identifier.hash) {
-                throw new AsserterError("BlockIdentifier.hash == ParentBlockIdentifier.hash");
+                throw new errors_1.AsserterError("BlockIdentifier.hash == ParentBlockIdentifier.hash");
             }
             if (block.block_identifier.index <= block.parent_block_identifier.index) {
-                throw new AsserterError("BlockIdentifier.index <= ParentBlockIdentifier.index");
+                throw new errors_1.AsserterError("BlockIdentifier.index <= ParentBlockIdentifier.index");
             }
             this.Timestamp(block.timestamp);
         }
@@ -1297,7 +1322,7 @@ var RosettaAsserter = /** @class */ (function () {
         });
     };
     RosettaAsserter.NewClientWithFile = function (filePath) {
-        var buffer = fs.readFileSync(filePath);
+        var buffer = fs_1["default"].readFileSync(filePath);
         var contents = buffer.toString();
         var json = JSON.parse(contents);
         return RosettaAsserter.NewClientWithOptions(json.network_identifier, json.genesis_block_identifier, json.allowed_operation_types, json.allowed_operation_statuses, json.allowed_errors);
@@ -1312,7 +1337,7 @@ var RosettaAsserter = /** @class */ (function () {
     RosettaAsserter.prototype.OperationSuccessful = function (operation) {
         var status = this.operationStatusMap[operation.status];
         if (status == null) {
-            throw new AsserterError(operation.status + " not found in possible statuses");
+            throw new errors_1.AsserterError(operation.status + " not found in possible statuses");
         }
         return status;
     };
@@ -1357,8 +1382,8 @@ var RosettaAsserter = /** @class */ (function () {
         r.networkIdentifier = networkIdentifier;
         r.errorTypeMap = (function () {
             var ret = {};
-            for (var _i = 0, errors_1 = errors; _i < errors_1.length; _i++) {
-                var error = errors_1[_i];
+            for (var _i = 0, errors_2 = errors; _i < errors_2.length; _i++) {
+                var error = errors_2[_i];
                 ret[error.code] = error;
             }
             return ret;
@@ -1366,8 +1391,8 @@ var RosettaAsserter = /** @class */ (function () {
         r.operationStatusMap = (function () {
             var ret = {};
             for (var _i = 0, operationStatuses_3 = operationStatuses; _i < operationStatuses_3.length; _i++) {
-                var status_2 = operationStatuses_3[_i];
-                ret[status_2.status] = status_2.successful;
+                var status = operationStatuses_3[_i];
+                ret[status.status] = status.successful;
             }
             return ret;
         })();
@@ -1377,4 +1402,4 @@ var RosettaAsserter = /** @class */ (function () {
 }());
 RosettaAsserter.MinUnixEpoch = 946713600000; // 01/01/2000 at 12:00:00 AM.
 RosettaAsserter.MaxUnixEpoch = 2209017600000; // 01/01/2040 at 12:00:00 AM.
-module.exports = RosettaAsserter;
+exports["default"] = RosettaAsserter;

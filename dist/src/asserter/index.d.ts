@@ -1,4 +1,4 @@
-export = RosettaAsserter;
+export default RosettaAsserter;
 /**
  * @type module:OpenApiConfig
  * @class RosettaAsserter

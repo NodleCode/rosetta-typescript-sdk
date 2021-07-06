@@ -45,5 +45,5 @@ var events_1 = __importDefault(require("./src/syncer/events"));
 exports.SyncerEvents = events_1["default"];
 var types = __importStar(require("./src/types"));
 exports.types = types;
-var RosettaClient = __importStar(require("rosetta-node-sdk-client"));
+var RosettaClient = require('rosetta-node-sdk-client');
 exports.Client = RosettaClient;

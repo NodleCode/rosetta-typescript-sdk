@@ -1,3 +1,4 @@
+"use strict";
 // AsserterError.js
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -14,6 +15,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+exports.__esModule = true;
 var AsserterError = /** @class */ (function (_super) {
     __extends(AsserterError, _super);
     function AsserterError(message) {
@@ -23,4 +25,4 @@ var AsserterError = /** @class */ (function (_super) {
     }
     return AsserterError;
 }(Error));
-module.exports = AsserterError;
+exports["default"] = AsserterError;
