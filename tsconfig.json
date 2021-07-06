@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "CommonJS",
-    "target": "ESNext",
+    "module": "commonjs", 
+    "target": "es2019",
+    "moduleResolution": "node",
     "paths": {
       "types": [
         "src/types"
@@ -13,6 +14,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "noEmitOnError": true,
+    "declaration": true,
     "allowJs": true,
     "outDir": "dist",
     "lib": [

@@ -1,4 +1,4 @@
-import { Client } from '../../';
+import * as Client from 'rosetta-node-sdk-client';
 import RosettaFetcher from '../fetcher';
 import EventEmitter from 'events';
 import { SyncerError } from '../errors';

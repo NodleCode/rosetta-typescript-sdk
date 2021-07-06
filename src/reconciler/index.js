@@ -3,7 +3,7 @@
 import { ReconcilerError } from '../errors';
 
 import { SubtractValues, constructPartialBlockIdentifier, Hash } from '../utils';
-import { Client } from '../../'
+import * as  Client from 'rosetta-node-sdk-client'
 import sleep from '../utils/sleep';
 
 const { AccountCurrency: _AccountCurrency } = Client

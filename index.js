@@ -11,8 +11,7 @@ import * as RosettaErrors from './src/errors';
 import RosettaSyncer from './src/syncer';
 import RosettaSyncerEvents from './src/syncer/events';
 import * as types from './src/types'
-
-const RosettaClient = require('rosetta-node-sdk-client')
+import * as RosettaClient from 'rosetta-node-sdk-client';
 
 export {
     RosettaAsserter as Asserter,

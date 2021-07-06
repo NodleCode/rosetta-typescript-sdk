@@ -1,5 +1,5 @@
 // Parser: index.js
-import { Client } from '../../';
+import * as Client from 'rosetta-node-sdk-client';
 import { ParserError } from '../errors';
 
 import { AddValues, Hash, AmountValue, NegateValue } from '../utils';

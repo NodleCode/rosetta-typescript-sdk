@@ -1,7 +1,7 @@
 // models: index.js
 
 import { InputError } from '../errors';
-import { Client } from '../../'
+import * as Client  from 'rosetta-node-sdk-client'
 
 const PartialBlockIdentifier = Client.PartialBlockIdentifier
 
