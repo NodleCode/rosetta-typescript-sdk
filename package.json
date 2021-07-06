@@ -2,14 +2,20 @@
   "name": "rosetta-typescript-sdk",
   "version": "1.0.0",
   "description": "",
-  "main": "./index.js",
+  "types": "./dist",
+  "main": "./dist/index.js",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "run:server": "npm exec -- ts-node -r ./src/example/index.ts",
     "prettier": "prettier --config .prettierrc.json --write src/**/*.ts",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'tests/**/*.spec.ts'",
     "clean": "rmdir dist /S /Q",
     "build": "tsc --p ./ --sourceMap false",
-    "bundle": "uglifyjs ./dist/*.js --compress --mangle --output ./dist/index.min.js"
+    "bundle": "uglifyjs ./dist/*.js --compress --mangle --output ./dist/index.min.js",
+    "prepublishOnly": "npm run lint",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
