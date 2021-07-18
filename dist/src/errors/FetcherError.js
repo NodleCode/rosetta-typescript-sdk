@@ -15,7 +15,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-// FetcherError.js
 var FetcherError = /** @class */ (function (_super) {
     __extends(FetcherError, _super);
     function FetcherError(message) {
@@ -26,4 +25,3 @@ var FetcherError = /** @class */ (function (_super) {
     return FetcherError;
 }(Error));
 exports["default"] = FetcherError;
-;

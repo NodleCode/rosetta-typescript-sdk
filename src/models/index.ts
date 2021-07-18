@@ -1,5 +1,3 @@
-// models/index.js
-
 export { default as Descriptions } from './Descriptions';
 export { default as NetworkIdentifier } from './NetworkIdentifier';
 export { default as NetworkListResponse } from './NetworkListResponse';
