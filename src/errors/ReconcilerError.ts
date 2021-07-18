@@ -4,9 +4,9 @@ export default class ReconcilerError extends Error {
     lineNumber: number;
     constructor(
         message: string,
-        type: string,
-        filename: string,
-        lineNumber: number
+        type?: string,
+        filename?: string,
+        lineNumber?: number
     ) {
         super(message);
         this.type = type;

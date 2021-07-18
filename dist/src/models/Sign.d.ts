@@ -5,7 +5,7 @@ declare class Sign {
     static Negative: string;
     static Any: string;
     type: string;
-    constructor(input: string);
+    constructor(input: string | number);
     sign(number: number): 0 | 1 | -1;
     match(amount: Amount): boolean;
     toString(): string;

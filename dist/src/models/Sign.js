@@ -8,8 +8,8 @@ var POSITIVE = '+';
 var NEGATIVE = '-';
 var Sign = /** @class */ (function () {
     function Sign(input) {
-        if ([exports.ANY, POSITIVE, NEGATIVE].includes(input)) {
-            this.type = input;
+        if ([exports.ANY, POSITIVE, NEGATIVE].includes(String(input))) {
+            this.type = String(input);
         }
         else if (typeof input == 'number') {
             switch (this.sign(input)) {

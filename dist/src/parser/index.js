@@ -19,11 +19,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 exports.__esModule = true;
-// Parser: index.js
 var Client = __importStar(require("rosetta-node-sdk-client"));
 var errors_1 = require("../errors");
 var utils_1 = require("../utils");
 var models_1 = require("../models");
+var index_1 = require("index");
 var Operation = Client.Operation;
 var ExpectedOppositesLength = 2;
 var EMPTY_OPERATIONS_GROUP = {
@@ -51,7 +51,10 @@ var Match = /** @class */ (function () {
 }());
 var RosettaParser = /** @class */ (function () {
     function RosettaParser(_a) {
-        var _b = _a === void 0 ? {} : _a, asserter = _b.asserter, exemptFunc = _b.exemptFunc;
+        var _b = _a === void 0 ? {
+            asserter: new index_1.Asserter(),
+            exemptFunc: function () { }
+        } : _a, asserter = _b.asserter, exemptFunc = _b.exemptFunc;
         this.asserter = asserter;
         this.exemptFunc = exemptFunc;
     }
@@ -67,7 +70,7 @@ var RosettaParser = /** @class */ (function () {
             return true;
         }
         if (this.exemptFunc && this.exemptFunc(operation)) {
-            console.verbose("Skipping excempt operation: " + JSON.stringify(operation));
+            console.log("Skipping excempt operation: " + JSON.stringify(operation));
             return true;
         }
         return false;
@@ -125,20 +128,21 @@ var RosettaParser = /** @class */ (function () {
     RosettaParser.prototype.addOperationToGroup = function (operationsGroup, destinationIndex, assignmentsArray, operation) {
         if (operationsGroup === void 0) { operationsGroup = EMPTY_OPERATIONS_GROUP; }
         if (assignmentsArray === void 0) { assignmentsArray = []; }
-        if (operation.type != operationsGroup.type && operationsGroup.type != '') {
+        if (operation.type != operationsGroup.type &&
+            operationsGroup.type != '') {
             operationsGroup.type = '';
         }
         // Add the operation
         operationsGroup.operations.push(operation);
-        assignmentsArray[operation.operation_identifier.index] = destinationIndex;
+        assignmentsArray[operation.operation_identifier.index] =
+            destinationIndex;
         if (operation.amount == null) {
             operationsGroup.nil_amount_present = true;
             return;
         }
         operationsGroup.nil_amount_present = false;
-        if (-1 == operationsGroup.currencies.findIndex(function (curr) {
-            return utils_1.Hash(curr) == utils_1.Hash(operation.amount.currency);
-        })) {
+        if (-1 ==
+            operationsGroup.currencies.findIndex(function (curr) { return utils_1.Hash(curr) == utils_1.Hash(operation.amount.currency); })) {
             operationsGroup.currencies.push(operation.amount.currency);
         }
     };
@@ -157,8 +161,7 @@ var RosettaParser = /** @class */ (function () {
                 continue;
             }
             v.operations.sort(function (a, b) {
-                return a.operation_identifier.index -
-                    b.operation_identifier.index;
+                return (a.operation_identifier.index - b.operation_identifier.index);
             });
             sliceGroups.push(v);
         }
@@ -173,20 +176,19 @@ var RosettaParser = /** @class */ (function () {
      */
     RosettaParser.prototype.groupOperations = function (transaction) {
         var ops = transaction.operations || [];
-        var opGroups = {};
+        var opGroups = [];
         var opAssignments = new Array(ops.length).fill(0);
         var counter = 0;
         if (ops) {
             for (var i = 0; i < ops.length; ++i) {
                 var op = ops[i];
                 // Create a new group
-                if (!op.related_operations || op.related_operations.length == 0) {
+                if (!op.related_operations ||
+                    op.related_operations.length == 0) {
                     var key = counter++;
                     opGroups[key] = {
                         type: op.type,
-                        operations: [
-                            Operation.constructFromObject(op),
-                        ]
+                        operations: [Operation.constructFromObject(op)]
                     };
                     if (op.amount != null) {
                         opGroups[key].currencies = [op.amount.currency];
@@ -201,7 +203,7 @@ var RosettaParser = /** @class */ (function () {
                 }
                 // Find groups to merge
                 var groupsToMerge = [];
-                for (var _i = 0, _a = (op.related_operations || []); _i < _a.length; _i++) {
+                for (var _i = 0, _a = op.related_operations || []; _i < _a.length; _i++) {
                     var relatedOp = _a[_i];
                     if (!groupsToMerge.includes(opAssignments[relatedOp.index])) {
                         groupsToMerge.push(opAssignments[relatedOp.index]);
@@ -274,7 +276,8 @@ var RosettaParser = /** @class */ (function () {
             throw new errors_1.ParserError("sub_account is populated");
         }
         if (accountDescription.sub_account_address.length > 0 &&
-            accountIdentifier.sub_account.address != accountDescription.sub_account_address) {
+            accountIdentifier.sub_account.address !=
+                accountDescription.sub_account_address) {
             throw new errors_1.ParserError("sub_account_identifier.address is " + accountIdentifier.sub_account.address +
                 (" not " + accountDescription.sub_account_address));
         }
@@ -304,7 +307,8 @@ var RosettaParser = /** @class */ (function () {
         if (amountDescription.currency == null) {
             return;
         }
-        if (amount.currency == null || utils_1.Hash(amount.currency) != utils_1.Hash(amountDescription.currency)) {
+        if (amount.currency == null ||
+            utils_1.Hash(amount.currency) != utils_1.Hash(amountDescription.currency)) {
             throw new errors_1.ParserError("Currency " + amountDescription.currency + " is not " + amount.currency);
         }
     };
@@ -319,7 +323,7 @@ var RosettaParser = /** @class */ (function () {
                 this.accountMatch(des.account, operation.account);
                 this.amountMatch(des.amount, operation.amount);
                 this.metadataMatch(des.metadata, operation.metadata);
-                this.coinActionMatch(des.coin_action, operation.coin_action);
+                this.coinActionMatch(des.coin_action, operation.coin_change);
             }
             catch (e) {
                 continue;
@@ -414,71 +418,86 @@ var RosettaParser = /** @class */ (function () {
     };
     RosettaParser.prototype.expectedOperation = function (intentOperation, observedOperation) {
         if (utils_1.Hash(intentOperation.account) != utils_1.Hash(observedOperation.account)) {
-            throw new errors_1.ParserError("Intended Account " + intent.account + " did not " +
+            throw new errors_1.ParserError("Intended Account " + intentOperation.account + " did not " +
                 ("match observed account " + observedOperation.account));
         }
         if (utils_1.Hash(intentOperation.amount) != utils_1.Hash(observedOperation.amount)) {
-            throw new errors_1.ParserError("Intended amount " + intent.amount + " did not " +
+            throw new errors_1.ParserError("Intended amount " + intentOperation.amount + " did not " +
                 ("match observed amount " + observedOperation.amount));
         }
         if (intentOperation.type != observedOperation.type) {
-            throw new errors_1.ParserError("Intended type " + intent.type + " did not " +
+            throw new errors_1.ParserError("Intended type " + intentOperation.type + " did not " +
                 ("match observed type " + observedOperation.type));
         }
     };
     RosettaParser.prototype.expectedOperations = function (intentOperations, observedOperations, errExtra, confirmSuccess) {
         if (errExtra === void 0) { errExtra = false; }
         if (confirmSuccess === void 0) { confirmSuccess = false; }
-        if (!Array.isArray(intentOperations))
-            throw new errors_1.ParserError('intentOperations must be an array');
+        throw new Error('Not implemented');
+        /* if (!Array.isArray(intentOperations))
+            throw new ParserError('intentOperations must be an array');
+
         if (!Array.isArray(observedOperations))
-            throw new errors_1.ParserError('observedOperations must be an array');
-        var matches = {};
-        var failedMatches = [];
-        for (var _i = 0, observedOperation_1 = observedOperation; _i < observedOperation_1.length; _i++) {
-            var observed = observedOperation_1[_i];
-            var foundMatch = false;
-            for (var i = 0; i < intentOperations.length; ++i) {
-                var intent = intentOperations[i];
-                if (matches[i] != null)
-                    continue;
+            throw new ParserError('observedOperations must be an array');
+
+        const matches = {};
+        const failedMatches = [];
+
+        for (let observed of observedOperations) {
+            let foundMatch = false;
+
+            for (let i = 0; i < intentOperations.length; ++i) {
+                const intent = intentOperations[i];
+                if (matches[i] != null) continue;
+
                 try {
                     this.expectedOperation(intent, observed);
-                }
-                catch (e) {
+                } catch (e) {
                     continue;
                 }
+
                 if (confirmSuccess) {
                     try {
                         this.OperationSuccessful(observed);
+                    } catch (e) {
+                        throw new ParserError(
+                            `Unable to check operation success: ${e.message}`
+                        );
                     }
-                    catch (e) {
-                        throw new errors_1.ParserError("Unable to check operation success: " + e.message);
-                    }
+
                     if (!obsSuccess) {
                         failedMatches.push(observed);
                     }
                 }
+
                 matches[i] = true;
                 foundMatch = true;
                 break;
             }
+
             if (!foundMatch && errExtra) {
-                throw new errors_1.ParserError("Found extra operation: " + JSON.stringify(observed));
+                throw new ParserError(
+                    `Found extra operation: ${JSON.stringify(observed)}`
+                );
             }
         }
-        var missingIntent = [];
-        for (var i = 0; i < intentOperations.length; ++i) {
-            if (matches[i] == null)
-                missingIntent.push(i);
+
+        const missingIntent = [];
+        for (let i = 0; i < intentOperations.length; ++i) {
+            if (matches[i] == null) missingIntent.push(i);
         }
+
         if (missingIntent.length > 0) {
-            var errMessage = "Could not intent match " + JSON.stringify(missingIntent);
+            let errMessage = `Could not intent match ${JSON.stringify(
+                missingIntent
+            )}`;
+
             if (failedMatches.length > 0) {
-                errMessage = errMessage + ": found matching ops with unsuccessful status: " + errMessage;
+                errMessage = `${errMessage}: found matching ops with unsuccessful status: ${errMessage}`;
             }
-            throw new errors_1.ParserError(errMessage);
-        }
+
+            throw new ParserError(errMessage);
+        } */
     };
     RosettaParser.prototype.expectedSigners = function (intentSigningPayloadArray, observedArray) {
         if (!Array.isArray(intentSigningPayloadArray))
@@ -486,7 +505,7 @@ var RosettaParser = /** @class */ (function () {
         if (!Array.isArray(observedArray))
             throw new errors_1.ParserError('observedArray must be an array');
         try {
-            this.asserter.StringArray('observed signers', this.observedArray);
+            this.asserter.StringArray('observed signers', observedArray);
         }
         catch (e) {
             throw new errors_1.ParserError("Found duplicate signer: " + e.message);
@@ -496,8 +515,8 @@ var RosettaParser = /** @class */ (function () {
             var payload = intentSigningPayloadArray_1[_i];
             intendedSigners[payload.address] = true;
         }
-        var seenSigners = {};
-        var unmatched = {};
+        var seenSigners = [];
+        var unmatched = [];
         for (var _a = 0, observedArray_1 = observedArray; _a < observedArray_1.length; _a++) {
             var signer = observedArray_1[_a];
             if (intendedSigners[signer] == null) {
@@ -571,7 +590,8 @@ var RosettaParser = /** @class */ (function () {
             }
         }
         for (var i = 0; i < matches.length; ++i) {
-            if (matches[i] === null && !descriptions.operation_descriptions[i].optional) {
+            if (matches[i] === null &&
+                !descriptions.operation_descriptions[i].optional) {
                 throw new errors_1.ParserError("Could not find match for description " + i);
             }
         }
@@ -583,7 +603,7 @@ var RosettaParser = /** @class */ (function () {
         }
         return matches;
     };
+    RosettaParser.Match = Match;
     return RosettaParser;
 }());
-RosettaParser.Match = Match;
 exports["default"] = RosettaParser;
