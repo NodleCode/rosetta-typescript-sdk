@@ -6,4 +6,3 @@ function default_1(timeoutMs) {
     });
 }
 exports["default"] = default_1;
-;

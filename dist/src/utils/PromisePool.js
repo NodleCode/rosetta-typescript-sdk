@@ -1,11 +1,4 @@
 "use strict";
-/**
- * PromisePool.js
- * Author: Yoshi Jaeger
- *
- * Adapted the code from https://github.com/rxaviers/async-pool/blob/master/lib/es7.js
- * to use an applier proxy.
- */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -89,6 +82,7 @@ var arrayApplier = function (promiseBodyFn, args) {
 exports.arrayApplier = arrayApplier;
 function PromisePool(poolLimit, argArray, promiseBodyFn, applierFn) {
     if (poolLimit === void 0) { poolLimit = 8; }
+    if (argArray === void 0) { argArray = []; }
     if (applierFn === void 0) { applierFn = defaultApplier; }
     return __awaiter(this, void 0, void 0, function () {
         var ret, executing, _loop_1, argArray_1, argArray_1_1, item, e_1_1;

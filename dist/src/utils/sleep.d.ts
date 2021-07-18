@@ -1,1 +1,1 @@
-export default function _default(timeoutMs: any): Promise<any>;
+export default function (timeoutMs: number): Promise<unknown>;
