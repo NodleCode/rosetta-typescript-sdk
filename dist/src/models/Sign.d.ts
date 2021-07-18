@@ -3,7 +3,7 @@ export default Sign;
 declare class Sign {
     constructor(input: any);
     type: any;
-    sign(number: any): 1 | 0 | -1;
+    sign(number: any): 0 | 1 | -1;
     match(amount: any): boolean;
     toString(): any;
 }

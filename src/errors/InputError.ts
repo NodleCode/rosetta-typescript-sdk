@@ -1,9 +1,6 @@
-
-// InputError.js
-
 export default class InputError extends Error {
-  constructor(message) {
+  constructor(message: string) {
     super(message);
     this.name = 'InputError';
-  }  
+  }
 }

@@ -1,4 +1,14 @@
-export default RosettaAsserter;
+/// <reference types="node" />
+import fs from 'fs';
+import { AccountBalanceRequest, AccountIdentifier, Allow, Amount, Block, BlockIdentifier, BlockRequest, BlockTransactionRequest, Coin, CoinAction, CoinChange, CoinIdentifier, ConstructionCombineRequest, ConstructionCombineResponse, ConstructionDeriveRequest, ConstructionDeriveResponse, ConstructionHashRequest, ConstructionMetadataRequest, ConstructionMetadataResponse, ConstructionParseRequest, ConstructionParseResponse, ConstructionPayloadsRequest, ConstructionPayloadsResponse, ConstructionPreprocessRequest, ConstructionSubmitRequest, Currency, CurveType, Error, MempoolTransactionRequest, MetadataRequest, NetworkIdentifier, NetworkListResponse, NetworkOptionsResponse, NetworkRequest, NetworkStatusResponse, Operation, OperationIdentifier, OperationStatus, PartialBlockIdentifier, Peer, PublicKey, Signature, SignatureType, SigningPayload, SubNetworkIdentifier, Transaction, TransactionIdentifier, TransactionIdentifierResponse, Version } from 'types';
+interface AsserterConstructor {
+    operationTypes?: string[];
+    operationStatuses?: OperationStatus[];
+    errorTypes?: Error[];
+    genesisBlockIdentifier?: BlockIdentifier;
+    supportedNetworks?: NetworkIdentifier[];
+    historicalBalanceLookup?: boolean;
+}
 /**
  * @type module:OpenApiConfig
  * @class RosettaAsserter
@@ -9,10 +19,6 @@ export default RosettaAsserter;
  * validator by only passing the network responses.
  */
 declare class RosettaAsserter {
-    static NewServer(supportedOperationTypes: any, historicalBalanceLookup: any, supportedNetworks: any): RosettaAsserter;
-    static NewClientWithFile(filePath: any): RosettaAsserter;
-    static NewClientWithResponses(networkIdentifier: any, networkStatus: any, networkOptions: any): RosettaAsserter;
-    static NewClientWithOptions(networkIdentifier: any, genesisBlockIdentifier: any, operationTypes: any, operationStatuses?: any[], errors?: any[]): RosettaAsserter;
     /**
      * Create an Asserter by passing different options
      * @constructor
@@ -25,25 +31,29 @@ declare class RosettaAsserter {
      * @param {boolean} historicalBalanceLookup - Specifies whether balance requests can be performed by using
      *         a particular block identifier.
      */
-    constructor({ operationTypes, operationStatuses, errorTypes, genesisBlockIdentifier, supportedNetworks, historicalBalanceLookup, }?: string[]);
-    operationTypes: any;
-    genesisBlockIdentifier: any;
-    supportedNetworks: any;
-    historicalBalanceLookup: any;
-    operationStatusMap: {};
-    errorTypeMap: {};
-    networkIdentifier: any;
+    operationTypes?: string[];
+    operationStatuses?: OperationStatus[];
+    errorTypes?: Error[];
+    genesisBlockIdentifier?: BlockIdentifier;
+    supportedNetworks?: NetworkIdentifier[];
+    historicalBalanceLookup?: boolean;
+    operationStatusMap?: any;
+    errorTypeMap?: any;
+    networkIdentifier?: any;
+    static MinUnixEpoch: number;
+    static MaxUnixEpoch: number;
+    constructor({ operationTypes, operationStatuses, errorTypes, genesisBlockIdentifier, supportedNetworks, historicalBalanceLookup, }?: AsserterConstructor);
     /**
      * SupportedNetworks validates an array of NetworkIdentifiers.
      * @throws {AsserterError} if the array is empty or one of the networks is invalid.
      */
-    SupportedNetworks(supportedNetworks: any): void;
+    SupportedNetworks(supportedNetworks: NetworkIdentifier[]): void;
     /**
      * SupportedNetwork validates a single NetworkIdentifiers.
      * @param {Rosetta:NetworkIdentifier} networkIdentifier - NetworkIdentifier which will be validated.
      * @throws {AsserterError} if the networkIdentifier is not supported by the asserter.
      */
-    SupportedNetwork(networkIdentifier: any): void;
+    SupportedNetwork(networkIdentifier: NetworkIdentifier): void;
     /**
      * ValidSupportedNetwork is a wrapper method, that checks both, the validity and whether
      * the provided network is supported by the asserter.
@@ -51,7 +61,7 @@ declare class RosettaAsserter {
      * @param {Rosetta:NetworkIdentifier} requestNetwork - NetworkIdentifier which will be validated.
      * @throws {AsserterError} if the networkIdentifier is not valid or not supported by the asserter.
      */
-    ValidSupportedNetwork(requestNetwork: any): void;
+    ValidSupportedNetwork(requestNetwork: NetworkIdentifier): void;
     /**
      * Validates an Rosetta:AccountBalanceRequest.
      *
@@ -61,7 +71,7 @@ declare class RosettaAsserter {
      *     a Rosetta:PartialBlockIdentifier, although it is not supported by
      *     this asserter (historicalBalanceRequest = false).
      */
-    AccountBalanceRequest(accountBalanceRequest: any): void;
+    AccountBalanceRequest(accountBalanceRequest: AccountBalanceRequest): void;
     /**
      * Validates an Rosetta:BlockRequest.
      *
@@ -69,7 +79,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if either one of the networks is invalid or not supported, or
      *     if the specified Rosetta:PartialBlockIdentifier is invalid.
      */
-    BlockRequest(blockRequest: any): void;
+    BlockRequest(blockRequest: BlockRequest): void;
     /**
      * Validates an Rosetta:BlockTransactionRequest.
      *
@@ -78,7 +88,7 @@ declare class RosettaAsserter {
      *     the specified Rosetta:BlockIdentifier is invalid, or the Rosetta:TransactionIdentifier
      *     is invalid.
      */
-    BlockTransactionRequest(blockTransactionRequest: any): void;
+    BlockTransactionRequest(blockTransactionRequest: BlockTransactionRequest): void;
     /**
      * Validates an Rosetta:ConstructionMetadataRequest.
      *
@@ -86,7 +96,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if either the request is null, one of the networks is invalid or not supported,
      *     the the required parameter options is missing.
      */
-    ConstructionMetadataRequest(constructionMetadataRequest: any): void;
+    ConstructionMetadataRequest(constructionMetadataRequest: ConstructionMetadataRequest): void;
     /**
      * Validates an Rosetta:ConstructionSubmitRequest.
      *
@@ -94,7 +104,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if either the request is null, one of the networks is invalid or not supported,
      *     or the the required signed_transaction is empty.
      */
-    ConstructionSubmitRequest(constructionSubmitRequest: any): void;
+    ConstructionSubmitRequest(constructionSubmitRequest: ConstructionSubmitRequest): void;
     /**
      * Validates an Rosetta:MempoolTransactionRequest.
      *
@@ -102,14 +112,14 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if either the request is null, one of the networks is invalid or not supported,
      *     or the Rosetta:TransactionIdentifier is invalid.
      */
-    MempoolTransactionRequest(mempoolTransactionRequest: any): void;
+    MempoolTransactionRequest(mempoolTransactionRequest: MempoolTransactionRequest): void;
     /**
      * Validates an Rosetta:MetadataRequest.
      *
      * @param {Rosetta:MetadataRequest} metadataRequest - Request that will be validated.
      * @throws {AsserterError} thrown if the provided request is null.
      */
-    MetadataRequest(metadataRequest: any): void;
+    MetadataRequest(metadataRequest: MetadataRequest): void;
     /**
      * Validates an Rosetta:NetworkRequest.
      *
@@ -117,14 +127,14 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided request is null, or if the privded network is
      *     invalid or not supported.
      */
-    NetworkRequest(networkRequest: any): void;
+    NetworkRequest(networkRequest: NetworkRequest): void;
     /**
      * Validates an Rosetta:ConstructionMetadataResponse.
      *
      * @param {Rosetta:ConstructionMetadataResponse} constructionMetadataResponse - Response that will be validated.
      * @throws {AsserterError} thrown if the provided response is null, or if the metadata property is missing.
      */
-    ConstructionMetadataResponse(constructionMetadataResponse: any): void;
+    ConstructionMetadataResponse(constructionMetadataResponse: ConstructionMetadataResponse): void;
     /**
      * Validates an Rosetta:TransactionIdentifierResponse.
      *
@@ -132,7 +142,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided response is null, or if the the returned Rosetta:Transactionidetifier
      *     happens to be invalid..
      */
-    TransactionIdentifierResponse(transactionIdentifierResponse: any): void;
+    TransactionIdentifierResponse(transactionIdentifierResponse: TransactionIdentifierResponse): void;
     /**
      * Validates an Rosetta:ConstructionCombineResponse.
      *
@@ -140,14 +150,14 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided response is null, or if the returned signed transaction
      *     is empty.
      */
-    ConstructionCombineResponse(constructionCombineResponse: any): void;
+    ConstructionCombineResponse(constructionCombineResponse: ConstructionCombineResponse): void;
     /**
      * Validates an Rosetta:ConstructionDeriveResponse.
      *
      * @param {Rosetta:ConstructionDeriveResponse} constructionDeriveResponse - Response that will be validated.
      * @throws {AsserterError} thrown if the provided response is null, or if the returned address is empty
      */
-    ConstructionDeriveResponse(constructionDeriveResponse: any): void;
+    ConstructionDeriveResponse(constructionDeriveResponse: ConstructionDeriveResponse): void;
     /**
      * Validates an Rosetta:ConstructionDeriveRequest.
      *
@@ -155,7 +165,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided request is null, the specified network is invalid not supported
      *     or the provided public key is invalid.
      */
-    ConstructionDeriveRequest(constructionDeriveRequest: any): void;
+    ConstructionDeriveRequest(constructionDeriveRequest: ConstructionDeriveRequest): void;
     /**
      * Validates an Rosetta:ConstructionPreprocessRequest.
      *
@@ -163,7 +173,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided request is null, the specified network is invalid or not supported
      *     or the provided operations are invalid.
      */
-    ConstructionPreprocessRequest(constructionPreprocessRequest: any): void;
+    ConstructionPreprocessRequest(constructionPreprocessRequest: ConstructionPreprocessRequest): void;
     /**
      * Validates an Rosetta:ConstructionPayloadsRequest.
      *
@@ -171,7 +181,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided request is null, the specified network is invalid or not supported
      *     or the provided operations are invalid.
      */
-    ConstructionPayloadsRequest(constructionPayloadsRequest: any): void;
+    ConstructionPayloadsRequest(constructionPayloadsRequest: ConstructionPayloadsRequest): void;
     /**
      * Validates an Rosetta:ConstructionCombineRequest.
      *
@@ -179,7 +189,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided request is null, the specified network is invalid or not supported,
      *     the unsigned transaction is empty or if the provided signatures (Rosetta:Signature[]) are invalid.
      */
-    ConstructionCombineRequest(constructionCombineRequest: any): void;
+    ConstructionCombineRequest(constructionCombineRequest: ConstructionCombineRequest): void;
     /**
      * Validates an Rosetta:ConstructionHashRequest.
      *
@@ -187,7 +197,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided request is null, the specified network is invalid or not supported,
      *     or if the signed transaction is empty.
      */
-    ConstructionHashRequest(constructionHashRequest: any): void;
+    ConstructionHashRequest(constructionHashRequest: ConstructionHashRequest): void;
     /**
      * Validates an Rosetta:ConstructionParseRequest.
      *
@@ -195,7 +205,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided request is null, the specified network is invalid or not supported,
      *     or if the transaction is empty.
      */
-    ConstructionParseRequest(constructionParseRequest: any): void;
+    ConstructionParseRequest(constructionParseRequest: ConstructionParseRequest): void;
     /**
      * Validates an Rosetta:ConstructionParseResponse.
      *
@@ -205,7 +215,7 @@ declare class RosettaAsserter {
      *     the signers were empty when expecting a signer information, signers were returned when not
      *     expecting them or when invalid signers were returned.
      */
-    ConstructionParseResponse(constructionParseResponse: any, signed?: boolean): void;
+    ConstructionParseResponse(constructionParseResponse: ConstructionParseResponse, signed?: boolean): void;
     /**
      * Validates an Rosetta:ConstructionPayloadsResponse.
      *
@@ -213,7 +223,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided response is null, an empty unsigned transaction was returned,
      *     or if no or invalid payloads were returned.
      */
-    ConstructionPayloadsResponse(constructionPayloadsResponse: any): void;
+    ConstructionPayloadsResponse(constructionPayloadsResponse: ConstructionPayloadsResponse): void;
     /**
      * Validates a PublicKey.
      *
@@ -221,14 +231,14 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided publicKey is null, the property hex_bytes
      *     is empty or not a valid hexadecimal string, or the curve type is invalid.
      */
-    PublicKey(publicKey: any): void;
+    PublicKey(publicKey: PublicKey): void;
     /**
      * Validates a CurveType.
      *
      * @param {Rosetta:CurveType} curveType - curve type that will be validated.
      * @throws {AsserterError} thrown if the provided curve type is not defined in the standard.
      */
-    CurveType(curveType: any): void;
+    CurveType(curveType: CurveType): void;
     /**
      * Validates a SigningPayload.
      *
@@ -237,7 +247,7 @@ declare class RosettaAsserter {
      *     the specified hex_bytes property is empty or not a valid hexadecimal string, or, if provided,
      *     the signature type is invalid.
      */
-    SigningPayload(signingPayload: any): void;
+    SigningPayload(signingPayload: SigningPayload): void;
     /**
      * Checks if a string consists only of hexadecimal bytes.
      *
@@ -251,15 +261,21 @@ declare class RosettaAsserter {
      * @param {Rosetta:Signature[]} signatureArray - Signature Array that will be validated.
      * @throws {AsserterError} thrown if the provided signatures are empty or invalid.
      */
-    Signatures(signatureArray?: any[]): void;
-    SignatureType(signatureType: any): void;
+    Signatures(signatureArray?: Signature[]): void;
+    /**
+     * Validates a SignatureType.
+     *
+     * @param {Rosetta:SignatureType} signatureType - signature type that will be validated.
+     * @throws {AsserterError} thrown if the provided signature type is not defined in the standard.
+     */
+    SignatureType(signatureType: SignatureType): void;
     /**
      * Validates a transaction array.
      *
      * @param {Rosetta:Transaction[]} transactionIdentifiers - Transaction Array that will be validated.
      * @throws {AsserterError} thrown if the at least one of the provided transactions is invalid.
      */
-    MempoolTransactions(transactionIdentifiers: any): void;
+    MempoolTransactions(transactionIdentifiers: TransactionIdentifier[]): void;
     /**
      * Checks if a string is valid
      *
@@ -275,21 +291,21 @@ declare class RosettaAsserter {
      *     property is missing, the network is missing or empty or, if specified, the subnetwork identifier
      *     is invalid.
      */
-    NetworkIdentifier(networkIdentifier: any): void;
+    NetworkIdentifier(networkIdentifier: NetworkIdentifier): void;
     /**
      * Validates a SubNetworkIdentifier.
      *
      * @param {Rosetta:SubNetworkIdentifier} subnetworkIdentifier - subnetwork identifier that will be validated.
      * @throws {AsserterError} thrown if the provided network identifier is null or empty
      */
-    SubNetworkIdentifier(subnetworkIdentifier: any): void;
+    SubNetworkIdentifier(subnetworkIdentifier: SubNetworkIdentifier): void;
     /**
      * Validates a Peer.
      *
      * @param {Rosetta:Peer} peer - peer that will be validated.
      * @throws {AsserterError} thrown if the provided peer is null or is missing a peer id.
      */
-    Peer(peer: any): void;
+    Peer(peer: Peer): void;
     /**
      * Validates a Version.
      *
@@ -298,7 +314,7 @@ declare class RosettaAsserter {
      *     property node_version is empty, or, if specified, the
      *     middleware_version is empty.
      */
-    Version(version: any): void;
+    Version(version: Version): void;
     /**
      * Validates a StringArray.
      *
@@ -323,7 +339,7 @@ declare class RosettaAsserter {
      *     the block timestamp is invalid, the genesis block identifier is invalid or if at least
      *     one of the peers is invalid.
      */
-    NetworkStatusResponse(networkStatusResponse: any): void;
+    NetworkStatusResponse(networkStatusResponse: NetworkStatusResponse): void;
     /**
      * Validates an array of Rosetta:OperationStatus.
      *
@@ -331,14 +347,14 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided array is null or empty, not at least one successful
      *     operation was specified or if at least one of the operations' status is invalid.
      */
-    OperationStatuses(operationStatuses: any): void;
+    OperationStatuses(operationStatuses: OperationStatus[]): void;
     /**
      * Validates an array of OperationType (string).
      *
      * @param {Rosetta:OperationTypes[]} types - operation type array to be validated
      * @throws {AsserterError} thrown if the provided array is not a valid string array.
      */
-    OperationTypes(types: any): void;
+    OperationTypes(types: string[]): void;
     /**
      * Validates a Rosetta:Error type.
      *
@@ -346,7 +362,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided error is null, the error code
      *     is negative or if the message is not a valid string.
      */
-    Error(error: any): void;
+    Error(error: Error): void;
     /**
      * Validates an array of Rosetta:Error.
      *
@@ -354,7 +370,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if one or more errors is invalid, or if a duplicate
      *     error code was detected.
      */
-    Errors(rosettaErrors?: any[]): void;
+    Errors(rosettaErrors?: Error[]): void;
     /**
      * Validates a Rosetta:Allow type.
      *
@@ -362,7 +378,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided Allow type is null, or if one of its
      *     specifications is invalid.
      */
-    Allow(allowed: any): void;
+    Allow(allowed: Allow): void;
     /**
      * Validates a NetworkOptionsResponse.
      *
@@ -370,7 +386,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided response is null, the returned version is invalid,
      *     or if the returned Allow struct is invalid.
      */
-    NetworkOptionsResponse(networkOptionsResponse: any): void;
+    NetworkOptionsResponse(networkOptionsResponse: NetworkOptionsResponse): void;
     /**
      * Checks if a network is contained in an array of networks.
      *
@@ -378,7 +394,7 @@ declare class RosettaAsserter {
      * @param {Rosetta:NetworkIdentifier} network - network to be found in networks array.
      * @returns {boolean} describes whether the network was found in the array of networks.
      */
-    containsNetworkIdentifier(networks: any, network: any): boolean;
+    containsNetworkIdentifier(networks: NetworkIdentifier[], network: NetworkIdentifier): boolean;
     /**
      * Validates a NetworkListResponse.
      *
@@ -386,7 +402,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided response is null or if at least one
      *     of the network identifiers is empty or duplicated.
      */
-    NetworkListResponse(networkListResponse: any): void;
+    NetworkListResponse(networkListResponse: NetworkListResponse): void;
     /**
      * Checks if a currency is contained in an array of currencies.
      *
@@ -394,7 +410,7 @@ declare class RosettaAsserter {
      * @param {Rosetta:Currency} currency - currency to be found in currency array.
      * @returns {boolean} describes whether the currency was found in the array of currencies.
      */
-    containsCurrency(currencies: any, currency: any): boolean;
+    containsCurrency(currencies: Currency[], currency: Currency): boolean;
     /**
      * Validates an Array of Rosetta:Amount.
      *
@@ -402,7 +418,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if a currency is used multiple times, or if one
      *     of the amounts is invalid.
      */
-    assertBalanceAmounts(amountsArray: any): void;
+    assertBalanceAmounts(amountsArray: Amount[]): void;
     /**
      * Validates an Amount type.
      *
@@ -410,21 +426,21 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the amount is null or empty, its value is not a valid
      *     integer (encoded as string), or if the provided currency is invalid.
      */
-    Amount(amount: any): void;
+    Amount(amount: Amount): void;
     /**
      * Validates a CoinIdentifier type.
      *
      * @param {Rosetta:CoinIdentifier} coinIdentifier - identifier to be validated.
      * @throws {AsserterError} thrown if the provided coin identifier is null or empty.
      */
-    CoinIdentifier(coinIdentifier: any): void;
+    CoinIdentifier(coinIdentifier: CoinIdentifier): void;
     /**
      * Validates a CoinAction.
      *
      * @param {Rosetta:CoinAction} coinAction - coin action to be validated.
      * @throws {AsserterError} thrown if the provided coin action is not defined in the standard.
      */
-    CoinAction(coinAction: any): void;
+    CoinAction(coinAction: CoinAction): void;
     /**
      * Validates a CoinChange type.
      *
@@ -432,7 +448,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided coin change type is null, or either
      *     the coin_identifier or coin_action is invalid.
      */
-    CoinChange(coinChange: any): void;
+    CoinChange(coinChange: CoinChange): void;
     /**
      * Validates a Coin type.
      *
@@ -440,7 +456,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided coin type is null, or either
      *     the coin_identifier or amount is invalid.
      */
-    Coin(coin: any): void;
+    Coin(coin: Coin): void;
     /**
      * Validates an array of coins.
      *
@@ -448,7 +464,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided coin array is empty, or either
      *     the array contains duplicates or at least one of the coins is invalid.
      */
-    Coins(coinArray: any): void;
+    Coins(coinArray: Coin[]): void;
     /**
      * Validates a AccountBalanceResponse.
      *
@@ -458,7 +474,6 @@ declare class RosettaAsserter {
      *     invalid, the coins are invalid or, if specified, the partialBlockIndex does not match the returned
      *     block identifier.
      */
-    AccountBalanceResponse(partialBlockIdentifier: any, accountBalanceResponse: any): void;
     /**
      * Validates an OperationIdentifier.
      *
@@ -467,7 +482,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided index is not a number, the operation identifier is null,
      *     the index does not match the index specified in the operation or if the network index is invalid.
      */
-    OperationIdentifier(operationIdentifier: any, index: number): void;
+    OperationIdentifier(operationIdentifier: OperationIdentifier, index: number): void;
     /**
      * Validates an AccountIdentifier.
      *
@@ -475,7 +490,7 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided account identifier is null, the address is missing, or
      *     if specified, the sub_account's address is missing.
      */
-    AccountIdentifier(accountIdentifier: any): void;
+    AccountIdentifier(accountIdentifier: AccountIdentifier): void;
     /**
      * Validates an OperationStatus.
      *
@@ -483,26 +498,27 @@ declare class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided status is null or empty, or if the
      *     provided status is not supported.
      */
-    OperationStatus(status: any): void;
-    OperationType(type: any): void;
-    Operation(operation: any, index: any, construction?: boolean): any;
-    BlockIdentifier(blockIdentifier: any): void;
-    PartialBlockIdentifier(partialBlockIdentifier: any): any;
-    TransactionIdentifier(transactionIdentifier: any): void;
-    Operations(operations: any, construction?: boolean): void;
-    Transaction(transaction: any): void;
-    Block(block: any): void;
-    OperationSuccessful(operation: any): any;
+    OperationStatus(status: string): void;
+    OperationType(type: string): void;
+    Operation(operation: Operation, index: number, construction?: boolean): any;
+    BlockIdentifier(blockIdentifier: BlockIdentifier): void;
+    PartialBlockIdentifier(partialBlockIdentifier: PartialBlockIdentifier): any;
+    TransactionIdentifier(transactionIdentifier: TransactionIdentifier): void;
+    Operations(operations: Operation[], construction?: boolean): void;
+    Transaction(transaction: Transaction): void;
+    Block(block: Block): void;
+    static NewServer(supportedOperationTypes: any, historicalBalanceLookup: any, supportedNetworks: any): RosettaAsserter;
+    static NewClientWithFile(filePath: fs.PathLike | number): RosettaAsserter;
+    static NewClientWithResponses(networkIdentifier: NetworkIdentifier, networkStatus: NetworkStatusResponse, networkOptions: NetworkOptionsResponse): RosettaAsserter;
+    OperationSuccessful(operation: Operation): any;
     getClientConfiguration(): {
         network_identifier: any;
-        supportedNetworks: any;
-        genesis_block_identifier: any;
-        allowed_operation_types: any;
+        supportedNetworks: NetworkIdentifier[];
+        genesis_block_identifier: BlockIdentifier;
+        allowed_operation_types: string[];
         allowed_operation_statuses: any[];
         allowed_errors: any[];
     };
+    static NewClientWithOptions(networkIdentifier: NetworkIdentifier, genesisBlockIdentifier: BlockIdentifier, operationTypes: string[], operationStatuses?: any[], errors?: Error[]): RosettaAsserter;
 }
-declare namespace RosettaAsserter {
-    const MinUnixEpoch: number;
-    const MaxUnixEpoch: number;
-}
+export default RosettaAsserter;
