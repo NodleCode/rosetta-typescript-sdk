@@ -1,14 +1,16 @@
-import { AccountIdentifier, Amount } from 'types';
+import { AccountIdentifier, Amount, CoinAction } from 'types';
+import AccountDescription from './AccountDescription';
+import AmountDescription from './AmountDescription';
 
 // OperationDescription is used to describe an operation
 export default class OperationDescription {
-    account: AccountIdentifier;
-    amount: Amount;
+    account: AccountDescription;
+    amount: AmountDescription;
     metadata: any[];
     type: string;
     allow_repeats: boolean;
     optional: boolean;
-
+    coin_action: CoinAction;
     constructor({
         account,
         amount,

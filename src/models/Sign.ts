@@ -11,9 +11,9 @@ class Sign {
     static Negative = NEGATIVE;
     static Any = ANY;
     type: string;
-    constructor(input: string) {
-        if ([ANY, POSITIVE, NEGATIVE].includes(input)) {
-            this.type = input;
+    constructor(input: string | number) {
+        if ([ANY, POSITIVE, NEGATIVE].includes(String(input))) {
+            this.type = String(input);
         } else if (typeof input == 'number') {
             switch (this.sign(input)) {
                 case -1:

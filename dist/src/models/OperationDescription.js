@@ -14,4 +14,3 @@ var OperationDescription = /** @class */ (function () {
     return OperationDescription;
 }());
 exports["default"] = OperationDescription;
-;

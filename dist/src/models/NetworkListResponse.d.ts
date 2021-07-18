@@ -1,3 +1,5 @@
+import { NetworkIdentifier } from 'types';
 export default class NetworkListResponse {
-    network_identifiers: any[];
+    network_identifiers: NetworkIdentifier[];
+    constructor();
 }

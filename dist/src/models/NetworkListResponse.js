@@ -7,4 +7,3 @@ var NetworkListResponse = /** @class */ (function () {
     return NetworkListResponse;
 }());
 exports["default"] = NetworkListResponse;
-;

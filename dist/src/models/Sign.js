@@ -59,9 +59,9 @@ var Sign = /** @class */ (function () {
     Sign.prototype.toString = function () {
         return this.type;
     };
+    Sign.Positive = POSITIVE;
+    Sign.Negative = NEGATIVE;
+    Sign.Any = exports.ANY;
     return Sign;
 }());
-Sign.Positive = POSITIVE;
-Sign.Negative = NEGATIVE;
-Sign.Any = exports.ANY;
 exports["default"] = Sign;
