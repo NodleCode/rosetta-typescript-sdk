@@ -55,6 +55,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -111,51 +138,83 @@ var RosettaReconciler = /** @class */ (function () {
     };
     RosettaReconciler.prototype.queueChanges = function (blockIdentifier, balanceChangesArray) {
         return __awaiter(this, void 0, void 0, function () {
-            var _i, _a, account, skipAccount, _b, balanceChangesArray_1, change, _c, balanceChangesArray_2, change;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            var _a, _b, account, skipAccount, balanceChangesArray_1, balanceChangesArray_1_1, change, balanceChangesArray_2, balanceChangesArray_2_1, change, e_1_1;
+            var e_2, _c, e_3, _d, e_1, _e;
+            return __generator(this, function (_f) {
+                switch (_f.label) {
                     case 0:
-                        for (_i = 0, _a = this.interestingAccounts; _i < _a.length; _i++) {
-                            account = _a[_i];
-                            skipAccount = false;
-                            for (_b = 0, balanceChangesArray_1 = balanceChangesArray; _b < balanceChangesArray_1.length; _b++) {
-                                change = balanceChangesArray_1[_b];
-                                if (utils_1.Hash(account) == utils_1.Hash(change)) {
-                                    skipAccount = true;
-                                    break;
+                        try {
+                            for (_a = __values(this.interestingAccounts), _b = _a.next(); !_b.done; _b = _a.next()) {
+                                account = _b.value;
+                                skipAccount = false;
+                                try {
+                                    for (balanceChangesArray_1 = (e_3 = void 0, __values(balanceChangesArray)), balanceChangesArray_1_1 = balanceChangesArray_1.next(); !balanceChangesArray_1_1.done; balanceChangesArray_1_1 = balanceChangesArray_1.next()) {
+                                        change = balanceChangesArray_1_1.value;
+                                        if (utils_1.Hash(account) == utils_1.Hash(change)) {
+                                            skipAccount = true;
+                                            break;
+                                        }
+                                    }
                                 }
+                                catch (e_3_1) { e_3 = { error: e_3_1 }; }
+                                finally {
+                                    try {
+                                        if (balanceChangesArray_1_1 && !balanceChangesArray_1_1.done && (_d = balanceChangesArray_1["return"])) _d.call(balanceChangesArray_1);
+                                    }
+                                    finally { if (e_3) throw e_3.error; }
+                                }
+                                if (skipAccount)
+                                    continue;
+                                balanceChangesArray.push({
+                                    account_identifier: account.account,
+                                    currency: account.currency,
+                                    block_identifier: '0'
+                                });
                             }
-                            if (skipAccount)
-                                continue;
-                            balanceChangesArray.push({
-                                account_identifier: account.account,
-                                currency: account.currency,
-                                block_identifier: "0",
-                                difference: block
-                            });
                         }
-                        _c = 0, balanceChangesArray_2 = balanceChangesArray;
-                        _d.label = 1;
+                        catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                        finally {
+                            try {
+                                if (_b && !_b.done && (_c = _a["return"])) _c.call(_a);
+                            }
+                            finally { if (e_2) throw e_2.error; }
+                        }
+                        _f.label = 1;
                     case 1:
-                        if (!(_c < balanceChangesArray_2.length)) return [3 /*break*/, 4];
-                        change = balanceChangesArray_2[_c];
-                        return [4 /*yield*/, this.inactiveAccountQueue(false, new _AccountCurrency(change.account, change.currency), blockIdentifier)];
+                        _f.trys.push([1, 6, 7, 8]);
+                        balanceChangesArray_2 = __values(balanceChangesArray), balanceChangesArray_2_1 = balanceChangesArray_2.next();
+                        _f.label = 2;
                     case 2:
-                        _d.sent();
+                        if (!!balanceChangesArray_2_1.done) return [3 /*break*/, 5];
+                        change = balanceChangesArray_2_1.value;
+                        return [4 /*yield*/, this.inactiveAccountQueue(false, new _AccountCurrency(change.account, change.currency), blockIdentifier)];
+                    case 3:
+                        _f.sent();
                         if (!this.lookupBalanceByBlock) {
                             if (blockIdentifier.index < this.highWaterMark) {
-                                return [3 /*break*/, 3];
+                                return [3 /*break*/, 4];
                             }
                             this.changeQueue.push(change);
                         }
                         else {
                             this.changeQueue.push(change);
                         }
-                        _d.label = 3;
-                    case 3:
-                        _c++;
-                        return [3 /*break*/, 1];
-                    case 4: return [2 /*return*/];
+                        _f.label = 4;
+                    case 4:
+                        balanceChangesArray_2_1 = balanceChangesArray_2.next();
+                        return [3 /*break*/, 2];
+                    case 5: return [3 /*break*/, 8];
+                    case 6:
+                        e_1_1 = _f.sent();
+                        e_1 = { error: e_1_1 };
+                        return [3 /*break*/, 8];
+                    case 7:
+                        try {
+                            if (balanceChangesArray_2_1 && !balanceChangesArray_2_1.done && (_e = balanceChangesArray_2["return"])) _e.call(balanceChangesArray_2);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                        return [7 /*endfinally*/];
+                    case 8: return [2 /*return*/];
                 }
             });
         });
@@ -209,7 +268,7 @@ var RosettaReconciler = /** @class */ (function () {
     };
     RosettaReconciler.prototype.shouldAttemptInactiveReconciliation = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var head, e_1;
+            var head, e_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -224,7 +283,7 @@ var RosettaReconciler = /** @class */ (function () {
                         }
                         return [2 /*return*/, { shouldAttempt: true, head: head }];
                     case 2:
-                        e_1 = _a.sent();
+                        e_4 = _a.sent();
                         if (this.debugLogging)
                             this.logger.verbose('Waiting to start inactive reconciliation until a block is synced...');
                         return [3 /*break*/, 3];
@@ -235,7 +294,7 @@ var RosettaReconciler = /** @class */ (function () {
     };
     RosettaReconciler.prototype.accountReconciliation = function (accountIdentifier, currency, amount, blockIdentifier, isInactive) {
         return __awaiter(this, void 0, void 0, function () {
-            var accountCurrency, difference, cachedBalance, headIndex, result, e_2, _a, diff, reconciliationType, error;
+            var accountCurrency, difference, cachedBalance, headIndex, result, e_5, _a, diff, reconciliationType, error;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -258,9 +317,9 @@ var RosettaReconciler = /** @class */ (function () {
                         (difference = result.difference, cachedBalance = result.cachedBalance, headIndex = result.headIndex);
                         return [3 /*break*/, 14];
                     case 4:
-                        e_2 = _b.sent();
-                        if (!(e_2 instanceof errors_1.ReconcilerError)) return [3 /*break*/, 12];
-                        _a = e_2.type;
+                        e_5 = _b.sent();
+                        if (!(e_5 instanceof errors_1.ReconcilerError)) return [3 /*break*/, 12];
+                        _a = e_5.type;
                         switch (_a) {
                             case RECONCILIATION_ERROR_HEAD_BEHIND_LIVE: return [3 /*break*/, 5];
                             case RECONCILIATION_ERROR_ACCOUNT_UPDATED: return [3 /*break*/, 8];
@@ -276,13 +335,11 @@ var RosettaReconciler = /** @class */ (function () {
                         return [3 /*break*/, 1];
                     case 7:
                         // Don't wait to check if we are very far behind
-                        console.info("Skipping reconciliation for " + JSON.stringify(accountCurrency) + ":" +
-                            (" " + diff + " blocks behind"));
+                        console.info("Skipping reconciliation for " + JSON.stringify(accountCurrency) + ":" + (" " + diff + " blocks behind"));
                         // Set a highWaterMark to not accept any new
                         // reconciliation requests unless they happened
                         // after this new highWaterMark.
-                        this.highWaterMark = partialBlockIdentifier.index;
-                        return [3 /*break*/, 11];
+                        throw new errors_1.ReconcilerError('not implemented');
                     case 8:
                         {
                             // Either the block has not been processed in a re-org yet
@@ -299,14 +356,14 @@ var RosettaReconciler = /** @class */ (function () {
                         _b.label = 10;
                     case 10: return [3 /*break*/, 11];
                     case 11: return [3 /*break*/, 13];
-                    case 12: throw e_2;
+                    case 12: throw e_5;
                     case 13: return [3 /*break*/, 14];
                     case 14:
                         reconciliationType = RECONCILIATION_ACTIVE;
                         if (isInactive) {
                             reconciliationType = RECONCILIATION_INACTIVE;
                         }
-                        if (!(difference != "0")) return [3 /*break*/, 16];
+                        if (!(difference != '0')) return [3 /*break*/, 16];
                         return [4 /*yield*/, this.handler.reconciliationFailed(reconciliationType, accountCurrency.account_identifier, accountCurrency.currency, cachedBalance, amount, blockIdentifier)];
                     case 15:
                         error = _b.sent();
@@ -332,7 +389,8 @@ var RosettaReconciler = /** @class */ (function () {
             var shouldEnqueueInactive;
             return __generator(this, function (_a) {
                 shouldEnqueueInactive = false;
-                if (!isInactive && !RosettaReconciler.ContainsAccountCurrency(this.seenAccounts, accountCurrency)) {
+                if (!isInactive &&
+                    !RosettaReconciler.ContainsAccountCurrency(this.seenAccounts, accountCurrency)) {
                     this.seenAccounts[utils_1.Hash(accountCurrency)] = {};
                     shouldEnqueueInactive = true;
                 }
@@ -396,14 +454,9 @@ var RosettaReconciler = /** @class */ (function () {
                     case 5:
                         nextAccount = this.inactiveQueue[0];
                         nextValidIndex = -1;
-                        if (nextAccount.last_check != null) {
-                            nextValidIndex = nextAccount.last_check.index + config.inactiveFrequency;
-                        }
-                        if (!(nextValidIndex <= head.index)) return [3 /*break*/, 8];
-                        this.inactiveQueue.shift();
-                        return [4 /*yield*/, this.bestBalance(nextAccount.entry.account_identifier, nextAccount.entry.currency, utils_1.constructPartialBlockIdentifier(head))];
+                        throw new errors_1.ReconcilerError('Not implemented');
                     case 6:
-                        _b = _c.sent(), block = _b.block, amount = _b.amount;
+                        _b = _c.sent(), block = _b.block, amount = _b.value;
                         return [4 /*yield*/, this.accountReconciliation(nextAccount.entry.account_identifier, nextAccount.entry.currency, amount, block, true)];
                     case 7:
                         _c.sent();
@@ -446,11 +499,21 @@ var RosettaReconciler = /** @class */ (function () {
         });
     };
     RosettaReconciler.extractAmount = function (amountArray, currency) {
-        for (var _i = 0, amountArray_1 = amountArray; _i < amountArray_1.length; _i++) {
-            var b = amountArray_1[_i];
-            if (utils_1.Hash(b.currency) != utils_1.Hash(currency))
-                continue;
-            return b;
+        var e_6, _a;
+        try {
+            for (var amountArray_1 = __values(amountArray), amountArray_1_1 = amountArray_1.next(); !amountArray_1_1.done; amountArray_1_1 = amountArray_1.next()) {
+                var b = amountArray_1_1.value;
+                if (utils_1.Hash(b.currency) != utils_1.Hash(currency))
+                    continue;
+                return b;
+            }
+        }
+        catch (e_6_1) { e_6 = { error: e_6_1 }; }
+        finally {
+            try {
+                if (amountArray_1_1 && !amountArray_1_1.done && (_a = amountArray_1["return"])) _a.call(amountArray_1);
+            }
+            finally { if (e_6) throw e_6.error; }
         }
         throw new Error("Could not extract amount for " + JSON.stringify(currency));
     };
@@ -459,11 +522,11 @@ var RosettaReconciler = /** @class */ (function () {
             var _a, liveBlock, liveBalances, liveAmount;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, fetcher.AcountBalanceRetry(networkIdentifier, accountIdentifier, partialBlockIdentifier)];
+                    case 0: return [4 /*yield*/, fetcher.accountBalanceRetry(networkIdentifier, accountIdentifier, partialBlockIdentifier)];
                     case 1:
                         _a = _b.sent(), liveBlock = _a.liveBlock, liveBalances = _a.liveBalances;
                         try {
-                            liveAmount = this.extractAmount(liveBalances, currency);
+                            liveAmount = RosettaReconciler.extractAmount(liveBalances, currency);
                             return [2 /*return*/, {
                                     block: liveBlock,
                                     value: liveAmount.value
@@ -478,23 +541,24 @@ var RosettaReconciler = /** @class */ (function () {
             });
         });
     };
+    RosettaReconciler.defaults = defaults;
     return RosettaReconciler;
 }());
-RosettaReconciler.AccountCurrency = /** @class */ (function () {
+var AccountCurrency = /** @class */ (function () {
     function AccountCurrency(opts) {
-        if (typeof opts == 'object' && opts.accountIdentifier) {
-            var accountIdentifier = opts.accountIdentifier, currency = opts.currency;
+        if (typeof opts == 'object' &&
+            opts.accountIdentifier) {
+            var _a = opts, accountIdentifier = _a.accountIdentifier, currency = _a.currency;
             this.account = accountIdentifier;
             this.currency = currency;
         }
         else {
-            var accountIdentifier = arguments[0], currency = arguments[1];
+            // @ts-ignore
+            var _b = __read(arguments, 2), accountIdentifier = _b[0], currency = _b[1];
             this.account = arguments[0];
             this.currency = arguments[1];
         }
     }
-    ;
     return AccountCurrency;
 }());
-RosettaReconciler.defaults = defaults;
 exports["default"] = RosettaReconciler;

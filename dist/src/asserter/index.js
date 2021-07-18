@@ -18,6 +18,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -38,7 +49,8 @@ var utils_1 = require("../utils");
  */
 var RosettaAsserter = /** @class */ (function () {
     function RosettaAsserter(_a) {
-        var _b = _a === void 0 ? {} : _a, _c = _b.operationTypes, operationTypes = _c === void 0 ? [] : _c, _d = _b.operationStatuses, operationStatuses = _d === void 0 ? [] : _d, _e = _b.errorTypes, errorTypes = _e === void 0 ? [] : _e, genesisBlockIdentifier = _b.genesisBlockIdentifier, _f = _b.supportedNetworks, supportedNetworks = _f === void 0 ? [] : _f, _g = _b.historicalBalanceLookup, historicalBalanceLookup = _g === void 0 ? false : _g;
+        var e_1, _b, e_2, _c;
+        var _d = _a === void 0 ? {} : _a, _e = _d.operationTypes, operationTypes = _e === void 0 ? [] : _e, _f = _d.operationStatuses, operationStatuses = _f === void 0 ? [] : _f, _g = _d.errorTypes, errorTypes = _g === void 0 ? [] : _g, genesisBlockIdentifier = _d.genesisBlockIdentifier, _h = _d.supportedNetworks, supportedNetworks = _h === void 0 ? [] : _h, _j = _d.historicalBalanceLookup, historicalBalanceLookup = _j === void 0 ? false : _j;
         this.operationTypes = operationTypes;
         this.genesisBlockIdentifier = genesisBlockIdentifier;
         this.supportedNetworks = supportedNetworks;
@@ -49,18 +61,36 @@ var RosettaAsserter = /** @class */ (function () {
         if (operationStatuses &&
             typeof operationStatuses == 'object' &&
             Array.isArray(operationStatuses)) {
-            for (var _i = 0, operationStatuses_1 = operationStatuses; _i < operationStatuses_1.length; _i++) {
-                var operationStatus = operationStatuses_1[_i];
-                this.operationStatusMap[operationStatus.status] =
-                    operationStatus.successful;
+            try {
+                for (var operationStatuses_1 = __values(operationStatuses), operationStatuses_1_1 = operationStatuses_1.next(); !operationStatuses_1_1.done; operationStatuses_1_1 = operationStatuses_1.next()) {
+                    var operationStatus = operationStatuses_1_1.value;
+                    this.operationStatusMap[operationStatus.status] =
+                        operationStatus.successful;
+                }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (operationStatuses_1_1 && !operationStatuses_1_1.done && (_b = operationStatuses_1["return"])) _b.call(operationStatuses_1);
+                }
+                finally { if (e_1) throw e_1.error; }
             }
         }
         if (errorTypes &&
             typeof errorTypes == 'object' &&
             Array.isArray(errorTypes)) {
-            for (var _h = 0, errorTypes_1 = errorTypes; _h < errorTypes_1.length; _h++) {
-                var errorType = errorTypes_1[_h];
-                this.errorTypeMap[errorType.code] = errorType;
+            try {
+                for (var errorTypes_1 = __values(errorTypes), errorTypes_1_1 = errorTypes_1.next(); !errorTypes_1_1.done; errorTypes_1_1 = errorTypes_1.next()) {
+                    var errorType = errorTypes_1_1.value;
+                    this.errorTypeMap[errorType.code] = errorType;
+                }
+            }
+            catch (e_2_1) { e_2 = { error: e_2_1 }; }
+            finally {
+                try {
+                    if (errorTypes_1_1 && !errorTypes_1_1.done && (_c = errorTypes_1["return"])) _c.call(errorTypes_1);
+                }
+                finally { if (e_2) throw e_2.error; }
             }
         }
     }
@@ -69,6 +99,7 @@ var RosettaAsserter = /** @class */ (function () {
      * @throws {AsserterError} if the array is empty or one of the networks is invalid.
      */
     RosettaAsserter.prototype.SupportedNetworks = function (supportedNetworks) {
+        var e_3, _a;
         if (!Array.isArray(supportedNetworks)) {
             throw new errors_1.AsserterError('SupportedNetworks must be an array');
         }
@@ -76,13 +107,22 @@ var RosettaAsserter = /** @class */ (function () {
             throw new errors_1.AsserterError('NetworkIdentifier Array contains no supported networks');
         }
         var parsedNetworks = [];
-        for (var _i = 0, supportedNetworks_1 = supportedNetworks; _i < supportedNetworks_1.length; _i++) {
-            var network = supportedNetworks_1[_i];
-            this.NetworkIdentifier(network);
-            if (parsedNetworks.includes(utils_1.Hash(network))) {
-                throw new errors_1.AsserterError("SupportedNetwork has a duplicate: " + JSON.stringify(network));
+        try {
+            for (var supportedNetworks_1 = __values(supportedNetworks), supportedNetworks_1_1 = supportedNetworks_1.next(); !supportedNetworks_1_1.done; supportedNetworks_1_1 = supportedNetworks_1.next()) {
+                var network = supportedNetworks_1_1.value;
+                this.NetworkIdentifier(network);
+                if (parsedNetworks.includes(utils_1.Hash(network))) {
+                    throw new errors_1.AsserterError("SupportedNetwork has a duplicate: " + JSON.stringify(network));
+                }
+                parsedNetworks.push(utils_1.Hash(network));
             }
-            parsedNetworks.push(utils_1.Hash(network));
+        }
+        catch (e_3_1) { e_3 = { error: e_3_1 }; }
+        finally {
+            try {
+                if (supportedNetworks_1_1 && !supportedNetworks_1_1.done && (_a = supportedNetworks_1["return"])) _a.call(supportedNetworks_1);
+            }
+            finally { if (e_3) throw e_3.error; }
         }
     };
     /**
@@ -614,9 +654,19 @@ var RosettaAsserter = /** @class */ (function () {
      * @throws {AsserterError} thrown if the at least one of the provided transactions is invalid.
      */
     RosettaAsserter.prototype.MempoolTransactions = function (transactionIdentifiers) {
-        for (var _i = 0, transactionIdentifiers_1 = transactionIdentifiers; _i < transactionIdentifiers_1.length; _i++) {
-            var t = transactionIdentifiers_1[_i];
-            this.TransactionIdentifier(t);
+        var e_4, _a;
+        try {
+            for (var transactionIdentifiers_1 = __values(transactionIdentifiers), transactionIdentifiers_1_1 = transactionIdentifiers_1.next(); !transactionIdentifiers_1_1.done; transactionIdentifiers_1_1 = transactionIdentifiers_1.next()) {
+                var t = transactionIdentifiers_1_1.value;
+                this.TransactionIdentifier(t);
+            }
+        }
+        catch (e_4_1) { e_4 = { error: e_4_1 }; }
+        finally {
+            try {
+                if (transactionIdentifiers_1_1 && !transactionIdentifiers_1_1.done && (_a = transactionIdentifiers_1["return"])) _a.call(transactionIdentifiers_1);
+            }
+            finally { if (e_4) throw e_4.error; }
         }
     };
     /**
@@ -701,19 +751,29 @@ var RosettaAsserter = /** @class */ (function () {
      *     empty/invalid strings or if duplicate strings are detected.
      */
     RosettaAsserter.prototype.StringArray = function (name, array) {
+        var e_5, _a;
         if (!array || array.length == 0) {
             throw new errors_1.AsserterError("No " + name + " found");
         }
         var existing = [];
-        for (var _i = 0, array_1 = array; _i < array_1.length; _i++) {
-            var element = array_1[_i];
-            if (!this.validString(element)) {
-                throw new errors_1.AsserterError(name + " has an empty string");
+        try {
+            for (var array_1 = __values(array), array_1_1 = array_1.next(); !array_1_1.done; array_1_1 = array_1.next()) {
+                var element = array_1_1.value;
+                if (!this.validString(element)) {
+                    throw new errors_1.AsserterError(name + " has an empty string");
+                }
+                if (existing.includes(element)) {
+                    throw new errors_1.AsserterError(name + " contains a duplicate element: " + element);
+                }
+                existing.push(element);
             }
-            if (existing.includes(element)) {
-                throw new errors_1.AsserterError(name + " contains a duplicate element: " + element);
+        }
+        catch (e_5_1) { e_5 = { error: e_5_1 }; }
+        finally {
+            try {
+                if (array_1_1 && !array_1_1.done && (_a = array_1["return"])) _a.call(array_1);
             }
-            existing.push(element);
+            finally { if (e_5) throw e_5.error; }
         }
     };
     /**
@@ -743,6 +803,7 @@ var RosettaAsserter = /** @class */ (function () {
      *     one of the peers is invalid.
      */
     RosettaAsserter.prototype.NetworkStatusResponse = function (networkStatusResponse) {
+        var e_6, _a;
         if (networkStatusResponse == null) {
             throw new errors_1.AsserterError('networkStatusResponse is null');
         }
@@ -751,9 +812,18 @@ var RosettaAsserter = /** @class */ (function () {
         this.BlockIdentifier(networkStatusResponse.genesis_block_identifier);
         if (!Array.isArray(networkStatusResponse.peers))
             throw new errors_1.AsserterError('Peers must be an array.');
-        for (var _i = 0, _a = networkStatusResponse.peers; _i < _a.length; _i++) {
-            var peer = _a[_i];
-            this.Peer(peer);
+        try {
+            for (var _b = __values(networkStatusResponse.peers), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var peer = _c.value;
+                this.Peer(peer);
+            }
+        }
+        catch (e_6_1) { e_6 = { error: e_6_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
+            }
+            finally { if (e_6) throw e_6.error; }
         }
     };
     /**
@@ -764,20 +834,30 @@ var RosettaAsserter = /** @class */ (function () {
      *     operation was specified or if at least one of the operations' status is invalid.
      */
     RosettaAsserter.prototype.OperationStatuses = function (operationStatuses) {
+        var e_7, _a;
         if (operationStatuses == null || operationStatuses.length == 0) {
             throw new errors_1.AsserterError('No Allow.operation_statuses found');
         }
         var existingStatuses = [];
         var foundSuccessful = false;
-        for (var _i = 0, operationStatuses_2 = operationStatuses; _i < operationStatuses_2.length; _i++) {
-            var status = operationStatuses_2[_i];
-            if (!status.status) {
-                throw new errors_1.AsserterError('Operation.status is missing');
+        try {
+            for (var operationStatuses_2 = __values(operationStatuses), operationStatuses_2_1 = operationStatuses_2.next(); !operationStatuses_2_1.done; operationStatuses_2_1 = operationStatuses_2.next()) {
+                var status = operationStatuses_2_1.value;
+                if (!status.status) {
+                    throw new errors_1.AsserterError('Operation.status is missing');
+                }
+                if (status.successful) {
+                    foundSuccessful = true;
+                }
+                existingStatuses.push(status.status);
             }
-            if (status.successful) {
-                foundSuccessful = true;
+        }
+        catch (e_7_1) { e_7 = { error: e_7_1 }; }
+        finally {
+            try {
+                if (operationStatuses_2_1 && !operationStatuses_2_1.done && (_a = operationStatuses_2["return"])) _a.call(operationStatuses_2);
             }
-            existingStatuses.push(status.status);
+            finally { if (e_7) throw e_7.error; }
         }
         if (!foundSuccessful) {
             throw new errors_1.AsserterError('No successful Allow.operation_statuses found');
@@ -819,15 +899,25 @@ var RosettaAsserter = /** @class */ (function () {
      *     error code was detected.
      */
     RosettaAsserter.prototype.Errors = function (rosettaErrors) {
+        var e_8, _a;
         if (rosettaErrors === void 0) { rosettaErrors = []; }
         var statusCodeMap = {};
-        for (var _i = 0, rosettaErrors_1 = rosettaErrors; _i < rosettaErrors_1.length; _i++) {
-            var rosettaError = rosettaErrors_1[_i];
-            this.Error(rosettaError);
-            if (statusCodeMap[rosettaError.code] != null) {
-                throw new errors_1.AsserterError('Error code used multiple times');
+        try {
+            for (var rosettaErrors_1 = __values(rosettaErrors), rosettaErrors_1_1 = rosettaErrors_1.next(); !rosettaErrors_1_1.done; rosettaErrors_1_1 = rosettaErrors_1.next()) {
+                var rosettaError = rosettaErrors_1_1.value;
+                this.Error(rosettaError);
+                if (statusCodeMap[rosettaError.code] != null) {
+                    throw new errors_1.AsserterError('Error code used multiple times');
+                }
+                statusCodeMap[rosettaError.code] = true;
             }
-            statusCodeMap[rosettaError.code] = true;
+        }
+        catch (e_8_1) { e_8 = { error: e_8_1 }; }
+        finally {
+            try {
+                if (rosettaErrors_1_1 && !rosettaErrors_1_1.done && (_a = rosettaErrors_1["return"])) _a.call(rosettaErrors_1);
+            }
+            finally { if (e_8) throw e_8.error; }
         }
     };
     /**
@@ -879,17 +969,27 @@ var RosettaAsserter = /** @class */ (function () {
      *     of the network identifiers is empty or duplicated.
      */
     RosettaAsserter.prototype.NetworkListResponse = function (networkListResponse) {
+        var e_9, _a;
         if (networkListResponse == null) {
             throw new errors_1.AsserterError('NetworkListResponse is null');
         }
         var existingNetworks = [];
-        for (var _i = 0, _a = networkListResponse.network_identifiers; _i < _a.length; _i++) {
-            var network = _a[_i];
-            this.NetworkIdentifier(network);
-            if (this.containsNetworkIdentifier(existingNetworks, network)) {
-                throw new errors_1.AsserterError('NetworkListResponse.Network contains duplicated');
+        try {
+            for (var _b = __values(networkListResponse.network_identifiers), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var network = _c.value;
+                this.NetworkIdentifier(network);
+                if (this.containsNetworkIdentifier(existingNetworks, network)) {
+                    throw new errors_1.AsserterError('NetworkListResponse.Network contains duplicated');
+                }
+                existingNetworks.push(network);
             }
-            existingNetworks.push(network);
+        }
+        catch (e_9_1) { e_9 = { error: e_9_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
+            }
+            finally { if (e_9) throw e_9.error; }
         }
     };
     /**
@@ -911,15 +1011,25 @@ var RosettaAsserter = /** @class */ (function () {
      *     of the amounts is invalid.
      */
     RosettaAsserter.prototype.assertBalanceAmounts = function (amountsArray) {
+        var e_10, _a;
         var currencies = [];
-        for (var _i = 0, amountsArray_1 = amountsArray; _i < amountsArray_1.length; _i++) {
-            var amount = amountsArray_1[_i];
-            var containsCurrency = this.containsCurrency(currencies, amount.currency);
-            if (containsCurrency) {
-                throw new errors_1.AsserterError("Currency " + amount.currency.symbol + " used in balance multiple times");
+        try {
+            for (var amountsArray_1 = __values(amountsArray), amountsArray_1_1 = amountsArray_1.next(); !amountsArray_1_1.done; amountsArray_1_1 = amountsArray_1.next()) {
+                var amount = amountsArray_1_1.value;
+                var containsCurrency = this.containsCurrency(currencies, amount.currency);
+                if (containsCurrency) {
+                    throw new errors_1.AsserterError("Currency " + amount.currency.symbol + " used in balance multiple times");
+                }
+                currencies.push(amount.currency);
+                this.Amount(amount);
             }
-            currencies.push(amount.currency);
-            this.Amount(amount);
+        }
+        catch (e_10_1) { e_10 = { error: e_10_1 }; }
+        finally {
+            try {
+                if (amountsArray_1_1 && !amountsArray_1_1.done && (_a = amountsArray_1["return"])) _a.call(amountsArray_1);
+            }
+            finally { if (e_10) throw e_10.error; }
         }
     };
     /**
@@ -1032,22 +1142,32 @@ var RosettaAsserter = /** @class */ (function () {
      *     the array contains duplicates or at least one of the coins is invalid.
      */
     RosettaAsserter.prototype.Coins = function (coinArray) {
+        var e_11, _a;
         var ids = {};
         if (!coinArray)
             return;
-        for (var _i = 0, coinArray_1 = coinArray; _i < coinArray_1.length; _i++) {
-            var coin = coinArray_1[_i];
+        try {
+            for (var coinArray_1 = __values(coinArray), coinArray_1_1 = coinArray_1.next(); !coinArray_1_1.done; coinArray_1_1 = coinArray_1.next()) {
+                var coin = coinArray_1_1.value;
+                try {
+                    this.Coin(coin);
+                }
+                catch (e) {
+                    throw new errors_1.AsserterError("coin is invalid: " + e.message);
+                }
+                if (ids[coin.coin_identifier.identifier]) {
+                    throw new errors_1.AsserterError("duplicate coin identifier detected: " +
+                        ("" + coin.coin_identifier.identifier));
+                }
+                ids[coin.coin_identifier.identifier] = true;
+            }
+        }
+        catch (e_11_1) { e_11 = { error: e_11_1 }; }
+        finally {
             try {
-                this.Coin(coin);
+                if (coinArray_1_1 && !coinArray_1_1.done && (_a = coinArray_1["return"])) _a.call(coinArray_1);
             }
-            catch (e) {
-                throw new errors_1.AsserterError("coin is invalid: " + e.message);
-            }
-            if (ids[coin.coin_identifier.identifier]) {
-                throw new errors_1.AsserterError("duplicate coin identifier detected: " +
-                    ("" + coin.coin_identifier.identifier));
-            }
-            ids[coin.coin_identifier.identifier] = true;
+            finally { if (e_11) throw e_11.error; }
         }
     };
     /**
@@ -1256,6 +1376,7 @@ var RosettaAsserter = /** @class */ (function () {
         }
     };
     RosettaAsserter.prototype.Operations = function (operations, construction) {
+        var e_12, _a;
         if (construction === void 0) { construction = false; }
         if (!operations)
             throw new errors_1.AsserterError('Operations cannot be null');
@@ -1268,18 +1389,27 @@ var RosettaAsserter = /** @class */ (function () {
             var relatedIndices = [];
             if (!operation.related_operations)
                 continue;
-            for (var _i = 0, _a = operation.related_operations; _i < _a.length; _i++) {
-                var relatedOperation = _a[_i];
-                if (relatedOperation.index >=
-                    operation.operation_identifier.index) {
-                    throw new errors_1.AsserterError("Related operation index " + relatedOperation.index +
-                        (" >= operation index " + operation.operation_identifier.index));
+            try {
+                for (var _b = (e_12 = void 0, __values(operation.related_operations)), _c = _b.next(); !_c.done; _c = _b.next()) {
+                    var relatedOperation = _c.value;
+                    if (relatedOperation.index >=
+                        operation.operation_identifier.index) {
+                        throw new errors_1.AsserterError("Related operation index " + relatedOperation.index +
+                            (" >= operation index " + operation.operation_identifier.index));
+                    }
+                    if (relatedIndices.includes(relatedOperation.index)) {
+                        throw new errors_1.AsserterError("Found duplicate related operation index" +
+                            (" " + relatedOperation.index + " for operation index " + operation.operation_identifier.index));
+                    }
+                    relatedIndices.push(relatedOperation.index);
                 }
-                if (relatedIndices.includes(relatedOperation.index)) {
-                    throw new errors_1.AsserterError("Found duplicate related operation index" +
-                        (" " + relatedOperation.index + " for operation index " + operation.operation_identifier.index));
+            }
+            catch (e_12_1) { e_12 = { error: e_12_1 }; }
+            finally {
+                try {
+                    if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
                 }
-                relatedIndices.push(relatedOperation.index);
+                finally { if (e_12) throw e_12.error; }
             }
         }
     };
@@ -1300,6 +1430,7 @@ var RosettaAsserter = /** @class */ (function () {
         }
     };
     RosettaAsserter.prototype.Block = function (block) {
+        var e_13, _a;
         if (block == null) {
             throw new errors_1.AsserterError('Block is null');
         }
@@ -1316,9 +1447,18 @@ var RosettaAsserter = /** @class */ (function () {
             }
             this.Timestamp(block.timestamp);
         }
-        for (var _i = 0, _a = block.transactions; _i < _a.length; _i++) {
-            var transaction = _a[_i];
-            this.Transaction(transaction);
+        try {
+            for (var _b = __values(block.transactions), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var transaction = _c.value;
+                this.Transaction(transaction);
+            }
+        }
+        catch (e_13_1) { e_13 = { error: e_13_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
+            }
+            finally { if (e_13) throw e_13.error; }
         }
     };
     RosettaAsserter.NewServer = function (supportedOperationTypes, historicalBalanceLookup, supportedNetworks) {
@@ -1352,20 +1492,39 @@ var RosettaAsserter = /** @class */ (function () {
         return status;
     };
     RosettaAsserter.prototype.getClientConfiguration = function () {
+        var e_14, _a, e_15, _b;
         var operationStatuses = [];
         var errors = [];
-        for (var _i = 0, _a = Object.keys(this.operationStatusMap); _i < _a.length; _i++) {
-            var key = _a[_i];
-            var value = this.operationStatusMap[key];
-            var operationStatus = new Types.OperationStatus(key, value);
-            // Validate
-            // this.OperationStatus(operationStatus);
-            operationStatuses.push(operationStatus);
+        try {
+            for (var _c = __values(Object.keys(this.operationStatusMap)), _d = _c.next(); !_d.done; _d = _c.next()) {
+                var key = _d.value;
+                var value = this.operationStatusMap[key];
+                var operationStatus = new Types.OperationStatus(key, value);
+                // Validate
+                // this.OperationStatus(operationStatus);
+                operationStatuses.push(operationStatus);
+            }
         }
-        for (var _b = 0, _c = Object.keys(this.errorTypeMap); _b < _c.length; _b++) {
-            var key = _c[_b];
-            var value = this.errorTypeMap[key];
-            errors.push(value);
+        catch (e_14_1) { e_14 = { error: e_14_1 }; }
+        finally {
+            try {
+                if (_d && !_d.done && (_a = _c["return"])) _a.call(_c);
+            }
+            finally { if (e_14) throw e_14.error; }
+        }
+        try {
+            for (var _e = __values(Object.keys(this.errorTypeMap)), _f = _e.next(); !_f.done; _f = _e.next()) {
+                var key = _f.value;
+                var value = this.errorTypeMap[key];
+                errors.push(value);
+            }
+        }
+        catch (e_15_1) { e_15 = { error: e_15_1 }; }
+        finally {
+            try {
+                if (_f && !_f.done && (_b = _e["return"])) _b.call(_e);
+            }
+            finally { if (e_15) throw e_15.error; }
         }
         var ret = {
             network_identifier: this.networkIdentifier,
@@ -1391,18 +1550,38 @@ var RosettaAsserter = /** @class */ (function () {
         });
         r.networkIdentifier = networkIdentifier;
         r.errorTypeMap = (function () {
+            var e_16, _a;
             var ret = {};
-            for (var _i = 0, errors_2 = errors; _i < errors_2.length; _i++) {
-                var error = errors_2[_i];
-                ret[error.code] = error;
+            try {
+                for (var errors_2 = __values(errors), errors_2_1 = errors_2.next(); !errors_2_1.done; errors_2_1 = errors_2.next()) {
+                    var error = errors_2_1.value;
+                    ret[error.code] = error;
+                }
+            }
+            catch (e_16_1) { e_16 = { error: e_16_1 }; }
+            finally {
+                try {
+                    if (errors_2_1 && !errors_2_1.done && (_a = errors_2["return"])) _a.call(errors_2);
+                }
+                finally { if (e_16) throw e_16.error; }
             }
             return ret;
         })();
         r.operationStatusMap = (function () {
+            var e_17, _a;
             var ret = {};
-            for (var _i = 0, operationStatuses_3 = operationStatuses; _i < operationStatuses_3.length; _i++) {
-                var status = operationStatuses_3[_i];
-                ret[status.status] = status.successful;
+            try {
+                for (var operationStatuses_3 = __values(operationStatuses), operationStatuses_3_1 = operationStatuses_3.next(); !operationStatuses_3_1.done; operationStatuses_3_1 = operationStatuses_3.next()) {
+                    var status = operationStatuses_3_1.value;
+                    ret[status.status] = status.successful;
+                }
+            }
+            catch (e_17_1) { e_17 = { error: e_17_1 }; }
+            finally {
+                try {
+                    if (operationStatuses_3_1 && !operationStatuses_3_1.done && (_a = operationStatuses_3["return"])) _a.call(operationStatuses_3);
+                }
+                finally { if (e_17) throw e_17.error; }
             }
             return ret;
         })();
