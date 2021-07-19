@@ -50,12 +50,15 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
         to[j] = from[i];
     return to;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var Client = __importStar(require("rosetta-node-sdk-client"));
 var errors_1 = require("../errors");
 var utils_1 = require("../utils");
 var models_1 = require("../models");
-var index_1 = require("index");
+var asserter_1 = __importDefault(require("../asserter"));
 var Operation = Client.Operation;
 var ExpectedOppositesLength = 2;
 var EMPTY_OPERATIONS_GROUP = {
@@ -84,7 +87,7 @@ var Match = /** @class */ (function () {
 var RosettaParser = /** @class */ (function () {
     function RosettaParser(_a) {
         var _b = _a === void 0 ? {
-            asserter: new index_1.Asserter(),
+            asserter: new asserter_1["default"](),
             exemptFunc: function () { }
         } : _a, asserter = _b.asserter, exemptFunc = _b.exemptFunc;
         this.asserter = asserter;
