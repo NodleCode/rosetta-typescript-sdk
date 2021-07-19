@@ -1,6 +1,6 @@
 import { AccountDescription, AmountDescription, Descriptions, OperationDescription } from '../models';
 import { AccountIdentifier, Amount, Block, CoinAction, CoinChange, Currency, Operation, Operation as OperationType, SigningPayload, Transaction } from 'types';
-import { Asserter } from 'index';
+import Asserter from '../asserter';
 export interface OperationsGroup {
     type: string;
     operations: OperationType[];

@@ -22,7 +22,7 @@ import {
     SigningPayload,
     Transaction,
 } from 'types';
-import { Asserter } from 'index';
+import Asserter from '../asserter';
 
 const { Operation } = Client;
 const ExpectedOppositesLength = 2;
