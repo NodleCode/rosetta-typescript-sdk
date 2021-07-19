@@ -15,12 +15,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-// ReconcilerError.js
 var ReconcilerError = /** @class */ (function (_super) {
     __extends(ReconcilerError, _super);
     function ReconcilerError(message, type, filename, lineNumber) {
-        var _this = _super.call(this, message, filename, lineNumber) || this;
+        var _this = _super.call(this, message) || this;
         _this.type = type;
+        _this.filename = filename;
+        _this.lineNumber = lineNumber;
         _this.name = 'ReconcilerError';
         return _this;
     }

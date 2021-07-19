@@ -1,4 +1,6 @@
 export default class ReconcilerError extends Error {
-    constructor(message: any, type: any, filename: any, lineNumber: any);
-    type: any;
+    type: string;
+    filename: string;
+    lineNumber: number;
+    constructor(message: string, type?: string, filename?: string, lineNumber?: number);
 }

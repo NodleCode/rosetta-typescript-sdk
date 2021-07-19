@@ -5,9 +5,9 @@ var NetworkIdentifier = /** @class */ (function () {
         this.blockchain = '';
         this.network = '';
         this.sub_network_identifier = {
-            'network': '',
-            'metadata': {
-                'producer': ''
+            network: '',
+            metadata: {
+                producer: ''
             }
         }; // Optional
     }

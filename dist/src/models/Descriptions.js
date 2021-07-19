@@ -1,5 +1,4 @@
 "use strict";
-// Contains a slice of operation descriptions
 exports.__esModule = true;
 var Descriptions = /** @class */ (function () {
     function Descriptions(_a) {
@@ -13,4 +12,3 @@ var Descriptions = /** @class */ (function () {
     return Descriptions;
 }());
 exports["default"] = Descriptions;
-;

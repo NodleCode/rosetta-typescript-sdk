@@ -1,7 +1,5 @@
-// AsserterError.js
-
 export default class InternalError extends Error {
-  constructor(message) {
+  constructor(message: string) {
     super(message);
     this.name = 'InternalError';
   }

@@ -1,7 +1,5 @@
-
-// ParserError.js
 export default class ParserError extends Error {
-  constructor(message) {
+  constructor(message: string) {
     super(message);
     this.name = 'ParserError';
   }

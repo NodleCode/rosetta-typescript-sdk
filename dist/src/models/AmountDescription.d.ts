@@ -1,11 +1,12 @@
+import { Currency } from 'types';
+import Sign from './Sign';
 export default class AmountDescription {
-    constructor({ exists, sign, currency, }: {
-        exists?: boolean;
-        sign?: any;
-        currency?: any;
-    });
     exists: boolean;
     sign: Sign;
-    currency: any;
+    currency: Currency;
+    constructor({ exists, sign, currency }: {
+        exists?: boolean;
+        sign?: string;
+        currency?: any;
+    });
 }
-import Sign from "./Sign";

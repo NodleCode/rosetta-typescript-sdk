@@ -1,36 +1,28 @@
 "use strict";
 // models: index.js
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
 exports.__esModule = true;
-exports.Hash = exports.NegateValue = exports.AmountValue = exports.constructPartialBlockIdentifier = exports.SubtractValues = exports.AddValues = void 0;
-var Client = __importStar(require("rosetta-node-sdk-client"));
-var PartialBlockIdentifier = Client.PartialBlockIdentifier;
+exports.NegateValue = exports.AmountValue = exports.Hash = exports.constructPartialBlockIdentifier = exports.SubtractValues = exports.AddValues = void 0;
+var errors_1 = require("../errors");
+var rosetta_node_sdk_client_1 = require("rosetta-node-sdk-client");
 function AddValues(a, b) {
     var parsedA = parseInt(a);
     var parsedB = parseInt(b);
     if (isNaN(parsedA)) {
-        throw new AsserterError('SupportedNetworks must be an array');
+        throw new errors_1.AsserterError('SupportedNetworks must be an array');
     }
     if (isNaN(parsedB)) {
-        throw new AsserterError('SupportedNetworks must be an array');
+        throw new errors_1.AsserterError('SupportedNetworks must be an array');
     }
     return "" + (parsedA + parsedB);
 }
@@ -39,16 +31,16 @@ function SubtractValues(a, b) {
     var parsedA = parseInt(a);
     var parsedB = parseInt(b);
     if (isNaN(parsedA)) {
-        throw new AsserterError('SupportedNetworks must be an array');
+        throw new errors_1.AsserterError('SupportedNetworks must be an array');
     }
     if (isNaN(parsedB)) {
-        throw new AsserterError('SupportedNetworks must be an array');
+        throw new errors_1.AsserterError('SupportedNetworks must be an array');
     }
     return "" + (parsedA - parsedB);
 }
 exports.SubtractValues = SubtractValues;
 function constructPartialBlockIdentifier(blockIdentifier) {
-    return PartialBlockIdentifier.constructFromObject({
+    return rosetta_node_sdk_client_1.PartialBlockIdentifier.constructFromObject({
         hash: blockIdentifier.hash,
         index: blockIdentifier.index
     });
@@ -60,32 +52,44 @@ Object.defineProperty(String.prototype, 'hashCode', {
         var hash = 0, i, chr;
         for (i = 0; i < this.length; i++) {
             chr = this.charCodeAt(i);
-            hash = ((hash << 5) - hash) + chr;
+            hash = (hash << 5) - hash + chr;
             hash |= 0; // Convert to 32bit integer
         }
         return hash;
     }
 });
 function Hash(input) {
+    var e_1, _a;
     if (typeof input == 'object') {
         var values = [];
         var keys = Object.keys(input).sort();
-        for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-            var key = keys_1[_i];
-            if (typeof input[key] == 'object') {
-                var subHash = Hash(input[key]);
-                values.push(key + ":" + subHash);
-            }
-            else {
-                values.push(key + ":" + input[key]);
+        try {
+            for (var keys_1 = __values(keys), keys_1_1 = keys_1.next(); !keys_1_1.done; keys_1_1 = keys_1.next()) {
+                var key = keys_1_1.value;
+                if (typeof input[key] == 'object') {
+                    var subHash = Hash(input[key]);
+                    values.push(key + ":" + subHash);
+                }
+                else {
+                    values.push(key + ":" + input[key]);
+                }
             }
         }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (keys_1_1 && !keys_1_1.done && (_a = keys_1["return"])) _a.call(keys_1);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+        // @ts-ignore
         return values.join('|').hashCode();
     }
     if (typeof input == 'number') {
         return "" + input;
     }
     if (typeof input == 'string') {
+        // @ts-ignore
         return input.hashCode();
     }
     throw new Error("Invalid type " + typeof input + " for Hasher");

@@ -1,11 +1,4 @@
 "use strict";
-/**
- * PromisePool.js
- * Author: Yoshi Jaeger
- *
- * Adapted the code from https://github.com/rxaviers/async-pool/blob/master/lib/es7.js
- * to use an applier proxy.
- */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,6 +35,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 exports.__esModule = true;
 exports.arrayApplier = exports.defaultApplier = exports.create = void 0;
 var defaultApplier = function (promiseBodyFn, arg) {
@@ -51,24 +76,26 @@ var defaultApplier = function (promiseBodyFn, arg) {
 exports.defaultApplier = defaultApplier;
 var arrayApplier = function (promiseBodyFn, args) {
     if (args === void 0) { args = []; }
-    var r = promiseBodyFn.apply(void 0, args);
+    var r = promiseBodyFn.apply(void 0, __spreadArray([], __read(args)));
     return r;
 };
 exports.arrayApplier = arrayApplier;
 function PromisePool(poolLimit, argArray, promiseBodyFn, applierFn) {
     if (poolLimit === void 0) { poolLimit = 8; }
+    if (argArray === void 0) { argArray = []; }
     if (applierFn === void 0) { applierFn = defaultApplier; }
     return __awaiter(this, void 0, void 0, function () {
-        var ret, executing, _loop_1, _i, argArray_1, item;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var ret, executing, _loop_1, argArray_1, argArray_1_1, item, e_1_1;
+        var e_1, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     ret = [];
                     executing = [];
                     _loop_1 = function (item) {
                         var p, e;
-                        return __generator(this, function (_b) {
-                            switch (_b.label) {
+                        return __generator(this, function (_c) {
+                            switch (_c.label) {
                                 case 0:
                                     p = Promise.resolve().then(function () { return applierFn(promiseBodyFn, item); });
                                     ret.push(p);
@@ -77,25 +104,39 @@ function PromisePool(poolLimit, argArray, promiseBodyFn, applierFn) {
                                     if (!(executing.length >= poolLimit)) return [3 /*break*/, 2];
                                     return [4 /*yield*/, Promise.race(executing)];
                                 case 1:
-                                    _b.sent();
-                                    _b.label = 2;
+                                    _c.sent();
+                                    _c.label = 2;
                                 case 2: return [2 /*return*/];
                             }
                         });
                     };
-                    _i = 0, argArray_1 = argArray;
-                    _a.label = 1;
+                    _b.label = 1;
                 case 1:
-                    if (!(_i < argArray_1.length)) return [3 /*break*/, 4];
-                    item = argArray_1[_i];
-                    return [5 /*yield**/, _loop_1(item)];
+                    _b.trys.push([1, 6, 7, 8]);
+                    argArray_1 = __values(argArray), argArray_1_1 = argArray_1.next();
+                    _b.label = 2;
                 case 2:
-                    _a.sent();
-                    _a.label = 3;
+                    if (!!argArray_1_1.done) return [3 /*break*/, 5];
+                    item = argArray_1_1.value;
+                    return [5 /*yield**/, _loop_1(item)];
                 case 3:
-                    _i++;
-                    return [3 /*break*/, 1];
-                case 4: return [2 /*return*/, Promise.all(ret)];
+                    _b.sent();
+                    _b.label = 4;
+                case 4:
+                    argArray_1_1 = argArray_1.next();
+                    return [3 /*break*/, 2];
+                case 5: return [3 /*break*/, 8];
+                case 6:
+                    e_1_1 = _b.sent();
+                    e_1 = { error: e_1_1 };
+                    return [3 /*break*/, 8];
+                case 7:
+                    try {
+                        if (argArray_1_1 && !argArray_1_1.done && (_a = argArray_1["return"])) _a.call(argArray_1);
+                    }
+                    finally { if (e_1) throw e_1.error; }
+                    return [7 /*endfinally*/];
+                case 8: return [2 /*return*/, Promise.all(ret)];
             }
         });
     });

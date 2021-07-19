@@ -1,16 +1,13 @@
-export const ANY: "*";
-export default Sign;
+import { Amount } from 'types';
+export declare const ANY = "*";
 declare class Sign {
-    constructor(input: any);
-    type: any;
-    sign(number: any): 1 | 0 | -1;
-    match(amount: any): boolean;
-    toString(): any;
+    static Positive: string;
+    static Negative: string;
+    static Any: string;
+    type: string;
+    constructor(input: string | number);
+    sign(number: number): 0 | 1 | -1;
+    match(amount: Amount): boolean;
+    toString(): string;
 }
-declare namespace Sign {
-    export { POSITIVE as Positive };
-    export { NEGATIVE as Negative };
-    export { ANY as Any };
-}
-declare const POSITIVE: "+";
-declare const NEGATIVE: "-";
+export default Sign;

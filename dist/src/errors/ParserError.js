@@ -15,7 +15,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-// ParserError.js
 var ParserError = /** @class */ (function (_super) {
     __extends(ParserError, _super);
     function ParserError(message) {

@@ -15,7 +15,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-// SyncerError.js
 var SyncerError = /** @class */ (function (_super) {
     __extends(SyncerError, _super);
     function SyncerError(message) {
@@ -26,4 +25,3 @@ var SyncerError = /** @class */ (function (_super) {
     return SyncerError;
 }(Error));
 exports["default"] = SyncerError;
-;

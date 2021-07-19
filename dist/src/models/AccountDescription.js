@@ -11,4 +11,3 @@ var AccountDescription = /** @class */ (function () {
     return AccountDescription;
 }());
 exports["default"] = AccountDescription;
-;

@@ -15,7 +15,8 @@
     "build": "tsc --p ./ --sourceMap false",
     "bundle": "uglifyjs ./dist/*.js --compress --mangle --output ./dist/index.min.js",
     "prepublishOnly": "npm run lint",
-    "prepare": "npm run build"
+    "precommit": "npm run build",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
@@ -26,7 +27,7 @@
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "husky": "^4.3.0",
+    "husky": "^4.3.8",
     "prettier": "^2.3.2",
     "tslib": "^2.0.1",
     "tslint": "^6.1.3",

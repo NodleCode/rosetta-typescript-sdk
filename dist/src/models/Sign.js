@@ -8,8 +8,8 @@ var POSITIVE = '+';
 var NEGATIVE = '-';
 var Sign = /** @class */ (function () {
     function Sign(input) {
-        if ([exports.ANY, POSITIVE, NEGATIVE].includes(input)) {
-            this.type = input;
+        if ([exports.ANY, POSITIVE, NEGATIVE].includes(String(input))) {
+            this.type = String(input);
         }
         else if (typeof input == 'number') {
             switch (this.sign(input)) {
@@ -59,9 +59,9 @@ var Sign = /** @class */ (function () {
     Sign.prototype.toString = function () {
         return this.type;
     };
+    Sign.Positive = POSITIVE;
+    Sign.Negative = NEGATIVE;
+    Sign.Any = exports.ANY;
     return Sign;
 }());
-Sign.Positive = POSITIVE;
-Sign.Negative = NEGATIVE;
-Sign.Any = exports.ANY;
 exports["default"] = Sign;
