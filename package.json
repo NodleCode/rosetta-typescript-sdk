@@ -16,7 +16,6 @@
     "build": "tsc --p ./ --sourceMap false",
     "bundle": "uglifyjs ./dist/*.js --compress --mangle --output ./dist/index.min.js",
     "prepublishOnly": "npm run lint",
-    "precommit": "npm run build",
     "prepare": "husky install"
   },
   "devDependencies": {

@@ -1,3 +1,0 @@
-export const BLOCK_ADDED: "BLOCK_ADDED";
-export const BLOCK_REMOVED: "BLOCK_REMOVED";
-export const SYNC_CANCELLED: "SYNC_CANCELLED";
