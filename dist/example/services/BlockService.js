@@ -51,6 +51,7 @@ var block = function (params) { return __awaiter(void 0, void 0, void 0, functio
     var blockRequest, previousBlockIndex_1, blockIdentifier_1, parentBlockIdentifier_1, timestamp_1, transactions_1, block_1, previousBlockIndex, blockIdentifier, parentBlockIdentifier, timestamp, transactionIdentifier, operations, transactions, block, otherTransactions;
     return __generator(this, function (_a) {
         blockRequest = params.blockRequest;
+        console.log(params);
         if (blockRequest.block_identifier.index != 1000) {
             previousBlockIndex_1 = Math.max(0, blockRequest.block_identifier.index - 1);
             blockIdentifier_1 = new Types.BlockIdentifier(blockRequest.block_identifier.index, "block " + blockRequest.block_identifier.index);

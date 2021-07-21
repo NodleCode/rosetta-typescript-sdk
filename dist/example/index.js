@@ -19,44 +19,44 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 exports.__esModule = true;
-var __1 = require("../../");
+//import { Server as RosettaServer, Asserter } from '../../';
 var ServiceHandlers = __importStar(require("./services"));
-var network_1 = require("./network");
-var asserter = __1.Asserter.NewServer(["Transfer", "Reward"], false, [
-    network_1.networkIdentifier,
+var RosettaSDK = require('rosetta-node-sdk');
+/* const asserter = Asserter.NewServer(['Transfer', 'Reward'], false, [
+    networkIdentifier,
 ]);
+ */
 /* Create a server configuration */
-var Server = new __1.Server({
+var Server = new RosettaSDK.Server({
     URL_PORT: 8080
 });
 // Register global asserter
-Server.useAsserter(asserter);
+//Server.useAsserter(asserter);
 /* Construction API */
-Server.register("/construction/metadata", ServiceHandlers.Construction.constructionMetadata);
-Server.register("/construction/submit", ServiceHandlers.Construction.constructionSubmit);
-Server.register("/construction/combine", ServiceHandlers.Construction.constructionCombine);
-Server.register("/construction/derive", ServiceHandlers.Construction.constructionDerive);
-Server.register("/construction/hash", ServiceHandlers.Construction.constructionHash);
-Server.register("/construction/parse", ServiceHandlers.Construction.constructionParse);
-Server.register("/construction/payloads", ServiceHandlers.Construction.constructionPayloads);
-Server.register("/construction/preprocess", ServiceHandlers.Construction.constructionPreprocess);
+Server.register('/construction/metadata', ServiceHandlers.Construction.constructionMetadata);
+Server.register('/construction/submit', ServiceHandlers.Construction.constructionSubmit);
+Server.register('/construction/combine', ServiceHandlers.Construction.constructionCombine);
+Server.register('/construction/derive', ServiceHandlers.Construction.constructionDerive);
+Server.register('/construction/hash', ServiceHandlers.Construction.constructionHash);
+Server.register('/construction/parse', ServiceHandlers.Construction.constructionParse);
+Server.register('/construction/payloads', ServiceHandlers.Construction.constructionPayloads);
+Server.register('/construction/preprocess', ServiceHandlers.Construction.constructionPreprocess);
 /* Data API: Network */
-Server.register("/network/list", ServiceHandlers.Network.networkList);
-Server.register("/network/options", ServiceHandlers.Network.networkOptions);
-Server.register("/network/status", ServiceHandlers.Network.networkStatus);
+Server.register('/network/list', ServiceHandlers.Network.networkList);
+Server.register('/network/options', ServiceHandlers.Network.networkOptions);
+Server.register('/network/status', ServiceHandlers.Network.networkStatus);
 /* Data API: Block */
-Server.register("/block", ServiceHandlers.Block.block);
-Server.register("/block/transaction", ServiceHandlers.Block.blockTransaction);
-Server.register("/network/list", ServiceHandlers.Network.networkList);
-Server.register("/network/options", ServiceHandlers.Network.networkOptions);
-Server.register("/network/status", ServiceHandlers.Network.networkStatus);
+Server.register('/block', ServiceHandlers.Block.block);
+Server.register('/block/transaction', ServiceHandlers.Block.blockTransaction);
+Server.register('/network/list', ServiceHandlers.Network.networkList);
+Server.register('/network/options', ServiceHandlers.Network.networkOptions);
+Server.register('/network/status', ServiceHandlers.Network.networkStatus);
 /* Data API: Block */
-Server.register("/block", ServiceHandlers.Block.block);
-Server.register("/block/transaction", ServiceHandlers.Block.blockTransaction);
+Server.register('/block', ServiceHandlers.Block.block);
+Server.register('/block/transaction', ServiceHandlers.Block.blockTransaction);
 /* Data API: Account */
-Server.register("/account/balance", ServiceHandlers.Account.balance);
+Server.register('/account/balance', ServiceHandlers.Account.balance);
 /* Data API: Mempool */
-Server.register("/mempool", ServiceHandlers.Mempool.mempool);
-Server.register("/mempool/transaction", ServiceHandlers.Mempool.mempoolTransaction);
-console.log(Server);
+Server.register('/mempool', ServiceHandlers.Mempool.mempool);
+Server.register('/mempool/transaction', ServiceHandlers.Mempool.mempoolTransaction);
 Server.launch();
