@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "types": "./dist",
-  "main": "./index.js",
+  "main": "./dist/index.js",
   "files": [
     "dist/"
   ],

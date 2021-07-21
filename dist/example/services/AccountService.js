@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.balance = void 0;
+exports.coins = exports.balance = void 0;
 /* Data API: Account */
 /**
  * Get an Account Balance
@@ -53,3 +53,9 @@ var balance = function (params) { return __awaiter(void 0, void 0, void 0, funct
     });
 }); };
 exports.balance = balance;
+var coins = function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/, {}];
+    });
+}); };
+exports.coins = coins;

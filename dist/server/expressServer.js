@@ -66,6 +66,7 @@ var swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 var js_yaml_1 = __importDefault(require("js-yaml"));
 var cors_1 = __importDefault(require("cors"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
+var body_parser_1 = __importDefault(require("body-parser"));
 var OpenApiValidator = __importStar(require("express-openapi-validator"));
 var ExpressServer = /** @class */ (function () {
     function ExpressServer(port, host, openApiYaml) {
@@ -86,7 +87,7 @@ var ExpressServer = /** @class */ (function () {
         var _this = this;
         // this.setupAllowedMedia();
         this.app.use(cors_1["default"]());
-        //this.app.use(bodyParser.json({ limit: "14MB" }));
+        this.app.use(body_parser_1["default"].json({ limit: "14MB" }));
         this.app.use(express_1["default"].json());
         this.app.use(express_1["default"].text());
         this.app.use(express_1["default"].urlencoded({ extended: false }));
