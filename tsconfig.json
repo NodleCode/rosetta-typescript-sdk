@@ -30,6 +30,7 @@
   },
   "include": [
     "src/**/*",
+    "**/*.yaml"
   ],
   "exclude": [
     "node_modules",
