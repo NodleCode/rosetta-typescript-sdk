@@ -8,7 +8,6 @@ export default class RosettaServer {
     expressServer: ExpressServer;
     constructor(configuration = {} as OpenApiConfig) {
         this.config = Object.assign({}, defaultConfig, configuration);
-
         const port = this.config.URL_PORT;
         const host = this.config.URL_PATH; //URL_HOST
         const openAPIPath = this.config.OPENAPI_YAML;

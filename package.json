@@ -5,11 +5,11 @@
   "types": "./dist",
   "main": "./dist/index.js",
   "files": [
-    "dist/"
+    "dist/",
+    "api/"
   ],
   "scripts": {
     "run:server": "npm exec -- ts-node -r ./src/example/index.ts",
-    "run:server2": "npm exec -- ts-node -r ./src/example/index2.ts",
     "prettier": "prettier --config .prettierrc.json --write src/**/*.ts",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'tests/**/*.spec.ts'",
     "clean": "rmdir dist /S /Q",

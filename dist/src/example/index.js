@@ -19,19 +19,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 exports.__esModule = true;
-//import { Server as RosettaServer, Asserter } from '../../';
+var __1 = require("../../");
 var ServiceHandlers = __importStar(require("./services"));
-var RosettaSDK = require('rosetta-node-sdk');
-/* const asserter = Asserter.NewServer(['Transfer', 'Reward'], false, [
-    networkIdentifier,
+var network_1 = require("./network");
+var asserter = __1.Asserter.NewServer(['Transfer', 'Reward'], false, [
+    network_1.networkIdentifier,
 ]);
- */
 /* Create a server configuration */
-var Server = new RosettaSDK.Server({
-    URL_PORT: 8080
+var Server = new __1.Server({
+    URL_PATH: 'localhost',
+    URL_PORT: 4000
 });
 // Register global asserter
-//Server.useAsserter(asserter);
+Server.useAsserter(asserter);
 /* Construction API */
 Server.register('/construction/metadata', ServiceHandlers.Construction.constructionMetadata);
 Server.register('/construction/submit', ServiceHandlers.Construction.constructionSubmit);
@@ -56,7 +56,12 @@ Server.register('/block', ServiceHandlers.Block.block);
 Server.register('/block/transaction', ServiceHandlers.Block.blockTransaction);
 /* Data API: Account */
 Server.register('/account/balance', ServiceHandlers.Account.balance);
+Server.register('account/balance', ServiceHandlers.Account.coins);
 /* Data API: Mempool */
 Server.register('/mempool', ServiceHandlers.Mempool.mempool);
 Server.register('/mempool/transaction', ServiceHandlers.Mempool.mempoolTransaction);
+Server.expressServer.app.use(function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    next();
+});
 Server.launch();

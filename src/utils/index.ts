@@ -44,7 +44,7 @@ export function constructPartialBlockIdentifier(
 }
 
 // http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-Object.defineProperty(String.prototype, 'hashCode', {
+/* Object.defineProperty(String.prototype, 'hashCode', {
     value: function () {
         var hash = 0,
             i,
@@ -56,7 +56,20 @@ Object.defineProperty(String.prototype, 'hashCode', {
         }
         return hash;
     },
-});
+    configurable: true,
+    writable: true,
+}); */
+export const hashCode = (string: string) => {
+    var hash = 0,
+        i,
+        chr;
+    for (i = 0; i < string.length; i++) {
+        chr = string.charCodeAt(i);
+        hash = (hash << 5) - hash + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+};
 
 export function Hash(input: string | number | object) {
     if (typeof input == 'object') {
@@ -71,8 +84,7 @@ export function Hash(input: string | number | object) {
                 values.push(`${key}:${input[key]}`);
             }
         }
-        // @ts-ignore
-        return values.join('|').hashCode();
+        return hashCode(values.join('|'));
     }
 
     if (typeof input == 'number') {
@@ -81,7 +93,7 @@ export function Hash(input: string | number | object) {
 
     if (typeof input == 'string') {
         // @ts-ignore
-        return input.hashCode();
+        return hashCode(input);
     }
 
     throw new Error(`Invalid type ${typeof input} for Hasher`);

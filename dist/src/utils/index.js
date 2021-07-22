@@ -12,7 +12,7 @@ var __values = (this && this.__values) || function(o) {
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
 exports.__esModule = true;
-exports.NegateValue = exports.AmountValue = exports.Hash = exports.constructPartialBlockIdentifier = exports.SubtractValues = exports.AddValues = void 0;
+exports.NegateValue = exports.AmountValue = exports.Hash = exports.hashCode = exports.constructPartialBlockIdentifier = exports.SubtractValues = exports.AddValues = void 0;
 var errors_1 = require("../errors");
 var rosetta_node_sdk_client_1 = require("rosetta-node-sdk-client");
 function AddValues(a, b) {
@@ -47,17 +47,31 @@ function constructPartialBlockIdentifier(blockIdentifier) {
 }
 exports.constructPartialBlockIdentifier = constructPartialBlockIdentifier;
 // http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-Object.defineProperty(String.prototype, 'hashCode', {
+/* Object.defineProperty(String.prototype, 'hashCode', {
     value: function () {
-        var hash = 0, i, chr;
+        var hash = 0,
+            i,
+            chr;
         for (i = 0; i < this.length; i++) {
             chr = this.charCodeAt(i);
             hash = (hash << 5) - hash + chr;
             hash |= 0; // Convert to 32bit integer
         }
         return hash;
+    },
+    configurable: true,
+    writable: true,
+}); */
+var hashCode = function (string) {
+    var hash = 0, i, chr;
+    for (i = 0; i < string.length; i++) {
+        chr = string.charCodeAt(i);
+        hash = (hash << 5) - hash + chr;
+        hash |= 0; // Convert to 32bit integer
     }
-});
+    return hash;
+};
+exports.hashCode = hashCode;
 function Hash(input) {
     var e_1, _a;
     if (typeof input == 'object') {
@@ -82,15 +96,14 @@ function Hash(input) {
             }
             finally { if (e_1) throw e_1.error; }
         }
-        // @ts-ignore
-        return values.join('|').hashCode();
+        return exports.hashCode(values.join('|'));
     }
     if (typeof input == 'number') {
         return "" + input;
     }
     if (typeof input == 'string') {
         // @ts-ignore
-        return input.hashCode();
+        return exports.hashCode(input);
     }
     throw new Error("Invalid type " + typeof input + " for Hasher");
 }
