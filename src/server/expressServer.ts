@@ -7,8 +7,7 @@ import jsYaml from 'js-yaml';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import * as OpenApiValidator from 'express-openapi-validator';
-
+import { OpenApiValidator } from 'express-openapi-validator';
 export default class ExpressServer {
     port: number;
     host: string;
@@ -39,7 +38,7 @@ export default class ExpressServer {
     setupMiddleware() {
         // this.setupAllowedMedia();
         this.app.use(cors());
-        this.app.use(bodyParser.json({ limit: "14MB" }));
+        this.app.use(bodyParser.json({ limit: '14MB' }));
         this.app.use(express.json());
         this.app.use(express.text());
         this.app.use(express.urlencoded({ extended: false }));
@@ -71,24 +70,6 @@ export default class ExpressServer {
         });
 
         this.app.routeHandlers = {};
-
-        this.app.use(
-            OpenApiValidator.middleware({
-                apiSpec: this.openApiPath,
-                operationHandlers: path.join(__dirname),
-                validateRequests: false,
-                validateResponses: false,
-            })
-        );
-
-        this.app.use((err, req, res, next) => {
-            // 7. Customize errors
-            console.error(err); // dump error to console for debug
-            res.status(err.status || 500).json({
-                message: err.message,
-                errors: err.errors,
-            });
-        });
     }
 
     configure(config) {
@@ -96,10 +77,28 @@ export default class ExpressServer {
     }
 
     launch() {
-        http.createServer(this.app).listen(this.port);
-        console.log(`Listening on port ${this.port}`);
-    }
+        new OpenApiValidator({
+            apiSpec: this.openApiPath,
+            operationHandlers: path.join(__dirname),
+            validateRequests: false,
+            validateResponses: false,
+        })
+            .install(this.app)
+            .catch((e) => console.log(e))
+            .then(() => {
+                // eslint-disable-next-line no-unused-vars
+                this.app.use((err, req, res, next) => {
+                    // format errors
+                    res.status(err.status || 500).json({
+                        message: err.message || err,
+                        errors: err.errors || '',
+                    });
+                });
 
+                http.createServer(this.app).listen(this.port, this.host);
+                console.log(`Listening on port ${this.port}`);
+            });
+    }
     async close() {
         if (this.server !== undefined) {
             await this.server.close();

@@ -1,23 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -67,7 +48,7 @@ var js_yaml_1 = __importDefault(require("js-yaml"));
 var cors_1 = __importDefault(require("cors"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var body_parser_1 = __importDefault(require("body-parser"));
-var OpenApiValidator = __importStar(require("express-openapi-validator"));
+var express_openapi_validator_1 = require("express-openapi-validator");
 var ExpressServer = /** @class */ (function () {
     function ExpressServer(port, host, openApiYaml) {
         this.port = port;
@@ -87,7 +68,7 @@ var ExpressServer = /** @class */ (function () {
         var _this = this;
         // this.setupAllowedMedia();
         this.app.use(cors_1["default"]());
-        this.app.use(body_parser_1["default"].json({ limit: "14MB" }));
+        this.app.use(body_parser_1["default"].json({ limit: '14MB' }));
         this.app.use(express_1["default"].json());
         this.app.use(express_1["default"].text());
         this.app.use(express_1["default"].urlencoded({ extended: false }));
@@ -111,27 +92,31 @@ var ExpressServer = /** @class */ (function () {
             res.json(req.query);
         });
         this.app.routeHandlers = {};
-        this.app.use(OpenApiValidator.middleware({
-            apiSpec: this.openApiPath,
-            operationHandlers: path_1["default"].join(__dirname),
-            validateRequests: false,
-            validateResponses: false
-        }));
-        this.app.use(function (err, req, res, next) {
-            // 7. Customize errors
-            console.error(err); // dump error to console for debug
-            res.status(err.status || 500).json({
-                message: err.message,
-                errors: err.errors
-            });
-        });
     };
     ExpressServer.prototype.configure = function (config) {
         this.app.config = config;
     };
     ExpressServer.prototype.launch = function () {
-        http_1["default"].createServer(this.app).listen(this.port);
-        console.log("Listening on port " + this.port);
+        var _this = this;
+        new express_openapi_validator_1.OpenApiValidator({
+            apiSpec: this.openApiPath,
+            operationHandlers: path_1["default"].join(__dirname),
+            validateRequests: false,
+            validateResponses: false
+        })
+            .install(this.app)["catch"](function (e) { return console.log(e); })
+            .then(function () {
+            // eslint-disable-next-line no-unused-vars
+            _this.app.use(function (err, req, res, next) {
+                // format errors
+                res.status(err.status || 500).json({
+                    message: err.message || err,
+                    errors: err.errors || ''
+                });
+            });
+            http_1["default"].createServer(_this.app).listen(_this.port, _this.host);
+            console.log("Listening on port " + _this.port);
+        });
     };
     ExpressServer.prototype.close = function () {
         return __awaiter(this, void 0, void 0, function () {

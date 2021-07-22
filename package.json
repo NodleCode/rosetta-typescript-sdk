@@ -55,7 +55,7 @@
     "cors": "^2.8.5",
     "exponential-backoff": "^3.1.0",
     "express": "^4.17.1",
-    "express-openapi-validator": "^4.12.14",
+    "express-openapi-validator": "^3.16.1",
     "js-yaml": "^3.14.1",
     "rosetta": "^1.1.0",
     "rosetta-node-sdk-client": "git+https://github.com/SmartArray/rosetta-node-sdk-client.git",
