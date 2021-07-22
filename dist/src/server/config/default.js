@@ -13,7 +13,8 @@ var defaultConfig = {
     PROJECT_DIR: path_1["default"].join(__dirname, '..'),
     BEAUTIFY_JSON: true
 };
-defaultConfig.OPENAPI_YAML = path_1["default"].join(defaultConfig.ROOT_DIR, '..', '..', 'api', 'openapi.yaml');
+defaultConfig.OPENAPI_YAML = path_1["default"].join(defaultConfig.ROOT_DIR, '..', '..', '..', //TODO USE ABSOLUTE PATH
+'api', 'openapi.yaml');
 defaultConfig.FULL_PATH = defaultConfig.URL_PATH + ":" + defaultConfig.URL_PORT + "/" + defaultConfig.BASE_VERSION;
 defaultConfig.FILE_UPLOAD_PATH = path_1["default"].join(defaultConfig.PROJECT_DIR, 'uploaded_files');
 exports["default"] = defaultConfig;

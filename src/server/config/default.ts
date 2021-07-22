@@ -13,7 +13,9 @@ const defaultConfig: OpenApiConfig = {
 
 defaultConfig.OPENAPI_YAML = path.join(
     defaultConfig.ROOT_DIR,
-    '..','..',
+    '..',
+    '..',
+    '..', //TODO USE ABSOLUTE PATH
     'api',
     'openapi.yaml'
 );
