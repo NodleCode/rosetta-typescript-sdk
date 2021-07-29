@@ -30,8 +30,6 @@
   },
   "include": [
     "src/**/*",
-    "src/server/api",
-    "**/*.yaml"
   ],
   "exclude": [
     "node_modules",

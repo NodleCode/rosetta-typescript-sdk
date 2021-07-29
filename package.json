@@ -2,12 +2,15 @@
   "name": "rosetta-typescript-sdk",
   "version": "1.0.0",
   "description": "",
-  "types": "./dist",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/",
     "api/"
   ],
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  },
   "scripts": {
     "run:server": "npm exec -- ts-node -r ./src/example/index.ts",
     "prettier": "prettier --config .prettierrc.json --write src/**/*.ts",
