@@ -19,7 +19,7 @@
     "clean": "rmdir dist /S /Q",
     "build": "tsc --p ./ --sourceMap false",
     "bundle": "uglifyjs ./dist/*.js --compress --mangle --output ./dist/index.min.js",
-    "prepublishOnly": "npm run",
+    "prepublishOnly": "npm run lint",
     "prepare": "husky install"
   },
   "devDependencies": {

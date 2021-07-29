@@ -118,7 +118,7 @@ class Controller {
     static extractModelName(schema, lcFirstChar = true) {
         const index = schema.$ref.lastIndexOf('/');
 
-        if (index == -1) {
+        if (index === -1) {
             console.warn(`${schema.$ref} did not have the expected format.`);
             return schema.$ref;
         }

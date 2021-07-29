@@ -112,7 +112,7 @@ class RosettaReconciler {
             let skipAccount = false;
 
             for (const change of balanceChangesArray) {
-                if (Hash(account) == Hash(change)) {
+                if (Hash(account) === Hash(change)) {
                     skipAccount = true;
                     break;
                 }
@@ -313,7 +313,7 @@ class RosettaReconciler {
                 reconciliationType = RECONCILIATION_INACTIVE;
             }
 
-            if (difference != '0') {
+            if (difference !== '0') {
                 const error = await this.handler.reconciliationFailed(
                     reconciliationType,
                     accountCurrency.account_identifier,
@@ -404,7 +404,7 @@ class RosettaReconciler {
             }
 
             const queueLen = this.inactiveQueue.length;
-            if (queueLen == 0) {
+            if (queueLen === 0) {
                 if (this.debugLogging) {
                     this.logger.verbose(
                         'No accounts ready for inactive reconciliation (0 accounts in queue)'
@@ -467,7 +467,7 @@ class RosettaReconciler {
 
     static extractAmount(amountArray: Amount[], currency: Currency) {
         for (const b of amountArray) {
-            if (Hash(b.currency) != Hash(currency)) continue;
+            if (Hash(b.currency) !== Hash(currency)) continue;
             return b;
         }
 
@@ -518,7 +518,7 @@ class AccountCurrency {
 
     constructor(opts: AccountCurrencyObj) {
         if (
-            typeof opts == 'object' &&
+            typeof opts === 'object' &&
             (opts as AccountCurrencyObj).accountIdentifier
         ) {
             const { accountIdentifier, currency } = opts as AccountCurrencyObj;

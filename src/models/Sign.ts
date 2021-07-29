@@ -14,7 +14,7 @@ class Sign {
     constructor(input: string | number) {
         if ([ANY, POSITIVE, NEGATIVE].includes(String(input))) {
             this.type = String(input);
-        } else if (typeof input == 'number') {
+        } else if (typeof input === 'number') {
             switch (this.sign(input)) {
                 case -1:
                     this.type = NEGATIVE;
@@ -44,22 +44,21 @@ class Sign {
     }
 
     match(amount: Amount) {
-        if (this.type == ANY) {
+        if (this.type === ANY) {
             return true;
         }
 
         try {
             const numeric = AmountValue(amount);
 
-            if (this.type == NEGATIVE && this.sign(numeric) == -1) {
+            if (this.type === NEGATIVE && this.sign(numeric) === -1) {
                 return true;
             }
 
-            if (this.type == POSITIVE && this.sign(numeric) == 1) {
+            if (this.type === POSITIVE && this.sign(numeric) === 1) {
                 return true;
             }
         } catch (e) {
-            console.error(`ERROR`, e);
             return false;
         }
     }

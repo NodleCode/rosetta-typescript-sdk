@@ -162,8 +162,8 @@ class RosettaParser {
         operation: OperationType
     ) {
         if (
-            operation.type != operationsGroup.type &&
-            operationsGroup.type != ''
+            operation.type !== operationsGroup.type &&
+            operationsGroup.type !== ''
         ) {
             operationsGroup.type = '';
         }
@@ -181,9 +181,9 @@ class RosettaParser {
         operationsGroup.nil_amount_present = false;
 
         if (
-            -1 ==
+            -1 ===
             operationsGroup.currencies.findIndex(
-                (curr) => Hash(curr) == Hash(operation.amount.currency)
+                (curr) => Hash(curr) === Hash(operation.amount.currency)
             )
         ) {
             operationsGroup.currencies.push(operation.amount.currency);
@@ -243,7 +243,7 @@ class RosettaParser {
                 // Create a new group
                 if (
                     !op.related_operations ||
-                    op.related_operations.length == 0
+                    op.related_operations.length === 0
                 ) {
                     const key = counter++;
 
@@ -321,7 +321,7 @@ class RosettaParser {
             );
         }
 
-        if (coinChange.coin_action != requiredCoinAction) {
+        if (coinChange.coin_action !== requiredCoinAction) {
             throw new ParserError(
                 `coin change_action is ${coinChange.coin_action} ` +
                     `but expected ${requiredCoinAction}`
@@ -330,7 +330,7 @@ class RosettaParser {
     }
 
     metadataMatch(metadataDescriptionArray: any[], metadataMap: any) {
-        if (metadataDescriptionArray.length == 0) {
+        if (metadataDescriptionArray.length === 0) {
             return;
         }
 
@@ -341,7 +341,7 @@ class RosettaParser {
                 throw new ParserError(`${req.key} not present in metadata`);
             }
 
-            if (typeof val != req.value_kind) {
+            if (typeof val !== req.value_kind) {
                 throw new ParserError(
                     `${req.key} value is not of type ${req.value_kind}`
                 );
@@ -377,7 +377,7 @@ class RosettaParser {
 
         if (
             accountDescription.sub_account_address.length > 0 &&
-            accountIdentifier.sub_account.address !=
+            accountIdentifier.sub_account.address !==
                 accountDescription.sub_account_address
         ) {
             throw new ParserError(
@@ -429,7 +429,7 @@ class RosettaParser {
 
         if (
             amount.currency == null ||
-            Hash(amount.currency) != Hash(amountDescription.currency)
+            Hash(amount.currency) !== Hash(amountDescription.currency)
         ) {
             throw new ParserError(
                 `Currency ${amountDescription.currency} is not ${amount.currency}`
@@ -446,7 +446,7 @@ class RosettaParser {
             const des = operationsDescriptionArray[i];
 
             if (matchesArray[i] != null && !des.allow_repeats) continue;
-            if (des.type.length > 0 && des.type != operation.type) continue;
+            if (des.type.length > 0 && des.type !== operation.type) continue;
 
             try {
                 this.accountMatch(des.account, operation.account);
@@ -477,7 +477,7 @@ class RosettaParser {
     }
 
     equalAmounts(operationsArray: OperationType[]) {
-        if (operationsArray.length == 0) {
+        if (operationsArray.length === 0) {
             throw new ParserError(`cannot check equality of 0 operations`);
         }
 
@@ -498,7 +498,7 @@ class RosettaParser {
         const valA = AmountValue(operationA.amount);
         const valB = AmountValue(operationB.amount);
 
-        if (new Sign(valA).toString() == new Sign(valB).toString()) {
+        if (new Sign(valA).toString() === new Sign(valB).toString()) {
             throw new ParserError(`${valA} and ${valB} have the same sign`);
         }
 
@@ -526,7 +526,7 @@ class RosettaParser {
                 continue;
             }
 
-            if (base != op.account.address) {
+            if (base !== op.account.address) {
                 throw new ParserError(
                     `${base} is not equal to ${op.account.address}`
                 );
@@ -535,7 +535,7 @@ class RosettaParser {
     }
 
     matchIndexValid(matchesArray: Match[], index: number) {
-        if (typeof index != 'number') {
+        if (typeof index !== 'number') {
             throw new ParserError(`Index must be a number`);
         }
 
@@ -579,21 +579,21 @@ class RosettaParser {
         intentOperation: OperationType,
         observedOperation: OperationType
     ) {
-        if (Hash(intentOperation.account) != Hash(observedOperation.account)) {
+        if (Hash(intentOperation.account) !== Hash(observedOperation.account)) {
             throw new ParserError(
                 `Intended Account ${intentOperation.account} did not ` +
                     `match observed account ${observedOperation.account}`
             );
         }
 
-        if (Hash(intentOperation.amount) != Hash(observedOperation.amount)) {
+        if (Hash(intentOperation.amount) !== Hash(observedOperation.amount)) {
             throw new ParserError(
                 `Intended amount ${intentOperation.amount} did not ` +
                     `match observed amount ${observedOperation.amount}`
             );
         }
 
-        if (intentOperation.type != observedOperation.type) {
+        if (intentOperation.type !== observedOperation.type) {
             throw new ParserError(
                 `Intended type ${intentOperation.type} did not ` +
                     `match observed type ${observedOperation.type}`
@@ -714,7 +714,7 @@ class RosettaParser {
             }
         }
 
-        if (unmatched.length != 0) {
+        if (unmatched.length !== 0) {
             throw new ParserError(
                 `Found unexpected signers: ${JSON.stringify(unmatched)}`
             );
@@ -747,7 +747,7 @@ class RosettaParser {
         }
 
         for (const amountMatch of descriptions.opposite_amounts) {
-            if (amountMatch.length != ExpectedOppositesLength) {
+            if (amountMatch.length !== ExpectedOppositesLength) {
                 throw new ParserError(
                     `Cannot check opposites of ${amountMatch.length} operations`
                 );
@@ -784,7 +784,7 @@ class RosettaParser {
         descriptions: Descriptions,
         operationsArray: OperationType[]
     ) {
-        if (operationsArray.length == 0) {
+        if (operationsArray.length === 0) {
             throw new ParserError(
                 `Unable to match anything to zero operations`
             );
@@ -793,7 +793,7 @@ class RosettaParser {
         const operationDescriptions = descriptions.operation_descriptions;
         const matches = new Array(operationDescriptions.length).fill(null);
 
-        if (operationDescriptions.length == 0) {
+        if (operationDescriptions.length === 0) {
             throw new ParserError(`No descriptions to match`);
         }
 
