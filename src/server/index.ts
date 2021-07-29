@@ -1,6 +1,6 @@
 import defaultConfig from './config/default';
 import ExpressServer from './expressServer';
-//import * as logger from "../logger";
+// import * as logger from "../logger";
 import { OpenApiConfig } from '../../src/types';
 
 export default class RosettaServer {
@@ -9,7 +9,7 @@ export default class RosettaServer {
     constructor(configuration = {} as OpenApiConfig) {
         this.config = Object.assign({}, defaultConfig, configuration);
         const port = this.config.URL_PORT;
-        const host = this.config.URL_PATH; //URL_HOST
+        const host = this.config.URL_PATH; // URL_HOST
         const openAPIPath = this.config.OPENAPI_YAML;
 
         this.expressServer = new ExpressServer(port, host, openAPIPath);

@@ -140,13 +140,13 @@ class Controller {
                     ].schema;
 
                 if (schema.$ref) {
-                    let modelName = Controller.extractModelName(schema);
+                    const modelName = Controller.extractModelName(schema);
                     requestParams[modelName] = request.body;
-                    requestParams['class'] = Controller.extractModelName(
+                    requestParams.class = Controller.extractModelName(
                         schema,
                         false
                     );
-                    requestParams['requestParamsKey'] = modelName;
+                    requestParams.requestParamsKey = modelName;
                 } else {
                     requestParams.body = request.body;
                 }

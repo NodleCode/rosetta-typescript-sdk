@@ -108,10 +108,10 @@ class RosettaReconciler {
         blockIdentifier: BlockIdentifier,
         balanceChangesArray: any[]
     ) {
-        for (let account of this.interestingAccounts) {
+        for (const account of this.interestingAccounts) {
             let skipAccount = false;
 
-            for (let change of balanceChangesArray) {
+            for (const change of balanceChangesArray) {
                 if (Hash(account) == Hash(change)) {
                     skipAccount = true;
                     break;
@@ -124,11 +124,11 @@ class RosettaReconciler {
                 account_identifier: account.account,
                 currency: account.currency,
                 block_identifier: '0',
-                //difference: block,
+                // difference: block,
             });
         }
 
-        for (let change of balanceChangesArray) {
+        for (const change of balanceChangesArray) {
             await this.inactiveAccountQueue(
                 false,
                 new _AccountCurrency(change.account, change.currency),
@@ -221,7 +221,7 @@ class RosettaReconciler {
                 return { shouldAttempt: false, head: null };
             }
 
-            return { shouldAttempt: true, head: head };
+            return { shouldAttempt: true, head };
         } catch (e) {
             if (this.debugLogging)
                 this.logger.verbose(
@@ -241,7 +241,7 @@ class RosettaReconciler {
     ) {
         const accountCurrency = {
             account_identifier: accountIdentifier,
-            currency: currency,
+            currency,
         };
 
         while (true) {
@@ -283,7 +283,7 @@ class RosettaReconciler {
                             // reconciliation requests unless they happened
                             // after this new highWaterMark.
                             throw new ReconcilerError('not implemented');
-                            //this.highWaterMark = partialBlockIdentifier.index;
+                            // this.highWaterMark = partialBlockIdentifier.index;
                             break;
                         }
 
@@ -416,7 +416,7 @@ class RosettaReconciler {
             }
 
             const nextAccount = this.inactiveQueue[0];
-            let nextValidIndex = -1;
+            const nextValidIndex = -1;
             throw new ReconcilerError('Not implemented');
             /* if (nextAccount.last_check != null) {
                 nextValidIndex =
@@ -466,7 +466,7 @@ class RosettaReconciler {
     }
 
     static extractAmount(amountArray: Amount[], currency: Currency) {
-        for (let b of amountArray) {
+        for (const b of amountArray) {
             if (Hash(b.currency) != Hash(currency)) continue;
             return b;
         }

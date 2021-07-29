@@ -63,7 +63,7 @@ interface AsserterConstructor {
     errorTypes?: Error[];
     genesisBlockIdentifier?: BlockIdentifier;
     supportedNetworks?: NetworkIdentifier[];
-    historicalBalanceLookup?: boolean; //- Specifies whether balance requests can be performed by using a particular block identifier.
+    historicalBalanceLookup?: boolean; // - Specifies whether balance requests can be performed by using a particular block identifier.
 }
 
 /**
@@ -72,7 +72,7 @@ interface AsserterConstructor {
  * Syntactical and semantical type validator.
  * This Asserter can be used to validate Requests/Responses.Constructors exist
  * that ease the creation of an asserter.
- + For example, `NewClientWithResponses` can be used in order to create a server
+ * For example, `NewClientWithResponses` can be used in order to create a server
  * validator by only passing the network responses.
  */
 class RosettaAsserter {
@@ -122,7 +122,7 @@ class RosettaAsserter {
 
         if (
             operationStatuses &&
-            typeof operationStatuses == 'object' &&
+            typeof operationStatuses === 'object' &&
             Array.isArray(operationStatuses)
         ) {
             for (const operationStatus of operationStatuses) {
@@ -133,7 +133,7 @@ class RosettaAsserter {
 
         if (
             errorTypes &&
-            typeof errorTypes == 'object' &&
+            typeof errorTypes === 'object' &&
             Array.isArray(errorTypes)
         ) {
             for (const errorType of errorTypes) {
@@ -151,7 +151,7 @@ class RosettaAsserter {
             throw new AsserterError('SupportedNetworks must be an array');
         }
 
-        if (supportedNetworks.length == 0) {
+        if (supportedNetworks.length === 0) {
             throw new AsserterError(
                 'NetworkIdentifier Array contains no supported networks'
             );
@@ -159,7 +159,7 @@ class RosettaAsserter {
 
         const parsedNetworks = [];
 
-        for (let network of supportedNetworks) {
+        for (const network of supportedNetworks) {
             this.NetworkIdentifier(network);
             if (parsedNetworks.includes(Hash(network))) {
                 throw new AsserterError(
@@ -180,10 +180,10 @@ class RosettaAsserter {
      */
     SupportedNetwork(networkIdentifier: NetworkIdentifier) {
         const index = this.supportedNetworks.findIndex(
-            (network) => Hash(network) == Hash(networkIdentifier)
+            (network) => Hash(network) === Hash(networkIdentifier)
         );
 
-        if (index == -1) {
+        if (index === -1) {
             throw new AsserterError(
                 `Network ${JSON.stringify(networkIdentifier)} is not supported`
             );
@@ -559,7 +559,7 @@ class RosettaAsserter {
         if (
             typeof constructionCombineRequest.unsigned_transaction !==
                 'string' ||
-            constructionCombineRequest.unsigned_transaction.length == 0
+            constructionCombineRequest.unsigned_transaction.length === 0
         ) {
             throw new AsserterError('unsigned_transaction cannot be empty');
         }
@@ -583,7 +583,7 @@ class RosettaAsserter {
 
         if (
             typeof constructionHashRequest.signed_transaction !== 'string' ||
-            constructionHashRequest.signed_transaction.length == 0
+            constructionHashRequest.signed_transaction.length === 0
         ) {
             throw new AsserterError('signed_transaction cannot be empty');
         }
@@ -607,7 +607,7 @@ class RosettaAsserter {
 
         if (
             typeof constructionParseRequest.transaction !== 'string' ||
-            constructionParseRequest.transaction.length == 0
+            constructionParseRequest.transaction.length === 0
         ) {
             throw new AsserterError('transaction cannot be empty');
         }
@@ -632,7 +632,7 @@ class RosettaAsserter {
 
         if (
             !constructionParseResponse.operations ||
-            constructionParseResponse.operations.length == 0
+            constructionParseResponse.operations.length === 0
         ) {
             throw new AsserterError('operations cannot be empty');
         }
@@ -646,7 +646,7 @@ class RosettaAsserter {
         if (
             signed &&
             (!constructionParseResponse.signers ||
-                constructionParseResponse.signers.length == 0)
+                constructionParseResponse.signers.length === 0)
         ) {
             throw new AsserterError('signers cannot be empty');
         }
@@ -668,7 +668,7 @@ class RosettaAsserter {
             ++i
         ) {
             const signer = constructionParseResponse.signers[i];
-            if (signer.length == 0) {
+            if (signer.length === 0) {
                 throw new AsserterError(`signer ${i} cannot be empty string`);
             }
         }
@@ -693,14 +693,14 @@ class RosettaAsserter {
         if (
             typeof constructionPayloadsResponse.unsigned_transaction !==
                 'string' ||
-            constructionPayloadsResponse.unsigned_transaction.length == 0
+            constructionPayloadsResponse.unsigned_transaction.length === 0
         ) {
             throw new AsserterError('unsigned transaction cannot be empty');
         }
 
         if (
             !constructionPayloadsResponse.payloads ||
-            constructionPayloadsResponse.payloads.length == 0
+            constructionPayloadsResponse.payloads.length === 0
         ) {
             throw new AsserterError('signing payloads cannot be empty');
         }
@@ -732,7 +732,7 @@ class RosettaAsserter {
 
         if (
             typeof publicKey.hex_bytes !== 'string' ||
-            publicKey.hex_bytes.length == 0
+            publicKey.hex_bytes.length === 0
         ) {
             // hex
             throw new AsserterError('public key bytes cannot be empty');
@@ -787,14 +787,14 @@ class RosettaAsserter {
 
         if (
             typeof signingPayload.address !== 'string' ||
-            signingPayload.address.length == 0
+            signingPayload.address.length === 0
         ) {
             throw new AsserterError('signing payload cannot be empty');
         }
 
         if (
-            typeof signingPayload.hex_bytes != 'string' ||
-            signingPayload.hex_bytes.length == 0
+            typeof signingPayload.hex_bytes !== 'string' ||
+            signingPayload.hex_bytes.length === 0
         ) {
             throw new AsserterError('signing payload bytes cannot be empty');
         }
@@ -807,7 +807,7 @@ class RosettaAsserter {
 
         if (
             !signingPayload.signature_type ||
-            signingPayload.signature_type.length == 0
+            signingPayload.signature_type.length === 0
         ) {
             return;
         }
@@ -831,7 +831,7 @@ class RosettaAsserter {
         if (!hexPayload) return false;
         return (
             hexPayload.match(/^[0-9a-fA-F]+$/) != null &&
-            hexPayload.length % 2 == 0
+            hexPayload.length % 2 === 0
         );
     }
 
@@ -842,7 +842,7 @@ class RosettaAsserter {
      * @throws {AsserterError} thrown if the provided signatures are empty or invalid.
      */
     Signatures(signatureArray: Signature[] = []) {
-        if (!signatureArray || signatureArray.length == 0) {
+        if (!signatureArray || signatureArray.length === 0) {
             throw new AsserterError('signatures cannot be empty');
         }
 
@@ -875,7 +875,7 @@ class RosettaAsserter {
 
             if (
                 signature.signing_payload.signature_type &&
-                signature.signing_payload.signature_type !=
+                signature.signing_payload.signature_type !==
                     signature.signature_type
             ) {
                 throw new AsserterError(
@@ -883,7 +883,7 @@ class RosettaAsserter {
                 );
             }
 
-            if (!signature.hex_bytes || signature.hex_bytes.length == 0) {
+            if (!signature.hex_bytes || signature.hex_bytes.length === 0) {
                 throw new AsserterError(
                     `signature ${i}: bytes cannot be empty`
                 );
@@ -926,7 +926,7 @@ class RosettaAsserter {
      * @throws {AsserterError} thrown if the at least one of the provided transactions is invalid.
      */
     MempoolTransactions(transactionIdentifiers: TransactionIdentifier[]) {
-        for (let t of transactionIdentifiers) {
+        for (const t of transactionIdentifiers) {
             this.TransactionIdentifier(t);
         }
     }
@@ -1028,13 +1028,13 @@ class RosettaAsserter {
      *     empty/invalid strings or if duplicate strings are detected.
      */
     StringArray(name: string, array: string[]) {
-        if (!array || array.length == 0) {
+        if (!array || array.length === 0) {
             throw new AsserterError(`No ${name} found`);
         }
 
         const existing = [];
 
-        for (let element of array) {
+        for (const element of array) {
             if (!this.validString(element)) {
                 throw new AsserterError(`${name} has an empty string`);
             }
@@ -1089,7 +1089,7 @@ class RosettaAsserter {
         if (!Array.isArray(networkStatusResponse.peers))
             throw new AsserterError('Peers must be an array.');
 
-        for (let peer of networkStatusResponse.peers) {
+        for (const peer of networkStatusResponse.peers) {
             this.Peer(peer);
         }
     }
@@ -1102,14 +1102,14 @@ class RosettaAsserter {
      *     operation was specified or if at least one of the operations' status is invalid.
      */
     OperationStatuses(operationStatuses: OperationStatus[]) {
-        if (operationStatuses == null || operationStatuses.length == 0) {
+        if (operationStatuses == null || operationStatuses.length === 0) {
             throw new AsserterError('No Allow.operation_statuses found');
         }
 
         const existingStatuses = [];
         let foundSuccessful = false;
 
-        for (let status of operationStatuses) {
+        for (const status of operationStatuses) {
             if (!status.status) {
                 throw new AsserterError('Operation.status is missing');
             }
@@ -1171,7 +1171,7 @@ class RosettaAsserter {
     Errors(rosettaErrors: Error[] = []) {
         const statusCodeMap = {};
 
-        for (let rosettaError of rosettaErrors) {
+        for (const rosettaError of rosettaErrors) {
             this.Error(rosettaError);
 
             if (statusCodeMap[rosettaError.code] != null) {
@@ -1227,7 +1227,7 @@ class RosettaAsserter {
         network: NetworkIdentifier
     ): boolean {
         const networkHash = Hash(network);
-        const index = networks.findIndex((n) => Hash(n) == networkHash);
+        const index = networks.findIndex((n) => Hash(n) === networkHash);
         return index >= 0;
     }
 
@@ -1245,7 +1245,7 @@ class RosettaAsserter {
 
         const existingNetworks = [];
 
-        for (let network of networkListResponse.network_identifiers) {
+        for (const network of networkListResponse.network_identifiers) {
             this.NetworkIdentifier(network);
             if (this.containsNetworkIdentifier(existingNetworks, network)) {
                 throw new AsserterError(
@@ -1265,8 +1265,8 @@ class RosettaAsserter {
      * @returns {boolean} describes whether the currency was found in the array of currencies.
      */
     containsCurrency(currencies: Currency[], currency: Currency): boolean {
-        let currencyIndex = currencies.findIndex(
-            (a) => Hash(a) == Hash(currency)
+        const currencyIndex = currencies.findIndex(
+            (a) => Hash(a) === Hash(currency)
         );
 
         return currencyIndex >= 0;
@@ -1282,8 +1282,8 @@ class RosettaAsserter {
     assertBalanceAmounts(amountsArray: Amount[]) {
         const currencies = [];
 
-        for (let amount of amountsArray) {
-            let containsCurrency = this.containsCurrency(
+        for (const amount of amountsArray) {
+            const containsCurrency = this.containsCurrency(
                 currencies,
                 amount.currency
             );
@@ -1307,7 +1307,7 @@ class RosettaAsserter {
      *     integer (encoded as string), or if the provided currency is invalid.
      */
     Amount(amount: Amount) {
-        if (amount == null || amount.value == '') {
+        if (!amount || !amount.value) {
             throw new AsserterError(`Amount.value is missing`);
         }
 
@@ -1430,7 +1430,7 @@ class RosettaAsserter {
 
         if (!coinArray) return;
 
-        for (let coin of coinArray) {
+        for (const coin of coinArray) {
             try {
                 this.Coin(coin);
             } catch (e) {
@@ -1517,7 +1517,7 @@ class RosettaAsserter {
             throw new AsserterError('OperationIdentifier is null');
         }
 
-        if (operationIdentifier.index != index) {
+        if (operationIdentifier.index !== index) {
             throw new AsserterError(
                 `OperationIdentifier.index ${operationIdentifier.index} is out of order, expected ${index}`
             );
@@ -1574,7 +1574,7 @@ class RosettaAsserter {
             throw new AsserterError('OperationStatus.status must be a string');
         }
 
-        if (status == '') {
+        if (!status) {
             throw new AsserterError('OperationStatus.status is empty');
         }
 
@@ -1590,7 +1590,7 @@ class RosettaAsserter {
             throw new AsserterError('OperationStatus.type must be a string');
         }
 
-        if (type == '' || !this.operationTypes.includes(type)) {
+        if (!type || !this.operationTypes.includes(type)) {
             throw new AsserterError(`Operation.type ${type} is invalid`);
         }
     }
@@ -1711,7 +1711,7 @@ class RosettaAsserter {
     Operations(operations: Operation[], construction = false) {
         if (!operations) throw new AsserterError('Operations cannot be null');
 
-        if (operations.length == 0 && construction) {
+        if (operations.length === 0 && construction) {
             throw new AsserterError(
                 'Operations cannot be empty for construction'
             );
@@ -1725,7 +1725,7 @@ class RosettaAsserter {
 
             if (!operation.related_operations) continue;
 
-            for (let relatedOperation of operation.related_operations) {
+            for (const relatedOperation of operation.related_operations) {
                 if (
                     relatedOperation.index >=
                     operation.operation_identifier.index
@@ -1777,9 +1777,9 @@ class RosettaAsserter {
         this.BlockIdentifier(block.block_identifier);
         this.BlockIdentifier(block.parent_block_identifier);
 
-        if (this.genesisBlockIdentifier.index != block.block_identifier.index) {
+        if (this.genesisBlockIdentifier.index !== block.block_identifier.index) {
             if (
-                block.block_identifier.hash ==
+                block.block_identifier.hash ===
                 block.parent_block_identifier.hash
             ) {
                 throw new AsserterError(
@@ -1799,7 +1799,7 @@ class RosettaAsserter {
             this.Timestamp(block.timestamp);
         }
 
-        for (let transaction of block.transactions) {
+        for (const transaction of block.transactions) {
             this.Transaction(transaction);
         }
     }
@@ -1871,7 +1871,7 @@ class RosettaAsserter {
         const operationStatuses = [];
         const errors = [];
 
-        for (let key of Object.keys(this.operationStatusMap)) {
+        for (const key of Object.keys(this.operationStatusMap)) {
             const value = this.operationStatusMap[key];
             const operationStatus = new Types.OperationStatus(key, value);
 
@@ -1881,7 +1881,7 @@ class RosettaAsserter {
             operationStatuses.push(operationStatus);
         }
 
-        for (let key of Object.keys(this.errorTypeMap)) {
+        for (const key of Object.keys(this.errorTypeMap)) {
             const value = this.errorTypeMap[key];
             errors.push(value);
         }
@@ -1914,7 +1914,7 @@ class RosettaAsserter {
 
         const r = new RosettaAsserter({
             operationTypes,
-            genesisBlockIdentifier: genesisBlockIdentifier,
+            genesisBlockIdentifier,
         });
 
         r.networkIdentifier = networkIdentifier;
@@ -1922,7 +1922,7 @@ class RosettaAsserter {
         r.errorTypeMap = (() => {
             const ret = {};
 
-            for (let error of errors) {
+            for (const error of errors) {
                 ret[error.code] = error;
             }
 
@@ -1932,7 +1932,7 @@ class RosettaAsserter {
         r.operationStatusMap = (() => {
             const ret = {};
 
-            for (let status of operationStatuses) {
+            for (const status of operationStatuses) {
                 ret[status.status] = status.successful;
             }
 

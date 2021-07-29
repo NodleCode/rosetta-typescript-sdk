@@ -60,7 +60,7 @@ export function constructPartialBlockIdentifier(
     writable: true,
 }); */
 export const hashCode = (string: string) => {
-    var hash = 0,
+    let hash = 0,
         i,
         chr;
     for (i = 0; i < string.length; i++) {
@@ -73,10 +73,10 @@ export const hashCode = (string: string) => {
 
 export function Hash(input: string | number | object) {
     if (typeof input == 'object') {
-        let values = [];
+        const values = [];
         const keys = Object.keys(input).sort();
 
-        for (let key of keys) {
+        for (const key of keys) {
             if (typeof input[key] == 'object') {
                 const subHash = Hash(input[key]);
                 values.push(`${key}:${subHash}`);

@@ -102,8 +102,8 @@ class RosettaParser {
     balanceChanges(block: Block, blockRemoved: boolean) {
         const balanceChanges = {};
 
-        for (let tx of block.transactions) {
-            for (let op of tx.operations) {
+        for (const tx of block.transactions) {
+            for (const op of tx.operations) {
                 const skip = this.skipOperation(op);
                 if (skip) {
                     continue;
@@ -139,7 +139,7 @@ class RosettaParser {
 
         // Collect all balance changes and return them.
         const changes = [];
-        for (let changeId of Object.keys(balanceChanges)) {
+        for (const changeId of Object.keys(balanceChanges)) {
             const change = balanceChanges[changeId];
             changes.push(change);
         }
@@ -245,7 +245,7 @@ class RosettaParser {
                     !op.related_operations ||
                     op.related_operations.length == 0
                 ) {
-                    let key = counter++;
+                    const key = counter++;
 
                     opGroups[key] = {
                         type: op.type,
@@ -266,7 +266,7 @@ class RosettaParser {
 
                 // Find groups to merge
                 const groupsToMerge = [];
-                for (let relatedOp of op.related_operations || []) {
+                for (const relatedOp of op.related_operations || []) {
                     if (
                         !groupsToMerge.includes(opAssignments[relatedOp.index])
                     ) {
@@ -287,11 +287,11 @@ class RosettaParser {
                     op
                 );
 
-                for (let otherGroupIndex of groupsToMerge.slice(1)) {
+                for (const otherGroupIndex of groupsToMerge.slice(1)) {
                     const otherGroup = opGroups[otherGroupIndex];
 
                     // Add otherGroup ops to mergedGroup
-                    for (let otherOp of otherGroup.operations) {
+                    for (const otherOp of otherGroup.operations) {
                         this.addOperationToGroup(
                             mergedGroup,
                             mergedGroupIndex,
@@ -334,7 +334,7 @@ class RosettaParser {
             return;
         }
 
-        for (let req of metadataDescriptionArray) {
+        for (const req of metadataDescriptionArray) {
             const val = metadataMap[req.key];
 
             if (!val) {
@@ -483,7 +483,7 @@ class RosettaParser {
 
         const val = AmountValue(operationsArray[0].amount);
 
-        for (let op of operationsArray) {
+        for (const op of operationsArray) {
             const otherVal = AmountValue(op.amount);
 
             if (val !== otherVal) {
@@ -516,7 +516,7 @@ class RosettaParser {
 
         let base;
 
-        for (let op of operations) {
+        for (const op of operations) {
             if (op.account == null) {
                 throw new ParserError(`account is null`);
             }
@@ -553,10 +553,10 @@ class RosettaParser {
         matchesArray: Match[],
         validCallback: Function
     ) {
-        for (let batch of requests2dArray) {
+        for (const batch of requests2dArray) {
             const ops = [];
 
-            for (let reqIndex of batch) {
+            for (const reqIndex of batch) {
                 try {
                     this.matchIndexValid(matchesArray, reqIndex);
                 } catch (e) {
@@ -691,14 +691,14 @@ class RosettaParser {
         }
 
         const intendedSigners = {};
-        for (let payload of intentSigningPayloadArray) {
+        for (const payload of intentSigningPayloadArray) {
             intendedSigners[payload.address] = true;
         }
 
         const seenSigners = [];
         const unmatched = [];
 
-        for (let signer of observedArray) {
+        for (const signer of observedArray) {
             if (intendedSigners[signer] == null) {
                 unmatched.push(signer);
             } else {
@@ -746,7 +746,7 @@ class RosettaParser {
             );
         }
 
-        for (let amountMatch of descriptions.opposite_amounts) {
+        for (const amountMatch of descriptions.opposite_amounts) {
             if (amountMatch.length != ExpectedOppositesLength) {
                 throw new ParserError(
                     `Cannot check opposites of ${amountMatch.length} operations`

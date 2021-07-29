@@ -15,11 +15,11 @@
   "scripts": {
     "run:server": "npm exec -- ts-node -r ./src/example/index.ts",
     "prettier": "prettier --config .prettierrc.json --write src/**/*.ts",
-    "lint": "tslint -c tslint.json 'src/**/*.ts' 'tests/**/*.spec.ts'",
+    "lint": "tslint --fix -c tslint.json 'src/**/*.ts'",
     "clean": "rmdir dist /S /Q",
     "build": "tsc --p ./ --sourceMap false",
     "bundle": "uglifyjs ./dist/*.js --compress --mangle --output ./dist/index.min.js",
-    "prepublishOnly": "npm run lint",
+    "prepublishOnly": "npm run",
     "prepare": "husky install"
   },
   "devDependencies": {
