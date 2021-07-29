@@ -1,4 +1,4 @@
-import { Components } from "types";
+import { Components } from 'types';
 
 export namespace AccountBalance {
     export type RequestBody =
