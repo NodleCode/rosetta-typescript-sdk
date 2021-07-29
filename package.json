@@ -1,5 +1,5 @@
 {
-  "name": "rosetta-typescript-sdk",
+  "name": "@ConsiderItDone/rosetta-typescript-sdk",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
@@ -9,7 +9,7 @@
     "api/"
   ],
   "publishConfig": {
-    "registry":"https://npm.pkg.github.com"
+    "@ConsiderItDone:registry":"https://npm.pkg.github.com"
   },
   "scripts": {
     "run:server": "npm exec -- ts-node -r ./src/example/index.ts",
