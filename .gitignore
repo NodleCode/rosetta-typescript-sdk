@@ -3,3 +3,4 @@ node_modules
 src/example
 .DS_Store
 dist
+.npmrc
