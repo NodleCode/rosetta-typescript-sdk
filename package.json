@@ -1,6 +1,6 @@
 {
   "name": "@consideritdone/rosetta-typescript-sdk",
-  "version": "1.0.3a",
+  "version": "1.0.4",
   "description": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
