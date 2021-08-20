@@ -5,3 +5,4 @@ src/example
 dist
 *.npmrc
 *.log
+cache
