@@ -1,6 +1,6 @@
 {
-  "name": "@consideritdone/rosetta-typescript-sdk",
-  "version": "1.0.4",
+  "name": "@nodle/rosetta-typescript-sdk",
+  "version": "1.0.5",
   "description": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -10,7 +10,8 @@
   ],
   "publishConfig": {
     "cache": "cache/.npm",
-    "@ConsiderItDone:registry":"https://npm.pkg.github.com"
+    "access": "public",
+    "@nodle:registry":"https://registry.npmjs.org"
   },
   "scripts": {
     "run:server": "npm exec -- ts-node -r ./src/example/index.ts",
